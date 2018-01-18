@@ -1,0 +1,104 @@
+<div class="container card card-primary" style="margin-top:2%; padding:2%;">
+    <form id="absenceform" class="form-horizontal" role="form" (ngSubmit)="submit()" novalidate #absenceForm="ngForm">
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <h2>{{titre}}</h2>
+                <hr>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 field-label-responsive">
+                <label for="add-dateDebut">Date de Début</label>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                        <input type="date" class="form-control" id="add-dateDebut"
+                        [(ngModel)]="absence.dateDebut" name="dateDebut" #dateFin="ngModel" required>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-control-feedback">
+                        <span class="text-danger align-middle">
+                            <!-- Put name validation error messages here -->
+                        </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 field-label-responsive">
+                <label for="add-dateFin">Date de Fin</label>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                        <input type="date" class="form-control" id="add-dateFin"
+                        [(ngModel)]="absence.dateFin" name="dateFin" #dateFin="ngModel" required>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-control-feedback">
+                        <span class="text-danger align-middle">
+                            <!-- Put e-mail validation error messages here -->
+                        </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 field-label-responsive">
+                <label for="add-dateFin">Type de congé</label>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                        <select class="form-control" id="add-dateFin"
+                        [(ngModel)]="absence.type" name="type" #dateFin="ngModel" required >
+                        <option selected value="">(Type de congé)</option>
+                        <option *ngFor="let type of typeOptions" [value]="type">{{type}}</option>
+                        </select>
+                        {{absence.type}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-control-feedback">
+                        <span class="text-danger align-middle">
+                            <!-- Put e-mail validation error messages here -->
+                        </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 field-label-responsive">
+                <label for="add-motif">Motif</label>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group has-danger">
+                    <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                        <textarea type="text" class="form-control" id="add-motif"
+                        [(ngModel)]="absence.motif" name="motif" #motif="ngModel"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-control-feedback">
+                        <span class="text-danger align-middle">
+                            <!-- Put e-mail validation error messages here -->
+                        </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-3">
+                <button type="cancel" class="btn btn-danger"> Annuler</button>
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-success">Valider</button>
+            </div>
+        </div>
+    </form>
+</div>
