@@ -7,7 +7,6 @@ import { FormsModule } from '@angular/forms';
 import { AbsenceService } from './shared/service/absence.service';
 import { FormAbsenceComponent } from './form-absence/form-absence.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,

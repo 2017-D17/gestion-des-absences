@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { AbsenceService } from '../shared/service/absence.service';
 import { Absence } from '../shared/domain/absence';
 import { AbsenceType } from '../shared/domain/absence-type.enum';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-form-absence',
