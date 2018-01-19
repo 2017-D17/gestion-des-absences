@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { Absence } from "../shared/domain/absence";
 
 @Component({
@@ -7,20 +7,22 @@ import { Absence } from "../shared/domain/absence";
   styleUrls: ["./buttons-modif-supp.component.css"]
 })
 export class ButtonsModifSuppComponent implements OnInit {
-  absence: Absence;
-
+  @Input() absence: Absence;
+  modif: boolean = false;
   constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (this.absence.statut == "INITIALE") {
+      this.modif = true;
+    }
+  }
 
   supprimer(absence: Absence) {
     console.log("supprimer");
   }
 
-  modifier(absence: Absence) {
-    // console.log("modifier");
-    // if (absence.statut == "INITIAL") {
-    //   return absence;
-    // }
+  modifier() {
+    console.log(this.absence);
+    console.log("modifier");
   }
 }
