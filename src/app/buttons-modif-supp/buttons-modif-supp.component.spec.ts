@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GestionDeAbsencesComponent } from './gestion-de-absences.component';
+import { ButtonsModifSuppComponent } from './buttons-modif-supp.component';
 
-describe('GestionDeAbsencesComponent', () => {
-  let component: GestionDeAbsencesComponent;
-  let fixture: ComponentFixture<GestionDeAbsencesComponent>;
+describe('ButtonsModifSuppComponent', () => {
+  let component: ButtonsModifSuppComponent;
+  let fixture: ComponentFixture<ButtonsModifSuppComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GestionDeAbsencesComponent ]
+      declarations: [ ButtonsModifSuppComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GestionDeAbsencesComponent);
+    fixture = TestBed.createComponent(ButtonsModifSuppComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
