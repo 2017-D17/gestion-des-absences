@@ -7,10 +7,19 @@ import { MenuComponent } from "./menu/menu.component";
 import { AccueilComponent } from "./accueil/accueil.component";
 import { AuthentificationComponent } from "./authentification/authentification.component";
 import { GestionDeAbsencesComponent } from "./gestion-de-absences/gestion-de-absences.component";
+import { ValidationDesAbsencesComponent } from './validation-des-absences/validation-des-absences.component';
+import { PlanningDesAbsencesComponent } from './planning-des-absences/planning-des-absences.component';
+import { JoursFeriesComponent } from './jours-feries/jours-feries.component';
+import { VueSynthetiqueComponent } from './vue-synthetique/vue-synthetique.component';
 
 const appRoutes: Routes = [
   { path: "accueil", component: AccueilComponent },
-  { path: "GestionDesAbsences", component: GestionDeAbsencesComponent }
+  { path: "GestionDesAbsences", component: GestionDeAbsencesComponent },
+  { path: "PlanningDesAbsences", component: PlanningDesAbsencesComponent },
+  { path: "ValidationDesAbsences", component: ValidationDesAbsencesComponent },
+  { path: "VueSynthetique", component: VueSynthetiqueComponent },
+  { path: "JoursFeries", component: JoursFeriesComponent },
+  { path: '**', redirectTo: 'accueil' }
 ];
 @NgModule({
   declarations: [
@@ -18,7 +27,11 @@ const appRoutes: Routes = [
     MenuComponent,
     AccueilComponent,
     AuthentificationComponent,
-    GestionDeAbsencesComponent
+    GestionDeAbsencesComponent,
+    ValidationDesAbsencesComponent,
+    PlanningDesAbsencesComponent,
+    JoursFeriesComponent,
+    VueSynthetiqueComponent
   ],
   imports: [
     BrowserModule,
@@ -28,4 +41,4 @@ const appRoutes: Routes = [
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

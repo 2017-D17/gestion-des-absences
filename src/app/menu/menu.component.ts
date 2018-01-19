@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { Stream } from "stream";
+
 
 @Component({
   selector: "app-menu",
@@ -8,7 +8,7 @@ import { Stream } from "stream";
 })
 export class MenuComponent implements OnInit {
   name: String;
-  constructor() {}
+  constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 }
