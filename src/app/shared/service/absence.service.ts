@@ -17,7 +17,7 @@ export class AbsenceService {
   //  }
   constructor(private http: HttpClient) {
     this.http
-      .get<Absence[]>("http://localhost:8080/absences/" + "UUID3")
+      .get<Absence[]>("http://localhost:8080/absences/" + "bd540e65")
       .subscribe(a => {
         this.absenceSubj.next(a);
       });
