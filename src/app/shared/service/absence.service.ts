@@ -12,10 +12,18 @@ export class AbsenceService {
   subjectCollaborateur = new BehaviorSubject<Collaborateur>(new Collaborateur("","",""));
   collaborateur:Collaborateur = new Collaborateur("","","");
 
-  constructor(private http:HttpClient) {
-    this.refreshConnectedCollab(this.collaborateur);
-   }
+  // constructor(private http:HttpClient) {
+  //   this.refreshConnectedCollab(this.collaborateur);
+  //  }
+  constructor(private http: HttpClient) {
+    this.http
+      .get<Absence[]>("http://localhost:8080/absences/" + "UUID3")
+      .subscribe(a => {
+        this.absenceSubj.next(a);
+      });
+  }
 
+  public absenceSubj = new BehaviorSubject<Absence[]>([]);
    refreshConnectedCollab(collab:Collaborateur) {
 		this.subjectCollaborateur.next(collab);
    }
@@ -35,5 +43,4 @@ export class AbsenceService {
 		};
 		return this.http.post<Absence>('http://localhost:8080/absences',newAbsence,httpOptions);
 	}
-
 }

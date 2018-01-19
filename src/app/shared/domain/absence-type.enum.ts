@@ -10,3 +10,4 @@ export const ABSENCES_TYPES= [
     { key: AbsenceType.RTT, label: "RTT"},
     { key: AbsenceType.CONGE_SANS_SOLDE, label: "Congé sans solde"}
 ]
+
