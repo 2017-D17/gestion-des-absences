@@ -1,5 +1,4 @@
 import { Component, OnInit } from "@angular/core";
-import { Stream } from "stream";
 
 @Component({
   selector: "app-menu",

@@ -1,4 +1,6 @@
 import { Component, OnInit } from "@angular/core";
+import { Absence } from "../shared/domain/absence";
+import { AbsenceService } from "../shared/service/absence.service";
 
 @Component({
   selector: "app-gestion-de-absences",
@@ -6,8 +8,12 @@ import { Component, OnInit } from "@angular/core";
   styleUrls: ["./gestion-de-absences.component.css"]
 })
 export class GestionDeAbsencesComponent implements OnInit {
-  collaborateurs: Collaborateur[] = [];
-  constructor() {}
+  absences: Absence[] = [];
+  constructor(private absService: AbsenceService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.absService.absenceSubj.subscribe(result => {
+      this.absences = result;
+    });
+  }
 }

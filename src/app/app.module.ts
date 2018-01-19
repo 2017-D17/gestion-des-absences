@@ -7,7 +7,8 @@ import { MenuComponent } from "./menu/menu.component";
 import { AccueilComponent } from "./accueil/accueil.component";
 import { AuthentificationComponent } from "./authentification/authentification.component";
 import { GestionDeAbsencesComponent } from "./gestion-de-absences/gestion-de-absences.component";
-
+import { AbsenceService } from "./shared/service/absence.service";
+import { HttpClientModule } from "@angular/common/http";
 const appRoutes: Routes = [
   { path: "accueil", component: AccueilComponent },
   { path: "GestionDesAbsences", component: GestionDeAbsencesComponent }
@@ -21,11 +22,12 @@ const appRoutes: Routes = [
     GestionDeAbsencesComponent
   ],
   imports: [
+    HttpClientModule,
     BrowserModule,
     NgbModule.forRoot(),
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [],
+  providers: [AbsenceService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

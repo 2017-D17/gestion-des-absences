@@ -18,12 +18,15 @@
       </tr>
     </thead>
     <tbody>
-      <!-- <tr *ngFor="let absences of absense"> -->
-      <td></td>
-
+      <tr *ngFor="let absence of absences">
+        <td>{{absence.dateDebut}} </td>
+        <td>{{absence.dateFin}}</td>
+        <td>{{absence.type}} </td>
+        <td>{{absence.statut}}</td>
+        <td></td>
   </table>
 
-  <p class="text-right">Demander une absences
+  <p class="text-right">Demander une absence
     <a>
       <img class="imgAdd" type="button" src="https://cdn4.iconfinder.com/data/icons/meBaze-Freebies/512/add.png">
     </a>
