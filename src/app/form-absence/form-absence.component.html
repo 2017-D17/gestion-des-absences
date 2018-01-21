@@ -1,12 +1,18 @@
-<div class="container card card-primary" style="margin-top:2%; padding:2%;">
-    <form id="absenceform" class="form-horizontal" role="form" (ngSubmit)="submit()" novalidate #absenceForm="ngForm">
-        <div class="row">
-            <div class="col-md-3"></div>
-            <div class="col-md-6">
-                <h2>{{titre}}</h2>
-                <hr>
-            </div>
-        </div>
+<p *ngIf="add" id="btnAddAbsence" class="text-right" (click)="open(content)">Demander une absence
+    <a>
+      <img class="imgAdd" type="button" src="https://cdn4.iconfinder.com/data/icons/meBaze-Freebies/512/add.png">
+    </a>
+</p>
+<i *ngIf="modif" type=" button " (click)="open(content)" class="fa fa-pencil font-btn" aria-hidden="true "></i>
+<ng-template #content let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">{{titre}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <form id="absenceform" class="form-horizontal" role="form" (ngSubmit)="submit()" novalidate #absenceForm="ngForm">
+    <div class="modal-body">
         <div class="row">
             <div class="col-md-3 field-label-responsive">
                 <label for="add-dateDebut">Date de Début</label>
@@ -14,13 +20,14 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                            <my-date-picker id="add-dateDebut" name="dateDebut" [options]="myDatePickerOptions" [(ngModel)]="dateDebut" #dateD="ngModel" required (dateChanged)="onDateDebutChanged($event)"></my-date-picker>
+                        <my-date-picker name="dateDebut"  [options]="myDatePickerOptions"  [selDate]="selDateDebut"  required (dateChanged)="onDateDebutChanged($event)"></my-date-picker>    
+                        <!-- <my-date-picker id="add-dateDebut" name="dateDebut" [options]="myDatePickerOptions" [selDate]="selDate"  [(ngModel)]="dateDebut" #dateD="ngModel" required (dateChanged)="onDateDebutChanged($event)">{{absence.dateDebut}}</my-date-picker> -->
                         </div>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-control-feedback">
-                        <span id="validator-dateD" *ngIf="(dateF.dirty || dateF.touched) && absence.dateDebut > absence.dateFin" class="text-danger align-middle">
+                        <span id="validator-dateD" *ngIf="isInvalidDate" class="text-danger align-middle">
                             La date de début ne doit pas être supérieur à la date de fin
                         </span>
                 </div>
@@ -33,7 +40,8 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                            <my-date-picker id="add-dateFin" name="dateFin" [options]="myDatePickerOptions" [(ngModel)]="dateDeFin" #dateF="ngModel" required (dateChanged)="onDateFinChanged($event)"></my-date-picker>
+                        <my-date-picker name="dateFin" [options]="myDatePickerOptions" [selDate]="selDateFin" required (dateChanged)="onDateFinChanged($event)"></my-date-picker>    
+                        <!-- <my-date-picker id="add-dateFin" name="dateFin" [options]="myDatePickerOptions" [(ngModel)]="dateDeFin" #dateF="ngModel" required (dateChanged)="onDateFinChanged($event)">{{absence.dateFin}}</my-date-picker> -->
                     </div>
                 </div>
             </div>
@@ -76,26 +84,22 @@
                 <div class="form-group has-danger">
                     <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                         <textarea type="text" class="form-control" id="add-motif"
-                        [(ngModel)]="absence.motif" name="motif" #motif="ngModel" (change)="onAlertChanged($event)"></textarea>
+                        [(ngModel)]="absence.motif" name="motif" #motif="ngModel" (change)="onAlertChanged($event)">{{absence.motif}}</textarea>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-control-feedback">
-                        <span *ngIf="absence.type === 'Congé sans solde' " class="text-danger align-middle">
+                        <span *ngIf="absence.type === 'CONGE_SANS_SOLDE'" class="text-danger align-middle">
                             * Obligatoire
                         </span>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-3"></div>
-            <div class="col-md-3">
-                <button type="cancel" class="btn btn-danger"> Annuler</button>
-            </div>
-            <div class="col-md-3">
-                <button type="submit" class="btn btn-success" [disabled]="!isValid" >Valider</button>
-            </div>
-        </div>
-    </form>
-</div>
+        </div>   
+    </div>
+    <div class="modal-footer">
+        <button type="cancel" class="btn btn-danger" (click)="d('Cross click')"> Annuler</button>
+        <button type="submit" class="btn btn-success" [disabled]="!isValid" >Valider</button>
+    </div>
+  </form>
+</ng-template>

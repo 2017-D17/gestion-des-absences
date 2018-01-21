@@ -8,12 +8,15 @@ import { Absence } from "../shared/domain/absence";
 })
 export class ButtonsModifSuppComponent implements OnInit {
   @Input() absence: Absence;
-  modif: boolean = false;
+  @Input() titre: string;
+  // modif: boolean = false;
+  modifAbsence:string;
   constructor() {}
 
   ngOnInit() {
     if (this.absence.statut == "INITIALE") {
-      this.modif = true;
+      this.modifAbsence = "update"
+      // this.modif = true;
     }
   }
 
