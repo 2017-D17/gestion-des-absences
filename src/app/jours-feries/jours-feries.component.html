@@ -9,8 +9,10 @@
   </div>
   <h4 class="text-center">
     Année
+
     <select>
-      <option>{{annee}}</option>
+      <option></option>
+      <option [value]="jf1" *ngFor="let jf1 of annees"> {{jf1 }}</option>
     </select>
   </h4>
   <table class="table table-hover">
@@ -24,14 +26,18 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor>
+      <tr *ngFor="let jf of joursFeries ">
+        <td>{{jf.date | date : 'dd-MM-yyyy' }}</td>
+        <td>{{jf.type}}</td>
+        <td>{{jf.date | date : 'EEEE' }}</td>
+        <td>{{jf.commentaire}}</td>
         <td>
-          <i type=" button" class="fa fa-pencil font-btn" aria-hidden="true "></i> -->
+          <i type=" button" class="fa fa-pencil font-btn" aria-hidden="true "></i>
           <i type="button" class="fa fa-trash font-btn" aria-hidden="true "></i>
         </td>
   </table>
 
-  <p id="btnAddAbsence" class="text-right">Demander une absence
+  <p id="btnAddAbsence" class="text-right">Ajouter un jour férié ou une RTT employeur
     <a>
       <img class="imgAdd" type="button" src="https://cdn4.iconfinder.com/data/icons/meBaze-Freebies/512/add.png">
     </a>

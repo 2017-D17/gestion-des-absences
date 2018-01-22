@@ -18,6 +18,7 @@ import { FormAbsenceComponent } from "./form-absence/form-absence.component";
 import { MyDatePickerModule } from "mydatepicker";
 import { VALID } from "@angular/forms/src/model";
 import { ValidationDemandesComponent } from "./validation-demandes/validation-demandes.component";
+import { JoursFeriesService } from "./shared/service/jours-feries.service";
 
 const appRoutes: Routes = [
   { path: "connexion", component: AuthentificationComponent },
@@ -54,7 +55,7 @@ const appRoutes: Routes = [
     MyDatePickerModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [AbsenceService],
+  providers: [AbsenceService, JoursFeriesService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
