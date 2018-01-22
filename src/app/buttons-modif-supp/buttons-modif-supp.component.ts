@@ -20,7 +20,6 @@ export class ButtonsModifSuppComponent implements OnInit {
   ngOnInit() {
     if (this.absence.statut == "INITIALE") {
       this.modifAbsence = "update";
-      // this.modif = true;
     }
   }
 

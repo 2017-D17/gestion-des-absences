@@ -15,12 +15,9 @@ export class GestionDesAbsencesComponent implements OnInit {
   constructor(private absService: AbsenceService) {}
 
   ngOnInit() {
-    // let collab:Collaborateur = new Collaborateur("bd540e65","Rossi","Roberts");
-    // let abs:Absence = new Absence(0,"2018-01-24","2018-01-25","CONGE_PAYE","","INITIALE",collab);
     this.absService.absenceSubj.subscribe(result => {
       console.log(result);
       this.absences = result;
-      // this.absences.push(abs);
     });
   }
 }

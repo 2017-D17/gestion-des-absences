@@ -50,8 +50,6 @@ export class AbsenceService {
     const httpOptions = {
       headers: new HttpHeaders({ "Content-Type": "application/json" })
     };
-    return this.http.delete<Absence>(
-      "http://localhost:8080/absences/" + absenceId
-    );
+    return this.http.delete<Absence>(env.urlBackEnd + absenceId);
   }
 }
