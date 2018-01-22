@@ -66,7 +66,6 @@ export class FormAbsenceComponent implements OnInit {
   currentDate:Date;
 
   constructor(private absenceService:AbsenceService,private modalService: NgbModal) {}
-  // @ViewChild(NgForm) absenceForm: NgForm;
 
   ngOnInit() {
     // récupération du collaborateur connecté

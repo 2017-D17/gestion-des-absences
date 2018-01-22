@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./jours-feries.component.css']
 })
 export class JoursFeriesComponent implements OnInit {
+  demandeAbsence: string = "add";
 
   constructor() { }
 

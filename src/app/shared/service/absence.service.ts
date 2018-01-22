@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable, Subject } from "rxjs";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { Absence } from "../domain/absence";
+import { JourFerie } from "../domain/jour-ferie";
 import { Collaborateur } from "../domain/collaborateur";
 
 import { environment as env} from '../../../environments/environment';
@@ -25,7 +26,7 @@ export class AbsenceService {
 
   refreshAbsencesByMatricule() {
     this.subjectCollaborateur.subscribe(data => {
-      this.http.get<Absence[]>( env.urlBackEnd + data.matricule)
+      this.http.get<Absence[]>( env.urlBackEnd + "absences/" + data.matricule)
       .subscribe(data => this.absenceSubj.next(data));
 
     });
@@ -35,7 +36,7 @@ export class AbsenceService {
 		const httpOptions = {
 			headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 		};
-		return this.http.post<Absence>(env.urlBackEnd, newAbsence,httpOptions);
+		return this.http.post<Absence>(env.urlBackEnd + "absences/", newAbsence,httpOptions);
   }
   
   modifierAbsence(modifAbsence:Absence) {
@@ -43,14 +44,14 @@ export class AbsenceService {
     const httpOptions = {
 			headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 		};
-		return this.http.put<Absence>(env.urlBackEnd + modifAbsence.id,modifAbsence,httpOptions);
+		return this.http.put<Absence>(env.urlBackEnd + "absences/"+ modifAbsence.id,modifAbsence,httpOptions);
 
   }
   supprimerAbsence(absenceId: number): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({ "Content-Type": "application/json" })
     };
-    return this.http.delete<Absence>(env.urlBackEnd + absenceId);
+    return this.http.delete<Absence>(env.urlBackEnd + "absences/" + absenceId);
   }
 
   validerOuRejeterAbsence(modifAbsence:Absence) {
@@ -58,6 +59,21 @@ export class AbsenceService {
     const httpOptions = {
 			headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 		};
-		return this.http.patch<Absence>(env.urlBackEnd + modifAbsence.id,modifAbsence,httpOptions);
+		return this.http.patch<Absence>(env.urlBackEnd + "absences/" + modifAbsence.id,modifAbsence,httpOptions);
   }
+
+  sauvegarderJourFerie(newAbsence:JourFerie):Observable<any> {
+		const httpOptions = {
+			headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+		};
+		return this.http.post<Absence>(env.urlBackEnd + "jours_feries/", newAbsence,httpOptions);
+  }
+
+  modifierJourFerie(modifAbsence:JourFerie):Observable<any> {
+		const httpOptions = {
+			headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+		};
+		return this.http.put<Absence>(env.urlBackEnd + "jours_feries/" + modifAbsence.id, modifAbsence,httpOptions);
+  }
+
 }
