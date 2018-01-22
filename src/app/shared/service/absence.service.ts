@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import { Observable, Subject } from 'rxjs';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Absence } from '../domain/absence';
-import { Collaborateur } from '../domain/collaborateur';
+import { Injectable } from "@angular/core";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Observable, Subject } from "rxjs";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { Absence } from "../domain/absence";
+import { Collaborateur } from "../domain/collaborateur";
 
 import { environment as env} from '../../../environments/environment';
 
@@ -13,6 +13,7 @@ export class AbsenceService {
   subjectCollaborateur = new BehaviorSubject<Collaborateur>(new Collaborateur("8b2d3ac7","Hahn","Nellie"));
   collaborateur:Collaborateur = new Collaborateur("","","");
   public absenceSubj = new BehaviorSubject<Absence[]>([]);
+
 
   constructor(private http: HttpClient) {
     this.refreshAbsencesByMatricule();
@@ -26,10 +27,10 @@ export class AbsenceService {
     this.subjectCollaborateur.subscribe(data => {
       this.http.get<Absence[]>( env.urlBackEnd + data.matricule)
       .subscribe(data => this.absenceSubj.next(data));
+
     });
-		
   }
-  
+
   sauvegarderAbsence(newAbsence:Absence):Observable<any> {
 		const httpOptions = {
 			headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -43,5 +44,14 @@ export class AbsenceService {
 			headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 		};
 		return this.http.put<Absence>(env.urlBackEnd + modifAbsence.id,modifAbsence,httpOptions);
+
+  }
+  supprimerAbsence(absenceId: number): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({ "Content-Type": "application/json" })
+    };
+    return this.http.delete<Absence>(
+      "http://localhost:8080/absences/" + absenceId
+    );
   }
 }

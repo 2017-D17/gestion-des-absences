@@ -10,7 +10,7 @@ import { Collaborateur } from "../shared/domain/collaborateur";
 })
 export class GestionDesAbsencesComponent implements OnInit {
   absences: Absence[] = [];
-  demandeAbsence:string = "add";
+  demandeAbsence: string = "add";
 
   constructor(private absService: AbsenceService) {}
 

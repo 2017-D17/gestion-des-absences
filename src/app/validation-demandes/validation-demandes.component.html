@@ -3,7 +3,7 @@
 <div class="container">
   <div class="text">
     <p class=" text-nowrap text-center font-weight-bold font-italic">
-      Gestion des absences
+      Validation des demandes
     </p>
     <br>
   </div>
@@ -13,7 +13,7 @@
         <th>Date de début</th>
         <th>Date de fin</th>
         <th>Type</th>
-        <th>Statut</th>
+        <th>Nom</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -21,13 +21,9 @@
       <tr *ngFor="let absence of absences">
         <td>{{absence.dateDebut}} </td>
         <td>{{absence.dateFin}}</td>
-        <td>{{absence.type}} </td>
-        <td>{{absence.statut}}</td>
+        <td>{{absence.type}}</td>
+        <td>{{absence.collaborateur.nom}} {{absence.collaborateur.nom}} </td>
         <td>
-          <app-buttons-modif-supp [absence]="absence"></app-buttons-modif-supp>
+          <i type="button" class="fa fa-check" style=" color:green" aria-hidden="true"></i>
+          <i type="button" class="fa fa-times" style=" color:red" aria-hidden="true"></i>
         </td>
-  </table>
-  <app-form-absence [action]="demandeAbsence"></app-form-absence>
-  <p>Soldes des compteurs:</p>
-  <p>Congés payés:{{nb}}</p>
-</div>
