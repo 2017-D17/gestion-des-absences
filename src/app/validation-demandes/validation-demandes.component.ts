@@ -73,8 +73,7 @@ export class ValidationDemandesComponent implements OnInit {
     });
 
   }
-
-
+  
   // Fermeture de l'alert par la croix
   closeAlert() {
 		this.alertActive = false;
