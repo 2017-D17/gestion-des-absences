@@ -24,16 +24,10 @@
         <td>{{absence.type}} </td>
         <td>{{absence.statut}}</td>
         <td>
-          <app-buttons-modif-supp [absence]="absence"></app-buttons-modif-supp>
+          <app-buttons-modif-supp [titre]="modifAbsence" [absence]="absence"></app-buttons-modif-supp>
         </td>
   </table>
-
-  <p class="text-right">Demander une absence
-    <a>
-      <img class="imgAdd" type="button" src="https://cdn4.iconfinder.com/data/icons/meBaze-Freebies/512/add.png">
-    </a>
-  </p>
-
+  <app-form-absence [action]="demandeAbsence"></app-form-absence>
   <p>Soldes des compteurs:</p>
   <p>Congés payés:{{nb}}</p>
 </div>

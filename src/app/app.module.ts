@@ -1,3 +1,4 @@
+
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
@@ -13,6 +14,9 @@ import { JoursFeriesComponent } from "./jours-feries/jours-feries.component";
 import { VueSynthetiqueComponent } from "./vue-synthetique/vue-synthetique.component";
 import { GestionDesAbsencesComponent } from "./gestion-des-absences/gestion-des-absences.component";
 import { ButtonsModifSuppComponent } from './buttons-modif-supp/buttons-modif-supp.component';
+import { FormsModule } from '@angular/forms';
+import { FormAbsenceComponent } from './form-absence/form-absence.component';
+import { MyDatePickerModule } from 'mydatepicker';
 
 const appRoutes: Routes = [
   { path: "connexion", component: AuthentificationComponent },
@@ -29,6 +33,7 @@ const appRoutes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
+    FormAbsenceComponent,
     MenuComponent,
     AccueilComponent,
     AuthentificationComponent,
@@ -39,9 +44,11 @@ const appRoutes: Routes = [
     ButtonsModifSuppComponent
   ],
   imports: [
-    HttpClientModule,
     BrowserModule,
     NgbModule.forRoot(),
+    HttpClientModule,
+    FormsModule,
+    MyDatePickerModule,
     RouterModule.forRoot(appRoutes)
   ],
   providers: [AbsenceService],
