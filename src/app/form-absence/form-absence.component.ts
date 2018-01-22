@@ -1,5 +1,5 @@
-import { Component, Input,OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, Input,OnInit,ViewChild } from '@angular/core';
+import { FormsModule,NgForm } from '@angular/forms';
 import { AbsenceService } from '../shared/service/absence.service';
 import {NgbModal,NgbModalRef, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { Absence } from '../shared/domain/absence';
@@ -66,6 +66,7 @@ export class FormAbsenceComponent implements OnInit {
   currentDate:Date;
 
   constructor(private absenceService:AbsenceService,private modalService: NgbModal) {}
+  // @ViewChild(NgForm) absenceForm: NgForm;
 
   ngOnInit() {
     // récupération du collaborateur connecté
@@ -78,12 +79,16 @@ export class FormAbsenceComponent implements OnInit {
       this.absence = new Absence(0,"","","","","",this.collaborateur);
       this.selDateDebut = {year: this.currentDate.getFullYear(), month: this.currentDate.getMonth() +1, day: this.currentDate.getDate()+1};
       this.selDateFin = {year: this.currentDate.getFullYear(), month: this.currentDate.getMonth() +1, day: this.currentDate.getDate()+1};
-      console.log(this.currentDate);
+      console.log('currentDate', this.currentDate);
       this.currentDate.setDate(this.currentDate.getDate()+1);
       this.dateDebut = this.currentDate;
       this.dateDeFin = this.currentDate;
       this.dateDebutNumber = Date.parse(this.dateDebut); //conversion date en millisecond pour tester le chevauchement
       this.dateDeFinNumber = Date.parse(this.dateDeFin); //conversion date date en millisecond pour tester le chevauchement
+      console.log('this.dateDebut', this.dateDebut);
+      console.log('this.dateDeFin', this.dateDeFin);
+      console.log('this.dateDebutNumber', this.dateDebutNumber);
+      console.log('this.dateDeFinNumber', this.dateDeFinNumber);
 
     } else if(this.action === "update") {
       this.isValid = true;
@@ -128,7 +133,7 @@ export class FormAbsenceComponent implements OnInit {
     }
   }
 
-  submit() {
+  submit(absenceForm: NgForm) {
     this.isValid = true;
     this.absence.dateDebut = this.dateDebut.getFullYear() + "-" + this.dateDebut.getMonth() + 1 + "-"  + this.dateDebut.getDate() ;
     this.absence.dateFin = this.dateDeFin.getFullYear() + "-" + this.dateDeFin.getMonth() + 1 + "-"  + this.dateDeFin.getDate() ;
@@ -139,7 +144,9 @@ export class FormAbsenceComponent implements OnInit {
       this.absenceService.sauvegarderAbsence(this.absence).subscribe(result => {
         this.alertActive = false;
         console.log('result ',result);
+        absenceForm.resetForm();
         if(result != null) {
+          // this.cancel(absenceForm);
           if ( this.dialog ) {
             this.dialog.dismiss();
             this.dialog = null;
@@ -166,6 +173,7 @@ export class FormAbsenceComponent implements OnInit {
         this.alertActive = false;
         console.log('result ',result);
         if(result != null) {
+          absenceForm.resetForm();
           if ( this.dialog ) {
             this.dialog.dismiss();
             this.dialog = null;
@@ -193,7 +201,7 @@ export class FormAbsenceComponent implements OnInit {
   onDateDebutChanged(event: IMyDateModel) {
     this.dateDebut = event.jsdate;
     this.dateDebutNumber = Date.parse(this.dateDebut); //conversion date en millisecond pour tester le chevauchement
-    this.dateDeFinNumber = Date.parse(this.absence.dateFin); //conversion date date en millisecond pour tester le chevauchement
+    this.dateDeFinNumber = Date.parse(this.dateDeFin); //conversion date date en millisecond pour tester le chevauchement
     console.log('this.dateDebutNumber', this.dateDebutNumber);
     console.log('this.dateDeFinNumber', this.dateDeFinNumber);
 
@@ -210,7 +218,7 @@ export class FormAbsenceComponent implements OnInit {
   // Ecouteur sur la de fin
   onDateFinChanged(event: IMyDateModel) {
     this.dateDeFin = event.jsdate;
-    this.dateDebutNumber = Date.parse(this.absence.dateDebut); //conversion date en millisecond pour tester le chevauchement
+    this.dateDebutNumber = Date.parse(this.dateDebut); //conversion date en millisecond pour tester le chevauchement
     this.dateDeFinNumber = Date.parse(this.dateDeFin); //conversion date date en millisecond pour tester le chevauchement
     console.log('this.dateDebutNumber', this.dateDebutNumber);
     console.log('this.dateDeFinNumber', this.dateDeFinNumber);
@@ -225,6 +233,7 @@ export class FormAbsenceComponent implements OnInit {
     this.onAlertChanged(event);
   }
 
+  // Ecouteur sur le bouton valider
   onAlertChanged(event: any) {
     console.log('this.absence.motif ',this.absence.motif);
     console.log('this.absence.typ ',this.absence.type);
@@ -241,8 +250,20 @@ export class FormAbsenceComponent implements OnInit {
     console.log('valid',this.isValid );
   }
 
+  // Fermeture de l'alert par la croix
   closeAlert() {
 		this.alertActive = false;
-	}
+  }
+
+  cancel(absenceForm) {
+    this.closeAlert();
+    this.isValid = false;
+    this.isInvalidDate = false;
+    absenceForm.reset();
+    this.dialog.close();
+  }
+
+  
+
 
 }
