@@ -24,6 +24,18 @@
         <td>{{absence.type}}</td>
         <td>{{absence.collaborateur.nom}} {{absence.collaborateur.nom}} </td>
         <td>
-          <i type="button" class="fa fa-check" style=" color:green" aria-hidden="true"></i>
-          <i type="button" class="fa fa-times" style=" color:red" aria-hidden="true"></i>
+          <div class="actionBtn">
+              <i  class="fa fa-check font-btn" style=" color:green" aria-hidden="true" (click)="valider(absence)"></i>
+              <i  class="fa fa-times font-btn" style=" color:red" aria-hidden="true" (click)="rejeter(absence)"></i>
+          </div>
+          
         </td>
+      </tr>
+    </tbody>
+  </table>
+
+
+<div *ngIf="alertActive" class="alert {{alertClass}} alert-dismissable">
+    <a (click)="closeAlert()" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>{{msg}}</strong>
+</div>

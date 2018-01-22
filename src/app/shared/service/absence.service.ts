@@ -52,4 +52,12 @@ export class AbsenceService {
     };
     return this.http.delete<Absence>(env.urlBackEnd + absenceId);
   }
+
+  validerOuRejeterAbsence(modifAbsence:Absence) {
+    console.log('modifAbsence.id ',modifAbsence.id);
+    const httpOptions = {
+			headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+		};
+		return this.http.patch<Absence>(env.urlBackEnd + modifAbsence.id,modifAbsence,httpOptions);
+  }
 }

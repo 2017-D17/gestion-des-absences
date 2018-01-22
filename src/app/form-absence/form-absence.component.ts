@@ -58,10 +58,10 @@ export class FormAbsenceComponent implements OnInit {
   dateDebut:any;
   // Objet qui récupère la date de fin saisie
   dateDeFin:any;
-    // Objet qui récupère la date de début saisie en milliseconde
-    dateDebutNumber:any;
-    // Objet qui récupère la date de fin saisie en milliseconde
-    dateDeFinNumber:any;
+  // Objet qui récupère la date de début saisie en milliseconde
+  dateDebutNumber:any;
+  // Objet qui récupère la date de fin saisie en milliseconde
+  dateDeFinNumber:any;
   // Objet Date qui stock la date actuelle
   currentDate:Date;
 
