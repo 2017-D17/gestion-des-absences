@@ -8,6 +8,8 @@ import { Absence } from "../shared/domain/absence";
 })
 export class ButtonsModifSuppComponent implements OnInit {
   @Input() absence: Absence;
+
+  absences: Absence[];
   modif: boolean = false;
   constructor() {}
 
@@ -17,7 +19,7 @@ export class ButtonsModifSuppComponent implements OnInit {
     }
   }
 
-  supprimer(absence: Absence) {
+  supprimer() {
     console.log("supprimer");
   }
 
