@@ -24,7 +24,7 @@ export class FormAbsenceComponent implements OnInit {
   // Titre du formulaire
   titre:string;
   // Collaborateur connecté
-  collaborateur:Collaborateur = new Collaborateur("bd540e65","Rossi","Roberts");
+  collaborateur:Collaborateur;
   // Attribut permettant d'activer ou non le boutons pour soumettre le formulaire
   isValid: boolean = false;
   // Attribut permettant d'afficher une alerte si les dates sont invalides
@@ -58,12 +58,18 @@ export class FormAbsenceComponent implements OnInit {
   dateDebut:any;
   // Objet qui récupère la date de fin saisie
   dateDeFin:any;
+    // Objet qui récupère la date de début saisie en milliseconde
+    dateDebutNumber:any;
+    // Objet qui récupère la date de fin saisie en milliseconde
+    dateDeFinNumber:any;
   // Objet Date qui stock la date actuelle
   currentDate:Date;
 
   constructor(private absenceService:AbsenceService,private modalService: NgbModal) {}
 
   ngOnInit() {
+    // récupération du collaborateur connecté
+    this.absenceService.subjectCollaborateur.subscribe(data => this.collaborateur = data);
     this.currentDate = new Date();
     // initialisation du formulaire selon son rôle
     if(this.action === "add") {
@@ -76,8 +82,11 @@ export class FormAbsenceComponent implements OnInit {
       this.currentDate.setDate(this.currentDate.getDate()+1);
       this.dateDebut = this.currentDate;
       this.dateDeFin = this.currentDate;
+      this.dateDebutNumber = Date.parse(this.dateDebut); //conversion date en millisecond pour tester le chevauchement
+      this.dateDeFinNumber = Date.parse(this.dateDeFin); //conversion date date en millisecond pour tester le chevauchement
 
     } else if(this.action === "update") {
+      this.isValid = true;
       this.modif = true;
       this.titre = "Modifier une absence";
 
@@ -86,15 +95,16 @@ export class FormAbsenceComponent implements OnInit {
       let deb:Date = new Date(dateDebutnumb);
       this.selDateDebut = {year: deb.getFullYear(), month: deb.getMonth()+1, day:deb.getDate()};
       this.dateDebut = deb;
-
       //Récupérationn date de fin de l'absence
       let dateFinnum:any = Date.parse(this.absence.dateFin);
       let fin:Date = new Date(dateFinnum);
       this.selDateFin = {year: fin.getFullYear(), month: fin.getMonth()+1, day:fin.getDate()};
       this.dateDeFin = fin;
+      this.dateDebutNumber = Date.parse(this.dateDebut); //conversion date en millisecond pour tester le chevauchement
+      this.dateDeFinNumber = Date.parse(this.dateDeFin); //conversion date date en millisecond pour tester le chevauchement
     }
     // Desactivation des dates precedente à la date actuelle
-    this.myDatePickerOptions.disableUntil = {year: this.currentDate.getFullYear(), month: this.currentDate.getMonth() +1, day: this.currentDate.getDate()-1};
+    this.myDatePickerOptions.disableUntil = {year: this.currentDate.getFullYear(), month: this.currentDate.getMonth() +1, day: this.currentDate.getDate()};
   }
 
   // Affichage de la modale
@@ -130,7 +140,6 @@ export class FormAbsenceComponent implements OnInit {
         this.alertActive = false;
         console.log('result ',result);
         if(result != null) {
-          this.absenceService.refreshAbsencesByMatricule();
           if ( this.dialog ) {
             this.dialog.dismiss();
             this.dialog = null;
@@ -138,22 +147,25 @@ export class FormAbsenceComponent implements OnInit {
         }		else {
           this.alertActive = true;
           this.msg = "Votre demande n'a pas pu être ajouté."
-        }	
+        }
+        // Mise à jour des absences suite à la soumission du formulaire
+        this.absenceService.refreshAbsencesByMatricule();
         
       },err => {
         console.log(err);
         this.alertActive = true;
-        this.msg = "Votre demande n'a pas pu être ajouté.";
+        this.msg = err.error.message;
         this.isValid = true;
+        // Mise à jour des absences suite à la soumission du formulaire
+        this.absenceService.refreshAbsencesByMatricule();
 
       },
     );
-    } else if(this.action === "mofif") {
+    } else if(this.action === "update") {
       this.absenceService.modifierAbsence(this.absence).subscribe(result => {
         this.alertActive = false;
         console.log('result ',result);
         if(result != null) {
-          this.absenceService.refreshAbsencesByMatricule();
           if ( this.dialog ) {
             this.dialog.dismiss();
             this.dialog = null;
@@ -161,26 +173,32 @@ export class FormAbsenceComponent implements OnInit {
         }		else {
           this.alertActive = true;
           this.msg = "Votre demande n'a pas pu être modifié."
-        }	
+        }
+        // Mise à jour des absences suite à la soumission du formulaire
+        this.absenceService.refreshAbsencesByMatricule();
         
       },err => {
         console.log(err);
         this.alertActive = true;
-        this.msg = "Votre absence n'a pas pu être modifié.";
+        this.msg = err.error.message;
         this.isValid = true;
+        // Mise à jour des absences suite à la soumission du formulaire
+        this.absenceService.refreshAbsencesByMatricule();
 
-      },
-    );
+      });
     }
-    
   }
 
   // Ecouteur sur la de début
   onDateDebutChanged(event: IMyDateModel) {
     this.dateDebut = event.jsdate;
+    this.dateDebutNumber = Date.parse(this.dateDebut); //conversion date en millisecond pour tester le chevauchement
+    this.dateDeFinNumber = Date.parse(this.absence.dateFin); //conversion date date en millisecond pour tester le chevauchement
+    console.log('this.dateDebutNumber', this.dateDebutNumber);
+    console.log('this.dateDeFinNumber', this.dateDeFinNumber);
+
     // test si la date de début est valide
-    this.absence.dateDebut = event.epoc; // Récupération du nombre de millisecondes depuis le 1er janvier 1970
-    if(this.absence.dateDebut > this.absence.dateFin) {
+    if(this.dateDebutNumber > this.dateDeFinNumber) {
       this.dateDebut = event.jsdate;
       this.isInvalidDate = true;
     } else {
@@ -192,9 +210,14 @@ export class FormAbsenceComponent implements OnInit {
   // Ecouteur sur la de fin
   onDateFinChanged(event: IMyDateModel) {
     this.dateDeFin = event.jsdate;
-    this.absence.dateFin = event.epoc; // Récupération du nombre de millisecondes depuis le 1er janvier 1970
+    this.dateDebutNumber = Date.parse(this.absence.dateDebut); //conversion date en millisecond pour tester le chevauchement
+    this.dateDeFinNumber = Date.parse(this.dateDeFin); //conversion date date en millisecond pour tester le chevauchement
+    console.log('this.dateDebutNumber', this.dateDebutNumber);
+    console.log('this.dateDeFinNumber', this.dateDeFinNumber);
+
     // test si la date de fin est valide
-    if(this.absence.dateDebut > this.absence.dateFin) {
+    if(this.dateDebutNumber > this.dateDeFinNumber) {
+      this.dateDeFin= event.jsdate;
       this.isInvalidDate = true;
     }else {
       this.isInvalidDate = false;
@@ -203,14 +226,19 @@ export class FormAbsenceComponent implements OnInit {
   }
 
   onAlertChanged(event: any) {
+    console.log('this.absence.motif ',this.absence.motif);
+    console.log('this.absence.typ ',this.absence.type);
+    console.log('this.dateDebutNumber', this.dateDebutNumber);
+    console.log('this.dateDeFinNumber', this.dateDeFinNumber);
     this.isValid = false;
-    if(this.absence.dateDebut <= this.absence.dateFin ) {
-      if(this.absence.type === "CONGE_SANS_SOLDE" && this.absence.motif != "") {
+    if(this.dateDebutNumber <= this.dateDeFinNumber ) {
+      if(this.absence.type === "CONGE_SANS_SOLDE" && this.absence.motif != null ) {
         this.isValid = true;
       } else if (this.absence.type != "CONGE_SANS_SOLDE" && this.absence.type != "") {
         this.isValid = true;
       }
     }
+    console.log('valid',this.isValid );
   }
 
   closeAlert() {

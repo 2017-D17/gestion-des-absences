@@ -5,23 +5,17 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Absence } from '../domain/absence';
 import { Collaborateur } from '../domain/collaborateur';
 
+import { environment as env} from '../../../environments/environment';
+
 @Injectable()
 export class AbsenceService {
   abences:Absence[];
-  subjectCollaborateur = new BehaviorSubject<Collaborateur>(new Collaborateur("bd540e65","Rossi","Roberts"));
+  subjectCollaborateur = new BehaviorSubject<Collaborateur>(new Collaborateur("8b2d3ac7","Hahn","Nellie"));
   collaborateur:Collaborateur = new Collaborateur("","","");
   public absenceSubj = new BehaviorSubject<Absence[]>([]);
 
-  // constructor(private http:HttpClient) {
-  //   this.refreshConnectedCollab(this.collaborateur);
-  //  }
   constructor(private http: HttpClient) {
     this.refreshAbsencesByMatricule();
-    // this.http
-    //   .get<Absence[]>("http://localhost:8080/absences/" + "bd540e65")
-    //   .subscribe(a => {
-    //     this.absenceSubj.next(a);
-    //   });
   }
 
    refreshConnectedCollab(collab:Collaborateur) {
@@ -30,7 +24,7 @@ export class AbsenceService {
 
   refreshAbsencesByMatricule() {
     this.subjectCollaborateur.subscribe(data => {
-      this.http.get<Absence[]>('http://localhost:8080/absences/'+data.matricule)
+      this.http.get<Absence[]>( env.urlBackEnd + data.matricule)
       .subscribe(data => this.absenceSubj.next(data));
     });
 		
@@ -40,6 +34,14 @@ export class AbsenceService {
 		const httpOptions = {
 			headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 		};
-		return this.http.post<Absence>('http://localhost:8080/absences',newAbsence,httpOptions);
-	}
+		return this.http.post<Absence>(env.urlBackEnd, newAbsence,httpOptions);
+  }
+  
+  modifierAbsence(modifAbsence:Absence) {
+    console.log('modifAbsence.id ',modifAbsence.id);
+    const httpOptions = {
+			headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+		};
+		return this.http.put<Absence>(env.urlBackEnd + modifAbsence.id,modifAbsence,httpOptions);
+  }
 }
