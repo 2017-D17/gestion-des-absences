@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { Absence } from "../shared/domain/absence";
+import { AbsenceService } from "../shared/service/absence.service";
 
 @Component({
   selector: "app-buttons-modif-supp",
@@ -14,7 +15,7 @@ export class ButtonsModifSuppComponent implements OnInit {
   modif: boolean = false;
   modifAbsence: string;
 
-  constructor() {}
+  constructor(private aService: AbsenceService) {}
 
   ngOnInit() {
     if (this.absence.statut == "INITIALE") {
@@ -23,8 +24,12 @@ export class ButtonsModifSuppComponent implements OnInit {
     }
   }
 
-  supprimer() {
-    console.log("supprimer");
+  supprimer(articleId: number) {
+    console.log(this.absence);
+    this.aService
+      .supprimerAbsence(this.absence.id)
+
+      .subscribe(abs => (this.absence = abs));
   }
 
   modifier() {

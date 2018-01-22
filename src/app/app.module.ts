@@ -1,4 +1,3 @@
-
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
@@ -13,10 +12,12 @@ import { PlanningDesAbsencesComponent } from "./planning-des-absences/planning-d
 import { JoursFeriesComponent } from "./jours-feries/jours-feries.component";
 import { VueSynthetiqueComponent } from "./vue-synthetique/vue-synthetique.component";
 import { GestionDesAbsencesComponent } from "./gestion-des-absences/gestion-des-absences.component";
-import { ButtonsModifSuppComponent } from './buttons-modif-supp/buttons-modif-supp.component';
-import { FormsModule } from '@angular/forms';
-import { FormAbsenceComponent } from './form-absence/form-absence.component';
-import { MyDatePickerModule } from 'mydatepicker';
+import { ButtonsModifSuppComponent } from "./buttons-modif-supp/buttons-modif-supp.component";
+import { FormsModule } from "@angular/forms";
+import { FormAbsenceComponent } from "./form-absence/form-absence.component";
+import { MyDatePickerModule } from "mydatepicker";
+import { VALID } from "@angular/forms/src/model";
+import { ValidationDemandesComponent } from "./validation-demandes/validation-demandes.component";
 
 const appRoutes: Routes = [
   { path: "connexion", component: AuthentificationComponent },
@@ -27,6 +28,7 @@ const appRoutes: Routes = [
     component: GestionDesAbsencesComponent
   },
   { path: "VueSynthetique", component: VueSynthetiqueComponent },
+  { path: "ValidationDesAbsences", component: ValidationDemandesComponent },
   { path: "JoursFeries", component: JoursFeriesComponent },
   { path: "**", redirectTo: "accueil" }
 ];
@@ -41,7 +43,8 @@ const appRoutes: Routes = [
     PlanningDesAbsencesComponent,
     JoursFeriesComponent,
     VueSynthetiqueComponent,
-    ButtonsModifSuppComponent
+    ButtonsModifSuppComponent,
+    ValidationDemandesComponent
   ],
   imports: [
     BrowserModule,

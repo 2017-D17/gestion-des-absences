@@ -1,3 +1,39 @@
-<p>
-  jours-feries works!
-</p>
+<br>
+<br>
+<div class="container">
+  <div class="text">
+    <p class=" text-nowrap text-center font-weight-bold font-italic">
+      Jours fériés et RTT employeurs
+    </p>
+    <br>
+  </div>
+  <h4 class="text-center">
+    Année
+    <select>
+      <option>{{annee}}</option>
+    </select>
+  </h4>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Date </th>
+        <th>Type</th>
+        <th>Jour</th>
+        <th>Commentaires</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor>
+        <td>
+          <i type=" button" class="fa fa-pencil font-btn" aria-hidden="true "></i> -->
+          <i type="button" class="fa fa-trash font-btn" aria-hidden="true "></i>
+        </td>
+  </table>
+
+  <p id="btnAddAbsence" class="text-right">Demander une absence
+    <a>
+      <img class="imgAdd" type="button" src="https://cdn4.iconfinder.com/data/icons/meBaze-Freebies/512/add.png">
+    </a>
+  </p>
+</div>
