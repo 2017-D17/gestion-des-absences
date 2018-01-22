@@ -97,6 +97,10 @@
             </div>
         </div>   
     </div>
+    <div *ngIf="alertActive" class="alert alert-danger alert-dismissable">
+        <a (click)="closeAlert()" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>{{msg}}</strong>
+    </div>
     <div class="modal-footer">
         <button type="cancel" class="btn btn-danger" (click)="d('Cross click')"> Annuler</button>
         <button type="submit" class="btn btn-success" [disabled]="!isValid" >Valider</button>

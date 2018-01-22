@@ -34,7 +34,8 @@ export class FormAbsenceComponent implements OnInit {
   // Message d'erreur ou de succès suite à l'envoi des données sur le serveur
   msg:string
   // Attribut permettant d'afficher ou non le message d'alert msg
-  succesAjout:boolean
+  succesAjout:boolean = false;
+  alertActive:boolean = false;
 
   // Paramètres de la modale
   closeResult: string;
@@ -65,13 +66,17 @@ export class FormAbsenceComponent implements OnInit {
   ngOnInit() {
     this.currentDate = new Date();
     // initialisation du formulaire selon son rôle
-    console.log("action ",this.action);
     if(this.action === "add") {
       this.add = true;
       this.titre = "Demande d'absence"; 
       this.absence = new Absence(0,"","","","","",this.collaborateur);
       this.selDateDebut = {year: this.currentDate.getFullYear(), month: this.currentDate.getMonth() +1, day: this.currentDate.getDate()+1};
       this.selDateFin = {year: this.currentDate.getFullYear(), month: this.currentDate.getMonth() +1, day: this.currentDate.getDate()+1};
+      console.log(this.currentDate);
+      this.currentDate.setDate(this.currentDate.getDate()+1);
+      this.dateDebut = this.currentDate;
+      this.dateDeFin = this.currentDate;
+
     } else if(this.action === "update") {
       this.modif = true;
       this.titre = "Modifier une absence";
@@ -80,14 +85,16 @@ export class FormAbsenceComponent implements OnInit {
       let dateDebutnumb:any = Date.parse(this.absence.dateDebut);
       let deb:Date = new Date(dateDebutnumb);
       this.selDateDebut = {year: deb.getFullYear(), month: deb.getMonth()+1, day:deb.getDate()};
+      this.dateDebut = deb;
 
       //Récupérationn date de fin de l'absence
       let dateFinnum:any = Date.parse(this.absence.dateFin);
       let fin:Date = new Date(dateFinnum);
       this.selDateFin = {year: fin.getFullYear(), month: fin.getMonth()+1, day:fin.getDate()};
+      this.dateDeFin = fin;
     }
     // Desactivation des dates precedente à la date actuelle
-    this.myDatePickerOptions.disableUntil = {year: this.currentDate.getFullYear(), month: this.currentDate.getMonth() +1, day: this.currentDate.getDate()};
+    this.myDatePickerOptions.disableUntil = {year: this.currentDate.getFullYear(), month: this.currentDate.getMonth() +1, day: this.currentDate.getDate()-1};
   }
 
   // Affichage de la modale
@@ -113,61 +120,68 @@ export class FormAbsenceComponent implements OnInit {
 
   submit() {
     this.isValid = true;
-    // formattage des dates pour l'envoi vers le server (yyyy-mm-dd)
-    let dayDebut = "";
-    let monthDebut = "";
-    if(this.dateDebut.date.day < 10) {
-      dayDebut = "0" + this.dateDebut.date.day;
-    } else {
-      dayDebut = this.dateDebut.date.day;
-    }
-    if(this.dateDebut.date.month < 10) {
-      monthDebut = "0" + this.dateDebut.date.month;
-    }else {
-      monthDebut = this.dateDebut.date.month;
-    }
-
-    let dayFin = "";
-    let monthFin = "";
-    if(this.dateDeFin.date.day < 10) {
-      dayFin = "0" + this.dateDeFin.date.day;
-    } else {
-      dayFin = this.dateDeFin.date.day;
-    }
-    if(this.dateDeFin.date.month < 10) {
-      monthFin = "0" + this.dateDeFin.date.month;
-    } else {
-      monthFin = this.dateDeFin.date.month;
-    }
-    this.absence.dateDebut = this.dateDebut.date.year + "-" + monthDebut + "-"  + dayDebut ;
-    this.absence.dateFin = this.dateDeFin.date.year + "-" + monthFin + "-"  + dayFin ;
+    this.absence.dateDebut = this.dateDebut.getFullYear() + "-" + this.dateDebut.getMonth() + 1 + "-"  + this.dateDebut.getDate() ;
+    this.absence.dateFin = this.dateDeFin.getFullYear() + "-" + this.dateDeFin.getMonth() + 1 + "-"  + this.dateDeFin.getDate() ;
     this.absence.statut = AbsenceStatut.INITIALE;
     console.log(this.absence);
     
     if(this.action === "add") {
       this.absenceService.sauvegarderAbsence(this.absence).subscribe(result => {
+        this.alertActive = false;
         console.log('result ',result);
         if(result != null) {
-          this.succesAjout = true;
-          this.msg = "Votre demande a été ajouté. Dès demain, elle sera en attente de validation par votre manager.";
+          this.absenceService.refreshAbsencesByMatricule();
           if ( this.dialog ) {
             this.dialog.dismiss();
             this.dialog = null;
          }
         }		else {
+          this.alertActive = true;
           this.msg = "Votre demande n'a pas pu être ajouté."
         }	
         
-      });
+      },err => {
+        console.log(err);
+        this.alertActive = true;
+        this.msg = "Votre demande n'a pas pu être ajouté.";
+        this.isValid = true;
+
+      },
+    );
+    } else if(this.action === "mofif") {
+      this.absenceService.modifierAbsence(this.absence).subscribe(result => {
+        this.alertActive = false;
+        console.log('result ',result);
+        if(result != null) {
+          this.absenceService.refreshAbsencesByMatricule();
+          if ( this.dialog ) {
+            this.dialog.dismiss();
+            this.dialog = null;
+         }
+        }		else {
+          this.alertActive = true;
+          this.msg = "Votre demande n'a pas pu être modifié."
+        }	
+        
+      },err => {
+        console.log(err);
+        this.alertActive = true;
+        this.msg = "Votre absence n'a pas pu être modifié.";
+        this.isValid = true;
+
+      },
+    );
     }
     
   }
 
   // Ecouteur sur la de début
   onDateDebutChanged(event: IMyDateModel) {
+    this.dateDebut = event.jsdate;
     // test si la date de début est valide
     this.absence.dateDebut = event.epoc; // Récupération du nombre de millisecondes depuis le 1er janvier 1970
     if(this.absence.dateDebut > this.absence.dateFin) {
+      this.dateDebut = event.jsdate;
       this.isInvalidDate = true;
     } else {
       this.isInvalidDate = false;
@@ -177,6 +191,7 @@ export class FormAbsenceComponent implements OnInit {
 
   // Ecouteur sur la de fin
   onDateFinChanged(event: IMyDateModel) {
+    this.dateDeFin = event.jsdate;
     this.absence.dateFin = event.epoc; // Récupération du nombre de millisecondes depuis le 1er janvier 1970
     // test si la date de fin est valide
     if(this.absence.dateDebut > this.absence.dateFin) {
@@ -197,5 +212,9 @@ export class FormAbsenceComponent implements OnInit {
       }
     }
   }
+
+  closeAlert() {
+		this.alertActive = false;
+	}
 
 }

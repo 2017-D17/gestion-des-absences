@@ -8,31 +8,30 @@ import { Collaborateur } from '../domain/collaborateur';
 @Injectable()
 export class AbsenceService {
   abences:Absence[];
-  subject = new BehaviorSubject<Absence[]>([]);
-  subjectCollaborateur = new BehaviorSubject<Collaborateur>(new Collaborateur("","",""));
+  subjectCollaborateur = new BehaviorSubject<Collaborateur>(new Collaborateur("bd540e65","Rossi","Roberts"));
   collaborateur:Collaborateur = new Collaborateur("","","");
+  public absenceSubj = new BehaviorSubject<Absence[]>([]);
 
   // constructor(private http:HttpClient) {
   //   this.refreshConnectedCollab(this.collaborateur);
   //  }
   constructor(private http: HttpClient) {
-    this.http
-      .get<Absence[]>("http://localhost:8080/absences/" + "bd540e65")
-      .subscribe(a => {
-        this.absenceSubj.next(a);
-      });
+    this.refreshAbsencesByMatricule();
+    // this.http
+    //   .get<Absence[]>("http://localhost:8080/absences/" + "bd540e65")
+    //   .subscribe(a => {
+    //     this.absenceSubj.next(a);
+    //   });
   }
 
-  public absenceSubj = new BehaviorSubject<Absence[]>([]);
    refreshConnectedCollab(collab:Collaborateur) {
 		this.subjectCollaborateur.next(collab);
    }
 
   refreshAbsencesByMatricule() {
-		let matricule = "";  
     this.subjectCollaborateur.subscribe(data => {
       this.http.get<Absence[]>('http://localhost:8080/absences/'+data.matricule)
-      .subscribe(data => this.subject.next(data));
+      .subscribe(data => this.absenceSubj.next(data));
     });
 		
   }
