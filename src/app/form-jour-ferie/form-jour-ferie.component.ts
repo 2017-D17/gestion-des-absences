@@ -176,7 +176,7 @@ export class FormJourFerieComponent implements OnInit {
   onDateChanged(event: IMyDateModel) {
     this.date = event.jsdate;
     // test si la date est un samedi ou dimanche pour le RTT employeur
-    if(this.jourFerie.type === FerieType.JOUR_FERIE && (this.date.getDay() === 0 || this.date.getDay() === 6)) {
+    if(this.jourFerie.type === FerieType.RTT_EMPLOYEUR && (this.date.getDay() === 0 || this.date.getDay() === 6)) {
       this.isInvalidDate = true;
       this.msgDate = "Il est interdit de saisir une RTT employeur un samedi ou un dimanche";
       this.isValid = false;
@@ -191,7 +191,7 @@ export class FormJourFerieComponent implements OnInit {
   onAlertChanged(event: any) {
     this.isValid = false;
      // test si la date est un samedi ou dimanche pour le RTT employeur
-     if(this.jourFerie.type === FerieType.JOUR_FERIE && (this.date.getDay() === 0 || this.date.getDay() === 6)) {
+     if(this.jourFerie.type === FerieType.RTT_EMPLOYEUR && (this.date.getDay() === 0 || this.date.getDay() === 6)) {
        this.isInvalidDate = true;
        this.msgDate = "Il est interdit de saisir une RTT employeur un samedi ou un dimanche";
        this.isValid = false;
