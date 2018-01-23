@@ -19,7 +19,6 @@ export class AbsenceService {
 
   constructor(private http: HttpClient) {
     this.refreshAbsencesByMatricule();
-    this.refreshJoursFeries();
   }
 
    refreshConnectedCollab(collab:Collaborateur) {
@@ -34,10 +33,7 @@ export class AbsenceService {
     });
   }
 
-  refreshJoursFeries() {
-    this.http.get<JourFerie[]>( env.urlBackEndJoursFeries)
-    .subscribe(data => this.jourFerieSubj.next(data));
-  }
+  
 
   sauvegarderAbsence(newAbsence:Absence):Observable<any> {
 		const httpOptions = {
@@ -67,20 +63,6 @@ export class AbsenceService {
 			headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 		};
 		return this.http.patch<Absence>(env.urlBackEndAbsences + modifAbsence.id,modifAbsence,httpOptions);
-  }
-
-  sauvegarderJourFerie(newAbsence:JourFerie):Observable<any> {
-		const httpOptions = {
-			headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-		};
-		return this.http.post<Absence>(env.urlBackEndJoursFeries, newAbsence,httpOptions);
-  }
-
-  modifierJourFerie(modifAbsence:JourFerie):Observable<any> {
-		const httpOptions = {
-			headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-		};
-		return this.http.put<Absence>(env.urlBackEndJoursFeries + modifAbsence.id, modifAbsence,httpOptions);
   }
 
 }

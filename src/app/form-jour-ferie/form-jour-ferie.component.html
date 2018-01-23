@@ -40,7 +40,7 @@
               <div class="form-group">
                   <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                       <select class="form-control" id="add-dateFin"
-                      [(ngModel)]="absence.type" name="type" #type="ngModel" required (change)="onAlertChanged($event)">
+                      [(ngModel)]="jourFerie.type" name="type" #type="ngModel" required (change)="onAlertChanged($event)">
                       <option selected value="" disabled>(Type de jour)</option>
                       <option *ngFor="let option of options" [value]="option.key">{{option.label}}</option>
                       </select>
@@ -62,7 +62,7 @@
               <div class="form-group has-danger">
                   <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                       <textarea type="text" class="form-control" id="add-commentaire"
-                      [(ngModel)]="absence.commentaire" name="commentaire" #commentaire="ngModel" (change)="onAlertChanged($event)">{{absence.commentaire}}</textarea>
+                      [(ngModel)]="jourFerie.commentaire" name="commentaire" #commentaire="ngModel" (change)="onAlertChanged($event)">{{jourFerie.commentaire}}</textarea>
                   </div>
               </div>
           </div>

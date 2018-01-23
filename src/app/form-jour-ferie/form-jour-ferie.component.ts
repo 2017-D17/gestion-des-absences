@@ -1,6 +1,6 @@
 import { Component, Input,OnInit,ViewChild } from '@angular/core';
 import { FormsModule,NgForm } from '@angular/forms';
-import { AbsenceService } from '../shared/service/absence.service';
+import { JoursFeriesService } from '../shared/service/jours-feries.service';
 import {NgbModal,NgbModalRef, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { JourFerie } from '../shared/domain/jour-ferie';
 import { FerieType, FERIE_TYPES } from '../shared/domain/ferie-type.enum';
@@ -14,7 +14,7 @@ import { AbsenceStatut, ABSENCES_STATUS } from '../absence-statut.enum';
 })
 export class FormJourFerieComponent implements OnInit {
   // Absence concerné par le formulaire
-  @Input() absence:JourFerie;
+  @Input() jourFerie:JourFerie;
   // Nom de l'action permettant d'identifier le rôle du formulaire (ajout ou modification)
   @Input() action:string;
   // Attributs permettant d'afficher le bouton d'ouverture de la modale
@@ -62,7 +62,7 @@ export class FormJourFerieComponent implements OnInit {
   currentDate:Date;
 
 
-  constructor(private absenceService:AbsenceService,private modalService: NgbModal) { }
+  constructor(private jourFerieService:JoursFeriesService,private modalService: NgbModal) { }
 
   ngOnInit() {
     this.currentDate = new Date();
@@ -70,7 +70,7 @@ export class FormJourFerieComponent implements OnInit {
     if(this.action === "add") {
       this.add = true;
       this.titre = "Nouveau jour férié / RTT employeur"; 
-      this.absence = new JourFerie(0,this.currentDate,"","","");
+      this.jourFerie = new JourFerie(0,this.currentDate,"","","");
       this.selDate = {year: this.currentDate.getFullYear(), month: this.currentDate.getMonth() +1, day: this.currentDate.getDate()+1};
       console.log('currentDate', this.currentDate);
       this.currentDate.setDate(this.currentDate.getDate()+1);
@@ -85,7 +85,7 @@ export class FormJourFerieComponent implements OnInit {
       this.titre = "Modifier un jour férié / RTT employeur";
 
       //Récupérationn date de début de l'absence
-      this.selDate = {year: this.absence.date.getFullYear(), month: this.absence.date.getMonth()+1, day:this.absence.date.getDate()};
+      this.selDate = {year: this.jourFerie.date.getFullYear(), month: this.jourFerie.date.getMonth()+1, day:this.jourFerie.date.getDate()};
     }
     // Desactivation des dates precedente à la date actuelle
     this.myDatePickerOptions.disableUntil = {year: this.currentDate.getFullYear(), month: this.currentDate.getMonth() +1, day: this.currentDate.getDate()};
@@ -94,32 +94,18 @@ export class FormJourFerieComponent implements OnInit {
   // Affichage de la modale
   open(content) {
     this.dialog = this.modalService.open(content);
-    // this.dialog.result.then((result) => {
-    //   this.closeResult = `Closed with: ${result}`;
-    // }, (reason) => {
-    //   this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    // });
   }
 
-  // Disparition de la modale
-  // private getDismissReason(reason: any): string {
-  //   if (reason === ModalDismissReasons.ESC) {
-  //     return 'by pressing ESC';
-  //   } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-  //     return 'by clicking on a backdrop';
-  //   } else {
-  //     return  `with: ${reason}`;
-  //   }
-  // }
 
   submit(absenceForm: NgForm) {
     this.isValid = true;
-    this.absence.date = this.date.getFullYear() + "-" + this.date.getMonth() + 1 + "-"  + this.date.getDate() ;
-    this.absence.statut = AbsenceStatut.INITIALE;
-    console.log(this.absence);
+    console.log(this.date);
+    this.jourFerie.date = this.date.getFullYear() + "-" + this.date.getMonth() + 1 + "-"  + this.date.getDate() ;
+    this.jourFerie.statut = AbsenceStatut.INITIALE;
+    console.log(this.jourFerie);
     
     if(this.action === "add") {
-      this.absenceService.sauvegarderJourFerie(this.absence).subscribe(result => {
+      this.jourFerieService.sauvegarderJourFerie(this.jourFerie).subscribe(result => {
         this.alertActive = false;
         console.log('result ',result);
         absenceForm.resetForm();
@@ -133,7 +119,7 @@ export class FormJourFerieComponent implements OnInit {
           this.msg = "Votre demande n'a pas pu être ajouté."
         }
         // Mise à jour des absences suite à la soumission du formulaire
-        this.absenceService.refreshAbsencesByMatricule();
+        this.jourFerieService.refreshJoursFeries();
         
       },err => {
         console.log(err);
@@ -145,12 +131,12 @@ export class FormJourFerieComponent implements OnInit {
         }
         this.isValid = true;
         // Mise à jour des absences suite à la soumission du formulaire
-        this.absenceService.refreshAbsencesByMatricule();
+        this.jourFerieService.refreshJoursFeries();
 
       },
     );
     } else if(this.action === "update") {
-      this.absenceService.modifierJourFerie(this.absence).subscribe(result => {
+      this.jourFerieService.modifierJourFerie(this.jourFerie).subscribe(result => {
         this.alertActive = false;
         console.log('result ',result);
         if(result != null) {
@@ -164,7 +150,7 @@ export class FormJourFerieComponent implements OnInit {
           this.msg = "Votre demande n'a pas pu être modifié.";
         }
         // Mise à jour des absences suite à la soumission du formulaire
-        this.absenceService.refreshAbsencesByMatricule();
+        this.jourFerieService.refreshJoursFeries();
         
       },err => {
         console.log(err);
@@ -177,7 +163,7 @@ export class FormJourFerieComponent implements OnInit {
         
         this.isValid = true;
         // Mise à jour des absences suite à la soumission du formulaire
-        this.absenceService.refreshAbsencesByMatricule();
+        this.jourFerieService.refreshJoursFeries();
 
       });
     }
@@ -188,7 +174,7 @@ export class FormJourFerieComponent implements OnInit {
     this.date = event.jsdate;
     // test si la date est un samedi ou dimanche pour le RTT employeur
     console.log('this.date.getDay() ',this.date.getDay());
-    if(this.absence.type === FerieType.JOUR_FERIE && (this.date.getDay() === 0 || this.date.getDay() === 6)) {
+    if(this.jourFerie.type === FerieType.JOUR_FERIE && (this.date.getDay() === 0 || this.date.getDay() === 6)) {
       this.isInvalidDate = true;
       this.msgDate = "Il est interdit de saisir une RTT employeur un samedi ou un dimanche";
       this.isValid = false;
@@ -203,11 +189,11 @@ export class FormJourFerieComponent implements OnInit {
   // Ecouteur sur le bouton valider et le select
   onAlertChanged(event: any) {
     this.isValid = false;
-    console.log('this.absence.commentaire ',this.absence.commentaire);
-    console.log('this.absence.type ',this.absence.type);
+    console.log('this.absence.commentaire ',this.jourFerie.commentaire);
+    console.log('this.absence.type ',this.jourFerie.type);
      // test si la date est un samedi ou dimanche pour le RTT employeur
      console.log('this.date.getDay() ',this.date.getDay());
-     if(this.absence.type === FerieType.JOUR_FERIE && (this.date.getDay() === 0 || this.date.getDay() === 6)) {
+     if(this.jourFerie.type === FerieType.JOUR_FERIE && (this.date.getDay() === 0 || this.date.getDay() === 6)) {
        this.isInvalidDate = true;
        this.msgDate = "Il est interdit de saisir une RTT employeur un samedi ou un dimanche";
        this.isValid = false;
@@ -217,9 +203,9 @@ export class FormJourFerieComponent implements OnInit {
      }
     
     // test du type
-    if(this.absence.type === FerieType.JOUR_FERIE) {
+    if(this.jourFerie.type === FerieType.JOUR_FERIE) {
       this.isRequiredComment = true;
-      if(this.absence.commentaire != null && !this.isInvalidDate) {
+      if(this.jourFerie.commentaire != null && !this.isInvalidDate) {
         this.isValid = true;
       } else {
         this.isValid = false;
@@ -245,7 +231,7 @@ export class FormJourFerieComponent implements OnInit {
   }
 
   private isValidCommentaire() {
-    if(this.absence.type === FerieType.JOUR_FERIE && this.absence.commentaire != null){
+    if(this.jourFerie.type === FerieType.JOUR_FERIE && this.jourFerie.commentaire != null){
       this.isValid = true;
     } else {
       this.isValid = true;
