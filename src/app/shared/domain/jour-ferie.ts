@@ -1,7 +1,7 @@
 export class JourFerie {
   constructor(
     public id: number,
-    public date: Date,
+    public date: any,
     public type: string,
     public commentaire: string
   ) {}

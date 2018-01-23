@@ -1,0 +1,25 @@
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Confirmation de suppression</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Confirmez-vous la suppression du {{jourFerie.type}} suivant ?</p>
+    <p>{{jourFerie.type}} du {{jourFerie.date |date : 'dd-MM-yyyy'}}</p>
+    <div *ngIf="alertActive" class="alert alert-danger alert-dismissable">
+      <a (click)="closeAlert()" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      <strong>{{msgServeur}}</strong>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="c('Close click')">Annuler</button>
+    <button type="button" class="btn btn-success" (click)="supprimerUnJourFerie(jourFerie)">Valider</button>
+
+  </div>
+</ng-template>
+<i type="button" class="fa fa-trash font-btn" aria-hidden="true " (click)="open(content)"></i>
+<hr>
+
+<pre>{{closeResult}}</pre>

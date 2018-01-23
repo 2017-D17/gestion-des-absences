@@ -12,7 +12,7 @@
 
     <select>
       <option></option>
-      <option [value]="jf1" *ngFor="let jf1 of annees"> {{jf1 }}</option>
+      <option [value]="jf1" *ngFor="let jf1 of annees"> {{jf1}}</option>
     </select>
   </h4>
   <table class="table table-hover">
@@ -33,7 +33,7 @@
         <td>{{jf.commentaire}}</td>
         <td>
           <i type=" button" class="fa fa-pencil font-btn" aria-hidden="true "></i>
-          <i type="button" class="fa fa-trash font-btn" aria-hidden="true "></i>
+          <app-suprimer-jour-ferie [jourFerie]="jf"></app-suprimer-jour-ferie>
         </td>
   </table>
 
