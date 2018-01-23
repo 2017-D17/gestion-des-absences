@@ -107,7 +107,6 @@ export class FormAbsenceComponent implements OnInit {
     // initialisation du formulaire selon son rôle
     if(this.action === "add") {
       this.isValid = false;
-
       this.add = true;
       this.titre = "Demande d'absence";
       this.absence = new Absence(0, "", "", "", "", "", this.collaborateur);
@@ -167,6 +166,7 @@ export class FormAbsenceComponent implements OnInit {
 
   // Affichage de la modale
   open(content) {
+    this.isValid = false;
     this.dialog = this.modalService.open(content);
     this.dialog.result.then(
       result => {
