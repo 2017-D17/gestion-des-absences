@@ -18,17 +18,19 @@
       </tr>
     </thead>
     <tbody>
-      <!-- <tr *ngFor="let absences of absense"> -->
-      <td></td>
-
+      <tr *ngFor="let absence of absences">
+        <td>{{absence.dateDebut}} </td>
+        <td>{{absence.dateFin}}</td>
+        <td>{{absence.type}} </td>
+        <td>{{absence.statut}}</td>
+        <td>
+          <app-buttons-modif-supp [absence]="absence"></app-buttons-modif-supp>
+        </td>
   </table>
-
-  <p class="text-right">Demander une absences
-    <a>
-      <img class="imgAdd" type="button" src="https://cdn4.iconfinder.com/data/icons/meBaze-Freebies/512/add.png">
-    </a>
-  </p>
-
+  <app-form-absence [action]="demandeAbsence"></app-form-absence>
   <p>Soldes des compteurs:</p>
-  <p>Congés payés:</p>
+  <ul>
+    <li>Congés payés : {{conges}}</li>
+    <li>RTT : {{rtt}}</li>
+  </ul>
 </div>

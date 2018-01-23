@@ -1,1 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
+.modal-dialog {
+    max-width: 1000px !important;
+}
+
+.modal-footer {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-evenly !important;
+}
+
+a, button {
+    cursor: pointer;
+}
+
+.actionBtn {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.font-btn {
+    cursor: pointer;
+}
+

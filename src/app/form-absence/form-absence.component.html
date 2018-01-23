@@ -1,0 +1,105 @@
+<p *ngIf="add" id="btnAddAbsence" class="text-right" (click)="open(content)">Demander une absence
+    <a>
+      <img class="imgAdd" type="button" src="https://cdn4.iconfinder.com/data/icons/meBaze-Freebies/512/add.png">
+    </a>
+</p>
+<i *ngIf="modif" type=" button " (click)="open(content)" class="fa fa-pencil font-btn" aria-hidden="true "></i>
+<ng-template #content>
+  <div class="modal-header">
+    <h4 class="modal-title">{{titre}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="cancel(absenceForm)">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <form id="absenceform" class="form-horizontal" role="form" (ngSubmit)="submit(absenceForm)" novalidate #absenceForm="ngForm">
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-3 field-label-responsive">
+                <label for="add-dateDebut">Date de Début</label>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                        <my-date-picker name="dateDebut"  [options]="myDatePickerOptions"  [selDate]="selDateDebut"  required (dateChanged)="onDateDebutChanged($event)"></my-date-picker>    
+                        </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-control-feedback">
+                        <span id="validator-dateD" *ngIf="isInvalidDate" class="text-danger align-middle">
+                            La date de début ne doit pas être supérieur à la date de fin
+                        </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 field-label-responsive">
+                <label for="add-dateFin">Date de Fin</label>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                        <my-date-picker name="dateFin" [options]="myDatePickerOptions" [selDate]="selDateFin" required (dateChanged)="onDateFinChanged($event)"></my-date-picker>    
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-control-feedback">
+                        <span class="text-danger align-middle">
+                        </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 field-label-responsive">
+                <label for="add-dateFin">Type de congé</label>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                        <select class="form-control" id="add-dateFin"
+                        [(ngModel)]="absence.type" name="type" #type="ngModel" required (change)="onAlertChanged($event)">
+                        <option selected value="" disabled>(Type de congé)</option>
+                        <option *ngFor="let option of options" [value]="option.key">{{option.label}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-control-feedback">
+                        <span class="text-danger align-middle">
+                        </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 field-label-responsive">
+                <label for="add-motif">Motif</label>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group has-danger">
+                    <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                        <textarea type="text" class="form-control" id="add-motif"
+                        [(ngModel)]="absence.motif" name="motif" #motif="ngModel" (change)="onAlertChanged($event)">{{absence.motif}}</textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-control-feedback">
+                        <span *ngIf="absence.type === 'CONGE_SANS_SOLDE'" class="text-danger align-middle">
+                            * Obligatoire
+                        </span>
+                </div>
+            </div>
+        </div>   
+    </div>
+    <div *ngIf="alertActive" class="alert alert-danger alert-dismissable">
+        <a (click)="closeAlert()" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>{{msg}}</strong>
+    </div>
+    <div class="modal-footer">
+        <button type="reset" class="btn btn-danger" (click)="cancel(absenceForm)"> Annuler</button>
+        <button type="submit" class="btn btn-success" [disabled]="!isValid" >Valider</button>
+    </div>
+  </form>
+</ng-template>
