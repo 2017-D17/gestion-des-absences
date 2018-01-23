@@ -13,8 +13,6 @@ export class AbsenceService {
   abences:Absence[];
   subjectCollaborateur = new BehaviorSubject<Collaborateur>(new Collaborateur("8b2d3ac7","Hahn","Nellie",0,0));
   public absenceSubj = new BehaviorSubject<Absence[]>([]);
-  public jourFerieSubj = new BehaviorSubject<JourFerie[]>([]);
-
 
   constructor(private http: HttpClient) {
     this.refreshAbsencesByMatricule();
@@ -42,7 +40,6 @@ export class AbsenceService {
   }
   
   modifierAbsence(modifAbsence:Absence) {
-    console.log('modifAbsence.id ',modifAbsence.id);
     const httpOptions = {
 			headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 		};
@@ -57,7 +54,6 @@ export class AbsenceService {
   }
 
   validerOuRejeterAbsence(modifAbsence:Absence) {
-    console.log('modifAbsence.id ',modifAbsence.id);
     const httpOptions = {
 			headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 		};

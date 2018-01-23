@@ -120,16 +120,11 @@ export class FormAbsenceComponent implements OnInit {
         month: this.currentDate.getMonth() + 1,
         day: this.currentDate.getDate() + 1
       };
-      console.log("currentDate", this.currentDate);
       this.currentDate.setDate(this.currentDate.getDate() + 1);
       this.dateDebut = this.currentDate;
       this.dateDeFin = this.currentDate;
       this.dateDebutNumber = Date.parse(this.dateDebut); //conversion date en millisecond pour tester le chevauchement
       this.dateDeFinNumber = Date.parse(this.dateDeFin); //conversion date date en millisecond pour tester le chevauchement
-      console.log("this.dateDebut", this.dateDebut);
-      console.log("this.dateDeFin", this.dateDeFin);
-      console.log("this.dateDebutNumber", this.dateDebutNumber);
-      console.log("this.dateDeFinNumber", this.dateDeFinNumber);
     } else if (this.action === "update") {
       this.isValid = true;
       this.modif = true;
@@ -203,13 +198,11 @@ export class FormAbsenceComponent implements OnInit {
     this.absence.dateFin = this.correctDateFormat(this.dateDeFin);
     
     this.absence.statut = AbsenceStatut.INITIALE;
-    console.log(this.absence);
 
     if (this.action === "add") {
       this.absenceService.sauvegarderAbsence(this.absence).subscribe(
         result => {
           this.alertActive = false;
-          console.log("result ", result);
           absenceForm.resetForm();
           if (result != null) {
             if (this.dialog) {
@@ -226,7 +219,6 @@ export class FormAbsenceComponent implements OnInit {
         err => {
           if(err && err.error) {
             this.msg = err.error.message;
-            console.log(err);
             
           } else {
             this.msg = "Votre demande n'a pas pu être modifié.";
@@ -240,7 +232,6 @@ export class FormAbsenceComponent implements OnInit {
         this.absenceService.modifierAbsence(this.absence).subscribe(
         result => {
           this.alertActive = false;
-          console.log("result ", result);
           if (result != null) {
             absenceForm.resetForm();
             if (this.dialog) {
@@ -257,7 +248,6 @@ export class FormAbsenceComponent implements OnInit {
         err => {
           if(err && err.error) {
             this.msg = err.error.message;
-            console.log(err);
             
           } else {
             this.msg = "Votre demande n'a pas pu être modifié.";
@@ -276,8 +266,6 @@ export class FormAbsenceComponent implements OnInit {
     this.dateDebut = event.jsdate;
     this.dateDebutNumber = Date.parse(this.dateDebut); //conversion date en millisecond pour tester le chevauchement
     this.dateDeFinNumber = Date.parse(this.dateDeFin); //conversion date date en millisecond pour tester le chevauchement
-    console.log("this.dateDebutNumber", this.dateDebutNumber);
-    console.log("this.dateDeFinNumber", this.dateDeFinNumber);
 
     // test si la date de début est valide
     if (this.dateDebutNumber > this.dateDeFinNumber) {
@@ -294,8 +282,7 @@ export class FormAbsenceComponent implements OnInit {
     this.dateDeFin = event.jsdate;
     this.dateDebutNumber = Date.parse(this.dateDebut); //conversion date en millisecond pour tester le chevauchement
     this.dateDeFinNumber = Date.parse(this.dateDeFin); //conversion date date en millisecond pour tester le chevauchement
-    console.log("this.dateDebutNumber", this.dateDebutNumber);
-    console.log("this.dateDeFinNumber", this.dateDeFinNumber);
+
 
     // test si la date de fin est valide
     if (this.dateDebutNumber > this.dateDeFinNumber) {
@@ -309,10 +296,6 @@ export class FormAbsenceComponent implements OnInit {
 
   // Ecouteur sur le bouton valider
   onAlertChanged(event: any) {
-    console.log('this.absence.motif ',this.absence.motif);
-    console.log('this.absence.type ',this.absence.type);
-    console.log('this.dateDebutNumber', this.dateDebutNumber);
-    console.log('this.dateDeFinNumber', this.dateDeFinNumber);
     this.isValid = false;
     if(this.dateDebutNumber <= this.dateDeFinNumber ) {
       if(this.absence.type != null ){
@@ -323,7 +306,6 @@ export class FormAbsenceComponent implements OnInit {
         }
       } 
     }
-    console.log("valid", this.isValid);
   }
 
   // Fermeture de l'alert par la croix

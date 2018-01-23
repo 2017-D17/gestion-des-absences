@@ -57,7 +57,6 @@ export class SuprimerJourFerieComponent {
         this.absService.refreshAbsencesByMatricule();
       },
       err => {
-        console.log(err);
         this.alertActive = true;
         if (err && err.error) {
           this.msgServeur = err.error.message;

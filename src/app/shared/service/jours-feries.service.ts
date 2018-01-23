@@ -18,7 +18,6 @@ export class JoursFeriesService {
     const httpOptions = {
       headers: new HttpHeaders({ "Content-Type": "application/json" })
     };
-    console.log("jourFerieId:" + jourFerieId);
     return this.http.delete<JourFerie>(
       env.urlBackEndJoursFeries + jourFerieId
     );

@@ -75,11 +75,8 @@ export class FormJourFerieComponent implements OnInit {
       this.titre = "Nouveau jour férié / RTT employeur"; 
       this.jourFerie = new JourFerie(0,this.currentDate,"","","");
       this.selDate = {year: this.currentDate.getFullYear(), month: this.currentDate.getMonth() +1, day: this.currentDate.getDate()+1};
-      console.log('currentDate', this.currentDate);
       this.currentDate.setDate(this.currentDate.getDate()+1);
       this.date = this.currentDate;
-      console.log('this.date', this.date);
-      console.log('this.dateNumber', this.dateNumber);
 
     } else if(this.action === "update") {
       this.isValid = true;
@@ -87,9 +84,7 @@ export class FormJourFerieComponent implements OnInit {
       this.titre = "Modifier un jour férié / RTT employeur";
 
       //Récupérationn date de début de l'absence
-      console.log(this.jourFerie.date);
       this.date = new Date(this.jourFerie.date);
-      console.log('this.date', this.date);
       this.selDate = {year: this.date.getFullYear(), month: this.date.getMonth()+1, day:this.date.getDate()};
     }
     // Desactivation des dates precedente à la date actuelle
@@ -111,12 +106,10 @@ export class FormJourFerieComponent implements OnInit {
     let y = this.date.getFullYear();
     this.jourFerie.date = y + '-' + (m <= 9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
     this.jourFerie.statut = AbsenceStatut.INITIALE;
-    console.log(this.jourFerie);
     
     if(this.action === "add") {
       this.jourFerieService.sauvegarderJourFerie(this.jourFerie).subscribe(result => {
         this.alertActive = false;
-        console.log('result ',result);
         absenceForm.resetForm();
         if(result != null) {
           if ( this.dialog ) {
@@ -132,7 +125,6 @@ export class FormJourFerieComponent implements OnInit {
         this.absenceService.refreshAbsencesByMatricule();
         
       },err => {
-        console.log(err);
         this.alertActive = true;
         if(err && err.error) {
           this.msg = err.error.message;
@@ -149,7 +141,6 @@ export class FormJourFerieComponent implements OnInit {
     } else if(this.action === "update") {
       this.jourFerieService.modifierJourFerie(this.jourFerie).subscribe(result => {
         this.alertActive = false;
-        console.log('result ',result);
         if(result != null) {
           absenceForm.resetForm();
           if ( this.dialog ) {
@@ -165,7 +156,6 @@ export class FormJourFerieComponent implements OnInit {
         this.absenceService.refreshAbsencesByMatricule();
         
       },err => {
-        console.log(err);
         this.alertActive = true;
         if(err && err.error) {
           this.msg = err.error.message;
@@ -186,7 +176,6 @@ export class FormJourFerieComponent implements OnInit {
   onDateChanged(event: IMyDateModel) {
     this.date = event.jsdate;
     // test si la date est un samedi ou dimanche pour le RTT employeur
-    console.log('this.date.getDay() ',this.date.getDay());
     if(this.jourFerie.type === FerieType.JOUR_FERIE && (this.date.getDay() === 0 || this.date.getDay() === 6)) {
       this.isInvalidDate = true;
       this.msgDate = "Il est interdit de saisir une RTT employeur un samedi ou un dimanche";
@@ -195,17 +184,13 @@ export class FormJourFerieComponent implements OnInit {
       this.isInvalidDate = false;
       this.isValid = true;
     }
-    console.log('this.isInvalidDate ',this.isInvalidDate);
     this.onAlertChanged(event);
   }
 
   // Ecouteur sur le bouton valider et le select
   onAlertChanged(event: any) {
     this.isValid = false;
-    console.log('this.absence.commentaire ',this.jourFerie.commentaire);
-    console.log('this.absence.type ',this.jourFerie.type);
      // test si la date est un samedi ou dimanche pour le RTT employeur
-     console.log('this.date.getMonth() ',this.date.getMonth());
      if(this.jourFerie.type === FerieType.JOUR_FERIE && (this.date.getDay() === 0 || this.date.getDay() === 6)) {
        this.isInvalidDate = true;
        this.msgDate = "Il est interdit de saisir une RTT employeur un samedi ou un dimanche";
@@ -226,8 +211,6 @@ export class FormJourFerieComponent implements OnInit {
     } else {
       this.isRequiredComment = false;
     }
-
-    console.log('valid',this.isValid );
   }
 
   // Fermeture de l'alert par la croix

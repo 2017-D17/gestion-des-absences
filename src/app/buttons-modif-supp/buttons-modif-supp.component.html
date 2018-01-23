@@ -1,4 +1,4 @@
 <div let modif of boolean class="actionBtn">
   <app-form-absence [action]="modifAbsence" [absence]="absence"></app-form-absence>
-  <i type="button " (click)="supprimer() " class="fa fa-trash font-btn" aria-hidden="true "></i>
+  <i *ngIf="aff" type="button " (click)="supprimer() " class="fa fa-trash font-btn" aria-hidden="true "></i>
 </div>
