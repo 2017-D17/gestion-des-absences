@@ -12,6 +12,7 @@ import { FerieType, FERIE_TYPES } from '../shared/domain/ferie-type.enum';
 })
 export class JoursFeriesComponent implements OnInit {
   demandeAbsence: string = "add";
+  modifAbsence: string = "update";
   joursFeries: JourFerie[] = [];
   annees: number[] = [];
    // Type de jours férié
@@ -20,15 +21,8 @@ export class JoursFeriesComponent implements OnInit {
   constructor(private jourFerieService: JoursFeriesService) {}
 
   ngOnInit() {
-    
-    // let jFerie: JourFerie = new JourFerie(0, new Date("2017-08-14"), "RTT employeur", "INITIALE", "");
-    // let jFerie1: JourFerie = new JourFerie(0, new Date("2017-08-14"),"Jour férié", "INITIALE","Lundi de paques");
     this.jourFerieService.ferieSubj.subscribe(jourF => {
       this.joursFeries = jourF;
-      // this.joursFeries.push(jFerie);
-      // this.joursFeries.push(jFerie1);
-      // console.log('types ',this.options);
-      // console.log(this.options[jFerie.type]);
       //filtre les annee
       this.joursFeries.forEach(jf => {
         console.log(jf.date);
