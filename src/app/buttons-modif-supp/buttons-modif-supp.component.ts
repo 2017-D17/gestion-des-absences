@@ -23,15 +23,13 @@ export class ButtonsModifSuppComponent implements OnInit {
     }
   }
 
-  supprimer(articleId: number) {
+  supprimer() {
     console.log(this.absence);
-    this.aService
-      .supprimerAbsence(this.absence.id).subscribe(resultat => {
-        this.absence = resultat;
-        console.log(resultat);
-        //Mise à jour des absences
-        this.aService.refreshAbsencesByMatricule();
-      });
+    this.aService.supprimerAbsence(this.absence.id).subscribe(resultat => {
+      this.absence = resultat;
+      console.log(resultat);
+      //Mise à jour des absences
+      this.aService.refreshAbsencesByMatricule();
+    });
   }
-
 }
