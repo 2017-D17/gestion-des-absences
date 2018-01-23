@@ -11,8 +11,7 @@ import { environment as env} from '../../../environments/environment';
 @Injectable()
 export class AbsenceService {
   abences:Absence[];
-  subjectCollaborateur = new BehaviorSubject<Collaborateur>(new Collaborateur("8b2d3ac7","Hahn","Nellie"));
-  collaborateur:Collaborateur = new Collaborateur("","","");
+  subjectCollaborateur = new BehaviorSubject<Collaborateur>(new Collaborateur("8b2d3ac7","Hahn","Nellie",0,0));
   public absenceSubj = new BehaviorSubject<Absence[]>([]);
   public jourFerieSubj = new BehaviorSubject<JourFerie[]>([]);
 

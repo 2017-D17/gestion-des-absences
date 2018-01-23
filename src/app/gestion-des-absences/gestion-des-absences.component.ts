@@ -11,6 +11,8 @@ import { Collaborateur } from "../shared/domain/collaborateur";
 export class GestionDesAbsencesComponent implements OnInit {
   absences: Absence[] = [];
   demandeAbsence: string = "add";
+  rtt:number;
+  conges:number;
 
   constructor(private absService: AbsenceService) {}
 
@@ -18,6 +20,10 @@ export class GestionDesAbsencesComponent implements OnInit {
     this.absService.absenceSubj.subscribe(result => {
       console.log(result);
       this.absences = result;
+      if (result.length > 0) {
+        this.rtt = result[0].collaborateur.conges;
+        this.conges = result[0].collaborateur.rtt;
+      }
     });
   }
 }
