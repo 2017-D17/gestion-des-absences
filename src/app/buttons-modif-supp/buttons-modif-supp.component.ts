@@ -23,7 +23,7 @@ export class ButtonsModifSuppComponent implements OnInit {
     }
   }
 
-  supprimer(articleId: number) {
+  supprimer() {
     console.log(this.absence);
     this.aService
       .supprimerAbsence(this.absence.id).subscribe(resultat => {
