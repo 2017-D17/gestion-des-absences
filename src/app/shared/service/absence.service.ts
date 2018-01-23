@@ -14,10 +14,12 @@ export class AbsenceService {
   subjectCollaborateur = new BehaviorSubject<Collaborateur>(new Collaborateur("8b2d3ac7","Hahn","Nellie"));
   collaborateur:Collaborateur = new Collaborateur("","","");
   public absenceSubj = new BehaviorSubject<Absence[]>([]);
+  public jourFerieSubj = new BehaviorSubject<JourFerie[]>([]);
 
 
   constructor(private http: HttpClient) {
     this.refreshAbsencesByMatricule();
+    this.refreshJoursFeries();
   }
 
    refreshConnectedCollab(collab:Collaborateur) {
@@ -26,17 +28,22 @@ export class AbsenceService {
 
   refreshAbsencesByMatricule() {
     this.subjectCollaborateur.subscribe(data => {
-      this.http.get<Absence[]>( env.urlBackEnd + "absences/" + data.matricule)
+      this.http.get<Absence[]>( env.urlBackEndAbsences + data.matricule)
       .subscribe(data => this.absenceSubj.next(data));
 
     });
+  }
+
+  refreshJoursFeries() {
+    this.http.get<JourFerie[]>( env.urlBackEndJoursFeries)
+    .subscribe(data => this.jourFerieSubj.next(data));
   }
 
   sauvegarderAbsence(newAbsence:Absence):Observable<any> {
 		const httpOptions = {
 			headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 		};
-		return this.http.post<Absence>(env.urlBackEnd + "absences/", newAbsence,httpOptions);
+		return this.http.post<Absence>(env.urlBackEndAbsences, newAbsence,httpOptions);
   }
   
   modifierAbsence(modifAbsence:Absence) {
@@ -44,14 +51,14 @@ export class AbsenceService {
     const httpOptions = {
 			headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 		};
-		return this.http.put<Absence>(env.urlBackEnd + "absences/"+ modifAbsence.id,modifAbsence,httpOptions);
+		return this.http.put<Absence>(env.urlBackEndAbsences + modifAbsence.id,modifAbsence,httpOptions);
 
   }
   supprimerAbsence(absenceId: number): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({ "Content-Type": "application/json" })
     };
-    return this.http.delete<Absence>(env.urlBackEnd + "absences/" + absenceId);
+    return this.http.delete<Absence>(env.urlBackEndAbsences + absenceId);
   }
 
   validerOuRejeterAbsence(modifAbsence:Absence) {
@@ -59,21 +66,21 @@ export class AbsenceService {
     const httpOptions = {
 			headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 		};
-		return this.http.patch<Absence>(env.urlBackEnd + "absences/" + modifAbsence.id,modifAbsence,httpOptions);
+		return this.http.patch<Absence>(env.urlBackEndAbsences + modifAbsence.id,modifAbsence,httpOptions);
   }
 
   sauvegarderJourFerie(newAbsence:JourFerie):Observable<any> {
 		const httpOptions = {
 			headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 		};
-		return this.http.post<Absence>(env.urlBackEnd + "jours_feries/", newAbsence,httpOptions);
+		return this.http.post<Absence>(env.urlBackEndJoursFeries, newAbsence,httpOptions);
   }
 
   modifierJourFerie(modifAbsence:JourFerie):Observable<any> {
 		const httpOptions = {
 			headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 		};
-		return this.http.put<Absence>(env.urlBackEnd + "jours_feries/" + modifAbsence.id, modifAbsence,httpOptions);
+		return this.http.put<Absence>(env.urlBackEndJoursFeries + modifAbsence.id, modifAbsence,httpOptions);
   }
 
 }

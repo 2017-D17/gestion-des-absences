@@ -5,5 +5,6 @@
 
 export const environment = {
   production: false,
-  urlBackEnd: 'http://localhost:8080/'
+  urlBackEndAbsences: 'http://localhost:8080/absences/',
+  urlBackEndJoursFeries: 'http://localhost:8080/jours_feries/',
 };

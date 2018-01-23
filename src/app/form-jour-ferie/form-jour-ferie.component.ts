@@ -138,7 +138,11 @@ export class FormJourFerieComponent implements OnInit {
       },err => {
         console.log(err);
         this.alertActive = true;
-        this.msg = err.error.message;
+        if(err && err.error) {
+          this.msg = err.error.message;
+        } else {
+          this.msg = "Votre demande n'a pas pu être ajouté.";
+        }
         this.isValid = true;
         // Mise à jour des absences suite à la soumission du formulaire
         this.absenceService.refreshAbsencesByMatricule();
@@ -157,7 +161,7 @@ export class FormJourFerieComponent implements OnInit {
          }
         }		else {
           this.alertActive = true;
-          this.msg = "Votre demande n'a pas pu être modifié."
+          this.msg = "Votre demande n'a pas pu être modifié.";
         }
         // Mise à jour des absences suite à la soumission du formulaire
         this.absenceService.refreshAbsencesByMatricule();
@@ -165,7 +169,12 @@ export class FormJourFerieComponent implements OnInit {
       },err => {
         console.log(err);
         this.alertActive = true;
-        this.msg = err.error.message;
+        if(err != null || err.error != null) {
+          this.msg = err.error.message;
+        } else {
+          this.msg = "Votre demande n'a pas pu être modifié.";
+        }
+        
         this.isValid = true;
         // Mise à jour des absences suite à la soumission du formulaire
         this.absenceService.refreshAbsencesByMatricule();
@@ -179,7 +188,7 @@ export class FormJourFerieComponent implements OnInit {
     this.date = event.jsdate;
     // test si la date est un samedi ou dimanche pour le RTT employeur
     console.log('this.date.getDay() ',this.date.getDay());
-    if(this.absence.type === FerieType.RTT_EMPLOYEUR && this.date.getDay() === 0 || this.date.getDay() === 6) {
+    if(this.absence.type === FerieType.JOUR_FERIE && (this.date.getDay() === 0 || this.date.getDay() === 6)) {
       this.isInvalidDate = true;
       this.msgDate = "Il est interdit de saisir une RTT employeur un samedi ou un dimanche";
       this.isValid = false;
@@ -191,14 +200,24 @@ export class FormJourFerieComponent implements OnInit {
     this.onAlertChanged(event);
   }
 
-  // Ecouteur sur le bouton valider
+  // Ecouteur sur le bouton valider et le select
   onAlertChanged(event: any) {
+    this.isValid = false;
     console.log('this.absence.commentaire ',this.absence.commentaire);
     console.log('this.absence.type ',this.absence.type);
-    this.isValid = false;
-
+     // test si la date est un samedi ou dimanche pour le RTT employeur
+     console.log('this.date.getDay() ',this.date.getDay());
+     if(this.absence.type === FerieType.JOUR_FERIE && (this.date.getDay() === 0 || this.date.getDay() === 6)) {
+       this.isInvalidDate = true;
+       this.msgDate = "Il est interdit de saisir une RTT employeur un samedi ou un dimanche";
+       this.isValid = false;
+     } else {
+       this.isInvalidDate = false;
+       this.isValid = true;
+     }
+    
     // test du type
-    if(this.absence.type === FerieType.RTT_EMPLOYEUR) {
+    if(this.absence.type === FerieType.JOUR_FERIE) {
       this.isRequiredComment = true;
       if(this.absence.commentaire != null && !this.isInvalidDate) {
         this.isValid = true;
@@ -209,23 +228,6 @@ export class FormJourFerieComponent implements OnInit {
       this.isRequiredComment = false;
     }
 
-    // test sur la date
-    // if(this.absence.type === FerieType.RTT_EMPLOYEUR && this.date.getDay() == 0 || this.date.getDay() == 6) {
-    //   this.isValid = false;
-    //   this.isInvalidDate = true;
-    //   this.msgDate = "Il est interdit de saisir une RTT employeur un samedi ou un dimanche";
-      
-    // } else {
-    //   this.isValid = true;
-    //   this.isInvalidDate = false;
-    // }
-    // if(this.dateNumber <= this.dateNumber ) {
-    //   if(this.absence.type === "CONGE_SANS_SOLDE" && this.absence.commentaire != null ) {
-    //     this.isValid = true;
-    //   } else if (this.absence.type != "CONGE_SANS_SOLDE" && this.absence.type != "") {
-    //     this.isValid = true;
-    //   }
-    // }
     console.log('valid',this.isValid );
   }
 
@@ -243,7 +245,7 @@ export class FormJourFerieComponent implements OnInit {
   }
 
   private isValidCommentaire() {
-    if(this.absence.type === FerieType.RTT_EMPLOYEUR && this.absence.commentaire != null){
+    if(this.absence.type === FerieType.JOUR_FERIE && this.absence.commentaire != null){
       this.isValid = true;
     } else {
       this.isValid = true;
