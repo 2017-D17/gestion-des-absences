@@ -70,6 +70,7 @@ export class FormJourFerieComponent implements OnInit {
     this.currentDate = new Date();
     // initialisation du formulaire selon son rôle
     if(this.action === "add") {
+      this.isValid = false;
       this.add = true;
       this.titre = "Nouveau jour férié / RTT employeur"; 
       this.jourFerie = new JourFerie(0,this.currentDate,"","","");
@@ -97,6 +98,7 @@ export class FormJourFerieComponent implements OnInit {
 
   // Affichage de la modale
   open(content) {
+    this.isValid = false;
     this.dialog = this.modalService.open(content);
   }
 
