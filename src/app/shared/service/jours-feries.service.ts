@@ -20,7 +20,7 @@ export class JoursFeriesService {
     };
     console.log("jourFerieId:" + jourFerieId);
     return this.http.delete<JourFerie>(
-      "http://localhost:8080/jours_feries/" + jourFerieId
+      env.urlBackEndJoursFeries + jourFerieId
     );
   }
 
