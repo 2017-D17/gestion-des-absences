@@ -21,6 +21,8 @@ import { ValidationDemandesComponent } from "./validation-demandes/validation-de
 import { FormJourFerieComponent } from "./form-jour-ferie/form-jour-ferie.component";
 import { JoursFeriesService } from "./shared/service/jours-feries.service";
 import { SuprimerJourFerieComponent } from "./suprimer-jour-ferie/suprimer-jour-ferie.component";
+import { CalendarModule } from 'angular-calendar';
+import { PlanningAbsencesComponent } from './planning-absences/planning-absences.component';
 
 const appRoutes: Routes = [
   { path: "connexion", component: AuthentificationComponent },
@@ -48,10 +50,10 @@ const appRoutes: Routes = [
     VueSynthetiqueComponent,
     ButtonsModifSuppComponent,
     ValidationDemandesComponent,
-
     SuprimerJourFerieComponent,
-
-    FormJourFerieComponent
+    FormJourFerieComponent,
+    PlanningAbsencesComponent
+    
   ],
   imports: [
     BrowserModule,
@@ -59,7 +61,8 @@ const appRoutes: Routes = [
     HttpClientModule,
     FormsModule,
     MyDatePickerModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    CalendarModule.forRoot()
   ],
   providers: [AbsenceService, JoursFeriesService],
   bootstrap: [AppComponent]
