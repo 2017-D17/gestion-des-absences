@@ -18,6 +18,7 @@ import { FormAbsenceComponent } from "./form-absence/form-absence.component";
 import { MyDatePickerModule } from "mydatepicker";
 import { VALID } from "@angular/forms/src/model";
 import { ValidationDemandesComponent } from "./validation-demandes/validation-demandes.component";
+import { FormJourFerieComponent } from "./form-jour-ferie/form-jour-ferie.component";
 import { JoursFeriesService } from "./shared/service/jours-feries.service";
 import { SuprimerJourFerieComponent } from "./suprimer-jour-ferie/suprimer-jour-ferie.component";
 
@@ -47,7 +48,10 @@ const appRoutes: Routes = [
     VueSynthetiqueComponent,
     ButtonsModifSuppComponent,
     ValidationDemandesComponent,
-    SuprimerJourFerieComponent
+
+    SuprimerJourFerieComponent,
+
+    FormJourFerieComponent
   ],
   imports: [
     BrowserModule,

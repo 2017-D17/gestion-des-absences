@@ -32,14 +32,10 @@
         <td>{{jf.date | date : 'EEEE' }}</td>
         <td>{{jf.commentaire}}</td>
         <td>
-          <i type=" button" class="fa fa-pencil font-btn" aria-hidden="true "></i>
+          <app-form-jour-ferie [action]="modifAbsence" [jourFerie]="jf"></app-form-jour-ferie>
           <app-suprimer-jour-ferie [jourFerie]="jf"></app-suprimer-jour-ferie>
+
         </td>
   </table>
-
-  <p id="btnAddAbsence" class="text-right">Ajouter un jour férié ou une RTT employeur
-    <a>
-      <img class="imgAdd" type="button" src="https://cdn4.iconfinder.com/data/icons/meBaze-Freebies/512/add.png">
-    </a>
-  </p>
+  <app-form-jour-ferie [action]="demandeAbsence"></app-form-jour-ferie>
 </div>

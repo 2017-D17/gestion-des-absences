@@ -11,27 +11,19 @@ import { Collaborateur } from "../shared/domain/collaborateur";
 export class GestionDesAbsencesComponent implements OnInit {
   absences: Absence[] = [];
   demandeAbsence: string = "add";
+  rtt:number;
+  conges:number;
 
   constructor(private absService: AbsenceService) {}
 
   ngOnInit() {
-    let collab: Collaborateur = new Collaborateur(
-      "bd540e65",
-      "Rossi",
-      "Roberts"
-    );
-    let abs: Absence = new Absence(
-      0,
-      "2018-01-24",
-      "2018-01-25",
-      "CONGE_PAYE",
-      "",
-      "INITIALE",
-      collab
-    );
     this.absService.absenceSubj.subscribe(result => {
+      console.log(result);
       this.absences = result;
-      this.absences.push(abs);
+      if (result.length > 0) {
+        this.rtt = result[0].collaborateur.conges;
+        this.conges = result[0].collaborateur.rtt;
+      }
     });
   }
 }

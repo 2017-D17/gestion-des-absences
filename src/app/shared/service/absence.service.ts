@@ -3,59 +3,65 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable, Subject } from "rxjs";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { Absence } from "../domain/absence";
+import { JourFerie } from "../domain/jour-ferie";
 import { Collaborateur } from "../domain/collaborateur";
+
+import { environment as env} from '../../../environments/environment';
 
 @Injectable()
 export class AbsenceService {
-  abences: Absence[];
-  subject = new BehaviorSubject<Absence[]>([]);
-  subjectCollaborateur = new BehaviorSubject<Collaborateur>(
-    new Collaborateur("", "", "")
-  );
-  collaborateur: Collaborateur = new Collaborateur("", "", "");
-
-  // constructor(private http:HttpClient) {
-  //   this.refreshConnectedCollab(this.collaborateur);
-  //  }
-  constructor(private http: HttpClient) {
-    this.http
-      .get<Absence[]>("http://localhost:8080/absences/" + "bd540e65")
-      .subscribe(a => {
-        this.absenceSubj.next(a);
-      });
-  }
-
+  abences:Absence[];
+  subjectCollaborateur = new BehaviorSubject<Collaborateur>(new Collaborateur("8b2d3ac7","Hahn","Nellie",0,0));
   public absenceSubj = new BehaviorSubject<Absence[]>([]);
-  refreshConnectedCollab(collab: Collaborateur) {
-    this.subjectCollaborateur.next(collab);
+  public jourFerieSubj = new BehaviorSubject<JourFerie[]>([]);
+
+
+  constructor(private http: HttpClient) {
+    this.refreshAbsencesByMatricule();
   }
+
+   refreshConnectedCollab(collab:Collaborateur) {
+		this.subjectCollaborateur.next(collab);
+   }
 
   refreshAbsencesByMatricule() {
-    let matricule = "";
     this.subjectCollaborateur.subscribe(data => {
-      this.http
-        .get<Absence[]>("http://localhost:8080/absences/" + data.matricule)
-        .subscribe(data => this.subject.next(data));
+      this.http.get<Absence[]>( env.urlBackEndAbsences + data.matricule)
+      .subscribe(data => this.absenceSubj.next(data));
+
     });
   }
 
-  sauvegarderAbsence(newAbsence: Absence): Observable<any> {
-    const httpOptions = {
-      headers: new HttpHeaders({ "Content-Type": "application/json" })
-    };
-    return this.http.post<Absence>(
-      "http://localhost:8080/absences",
-      newAbsence,
-      httpOptions
-    );
-  }
+  
 
+  sauvegarderAbsence(newAbsence:Absence):Observable<any> {
+		const httpOptions = {
+			headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+		};
+		return this.http.post<Absence>(env.urlBackEndAbsences, newAbsence,httpOptions);
+  }
+  
+  modifierAbsence(modifAbsence:Absence) {
+    console.log('modifAbsence.id ',modifAbsence.id);
+    const httpOptions = {
+			headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+		};
+		return this.http.put<Absence>(env.urlBackEndAbsences + modifAbsence.id,modifAbsence,httpOptions);
+
+  }
   supprimerAbsence(absenceId: number): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({ "Content-Type": "application/json" })
     };
-    return this.http.delete<Absence>(
-      "http://localhost:8080/absences/" + absenceId
-    );
+    return this.http.delete<Absence>(env.urlBackEndAbsences + absenceId);
   }
+
+  validerOuRejeterAbsence(modifAbsence:Absence) {
+    console.log('modifAbsence.id ',modifAbsence.id);
+    const httpOptions = {
+			headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+		};
+		return this.http.patch<Absence>(env.urlBackEndAbsences + modifAbsence.id,modifAbsence,httpOptions);
+  }
+
 }
