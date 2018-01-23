@@ -18,7 +18,6 @@ export class GestionDesAbsencesComponent implements OnInit {
 
   ngOnInit() {
     this.absService.absenceSubj.subscribe(result => {
-      console.log(result);
       this.absences = result;
       if (result.length > 0) {
         this.rtt = result[0].collaborateur.conges;

@@ -3,6 +3,7 @@ import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 import { JourFerie } from "../shared/domain/jour-ferie";
 import { JoursFeriesService } from "../shared/service/jours-feries.service";
 import { NgbModalRef } from "@ng-bootstrap/ng-bootstrap/modal/modal-ref";
+import { AbsenceService } from "../shared/service/absence.service";
 
 @Component({
   selector: "app-suprimer-jour-ferie",
@@ -21,7 +22,8 @@ export class SuprimerJourFerieComponent {
   @Input() jourFerie: JourFerie;
   constructor(
     private modalService: NgbModal,
-    private jourFerieService: JoursFeriesService
+    private jourFerieService: JoursFeriesService,
+    private absService: AbsenceService
   ) {}
 
   open(content) {
@@ -52,15 +54,17 @@ export class SuprimerJourFerieComponent {
           this.dialog = null;
         }
         this.jourFerieService.refreshJoursFeries();
+        this.absService.refreshAbsencesByMatricule();
       },
       err => {
-        console.log(err);
         this.alertActive = true;
         if (err && err.error) {
           this.msgServeur = err.error.message;
         } else {
           this.msgServeur = "Votre jour férié ou RTT n'a pas pu être supprimé.";
         }
+        this.jourFerieService.refreshJoursFeries();
+        this.absService.refreshAbsencesByMatricule();
       }
     );
   }

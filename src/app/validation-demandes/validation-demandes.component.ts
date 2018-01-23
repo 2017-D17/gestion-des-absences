@@ -21,25 +21,21 @@ export class ValidationDemandesComponent implements OnInit {
 
   ngOnInit() {
     this.absenceService.absenceSubj.subscribe(result => {
-      console.log(result);
       this.absences = result.filter(abs => abs.statut === AbsenceStatut.EN_ATTENTE_VALIDATION);
     });
   }
 
   valider(absence:Absence) {
-    console.log('valider absence ',absence);
     absence.statut = AbsenceStatut.VALIDEE;
     this.absenceService.validerOuRejeterAbsence(absence).subscribe(result => {
       this.alertActive = true;
       this.alertClass = "alert-success";
       this.msg = "L'absence n°"+ result.id + " est validée";
-      console.log('result ',result);
       
       // Mise à jour des absences suite à la soumission du formulaire
       this.absenceService.refreshAbsencesByMatricule();
       
     },err => {
-      console.log(err);
       this.alertActive = true;
       this.alertClass = "alert-danger";
       this.msg = err.error.message;
@@ -52,18 +48,15 @@ export class ValidationDemandesComponent implements OnInit {
 
   rejeter(absence:Absence) {
     absence.statut = AbsenceStatut.REJETEE;
-    console.log('rejeter absence ',absence);
     this.absenceService.validerOuRejeterAbsence(absence).subscribe(result => {
       this.alertActive = true;
       this.alertClass = "alert-success";
       this.msg = "L'absence n°"+ result.id + " est rejetée";
-      console.log('result ',result);
       
       // Mise à jour des absences suite à la soumission du formulaire
       this.absenceService.refreshAbsencesByMatricule();
       
     },err => {
-      console.log(err);
       this.alertActive = true;
       this.alertClass = "alert-danger";
       this.msg = err.error.message;

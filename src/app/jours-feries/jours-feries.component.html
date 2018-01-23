@@ -32,9 +32,10 @@
         <td>{{jf.date | date : 'EEEE' }}</td>
         <td>{{jf.commentaire}}</td>
         <td>
-          <app-form-jour-ferie [action]="modifAbsence" [jourFerie]="jf"></app-form-jour-ferie>
-          <app-suprimer-jour-ferie [jourFerie]="jf"></app-suprimer-jour-ferie>
-
+          <div class="actionBtn">
+            <app-form-jour-ferie [action]="modifAbsence" [jourFerie]="jf"></app-form-jour-ferie>
+            <app-suprimer-jour-ferie [jourFerie]="jf"></app-suprimer-jour-ferie>
+          </div>
         </td>
   </table>
   <app-form-jour-ferie [action]="demandeAbsence"></app-form-jour-ferie>
