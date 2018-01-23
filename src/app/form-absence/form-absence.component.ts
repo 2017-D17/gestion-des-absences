@@ -73,6 +73,7 @@ export class FormAbsenceComponent implements OnInit {
     this.currentDate = new Date();
     // initialisation du formulaire selon son rôle
     if(this.action === "add") {
+      this.isValid = false;
       this.add = true;
       this.titre = "Demande d'absence"; 
       this.absence = new Absence(0,"","","","","",this.collaborateur);
@@ -131,11 +132,17 @@ export class FormAbsenceComponent implements OnInit {
       return  `with: ${reason}`;
     }
   }
-
+  correctDateFormat(date:Date) {
+    let d = date.getDate();
+    let m = date.getMonth() + 1;
+    let y = date.getFullYear();
+    return y + '-' + (m <= 9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
+  }
   submit(absenceForm: NgForm) {
     this.isValid = true;
-    this.absence.dateDebut = this.dateDebut.getFullYear() + "-" + this.dateDebut.getMonth() + 1 + "-"  + this.dateDebut.getDate() ;
-    this.absence.dateFin = this.dateDeFin.getFullYear() + "-" + this.dateDeFin.getMonth() + 1 + "-"  + this.dateDeFin.getDate() ;
+    // formatage des dates pour le serveur
+    this.absence.dateDebut = this.correctDateFormat(this.dateDebut);
+    this.absence.dateFin = this.correctDateFormat(this.dateDeFin);
     this.absence.statut = AbsenceStatut.INITIALE;
     console.log(this.absence);
     
@@ -185,9 +192,14 @@ export class FormAbsenceComponent implements OnInit {
         this.absenceService.refreshAbsencesByMatricule();
         
       },err => {
-        console.log(err);
+        if(err && err.error) {
+          this.msg = err.error.message;
+          console.log(err);
+          
+        } else {
+          this.msg = "Votre demande n'a pas pu être modifié.";
+        }
         this.alertActive = true;
-        this.msg = err.error.message;
         this.isValid = true;
         // Mise à jour des absences suite à la soumission du formulaire
         this.absenceService.refreshAbsencesByMatricule();
@@ -235,16 +247,19 @@ export class FormAbsenceComponent implements OnInit {
   // Ecouteur sur le bouton valider
   onAlertChanged(event: any) {
     console.log('this.absence.motif ',this.absence.motif);
-    console.log('this.absence.typ ',this.absence.type);
+    console.log('this.absence.type ',this.absence.type);
     console.log('this.dateDebutNumber', this.dateDebutNumber);
     console.log('this.dateDeFinNumber', this.dateDeFinNumber);
     this.isValid = false;
     if(this.dateDebutNumber <= this.dateDeFinNumber ) {
-      if(this.absence.type === "CONGE_SANS_SOLDE" && this.absence.motif != null ) {
-        this.isValid = true;
-      } else if (this.absence.type != "CONGE_SANS_SOLDE" && this.absence.type != "") {
-        this.isValid = true;
+      if(this.absence.type != null ){
+        if(this.absence.type === "CONGE_SANS_SOLDE" && this.absence.motif != null ) {
+          this.isValid = true;
+        } else if (this.absence.type != "CONGE_SANS_SOLDE" && this.absence.type != "") {
+          this.isValid = true;
+        }
       }
+     
     }
     console.log('valid',this.isValid );
   }
