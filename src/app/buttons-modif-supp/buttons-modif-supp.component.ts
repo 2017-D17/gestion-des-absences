@@ -21,7 +21,7 @@ export class ButtonsModifSuppComponent implements OnInit {
   constructor(private aService: AbsenceService) {}
 
   ngOnInit() {
-    if ((this.absence.statut == AbsenceStatut.INITIALE || this.absence.statut == AbsenceStatut.REJETEE )&& this.absence.type != FerieType.RTT_EMPLOYEUR) {
+    if ((this.absence.statut == AbsenceStatut.INITIALE || this.absence.statut == AbsenceStatut.REJETEE ) && this.absence.type != FerieType.RTT_EMPLOYEUR) {
       this.modifAbsence = "update";
       this.aff = true;
     } else if(this.absence.statut == AbsenceStatut.EN_ATTENTE_VALIDATION ) {
