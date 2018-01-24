@@ -1,4 +1,5 @@
 import { BrowserModule } from "@angular/platform-browser";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from "@angular/core";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { RouterModule, Routes } from "@angular/router";
@@ -22,7 +23,6 @@ import { FormJourFerieComponent } from "./form-jour-ferie/form-jour-ferie.compon
 import { JoursFeriesService } from "./shared/service/jours-feries.service";
 import { SuprimerJourFerieComponent } from "./suprimer-jour-ferie/suprimer-jour-ferie.component";
 import { CalendarModule } from 'angular-calendar';
-import { PlanningAbsencesComponent } from './planning-absences/planning-absences.component';
 
 const appRoutes: Routes = [
   { path: "connexion", component: AuthentificationComponent },
@@ -51,8 +51,7 @@ const appRoutes: Routes = [
     ButtonsModifSuppComponent,
     ValidationDemandesComponent,
     SuprimerJourFerieComponent,
-    FormJourFerieComponent,
-    PlanningAbsencesComponent
+    FormJourFerieComponent
     
   ],
   imports: [
@@ -62,7 +61,8 @@ const appRoutes: Routes = [
     FormsModule,
     MyDatePickerModule,
     RouterModule.forRoot(appRoutes),
-    CalendarModule.forRoot()
+    CalendarModule.forRoot(),
+    BrowserAnimationsModule,
   ],
   providers: [AbsenceService, JoursFeriesService],
   bootstrap: [AppComponent]
