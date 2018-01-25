@@ -1,8 +1,17 @@
-import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef,OnInit} from '@angular/core';
-import { startOfDay, endOfDay, subDays, addDays, endOfMonth, isSameDay, isSameMonth, addHours} from 'date-fns';
-import { Subject } from 'rxjs/Subject';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent} from 'angular-calendar';
+import { Component, ChangeDetectionStrategy, ViewEncapsulation, OnInit } from '@angular/core';
+import {
+  CalendarEvent,
+  CalendarDateFormatter,
+  DAYS_OF_WEEK
+} from 'angular-calendar';
+import { DateFormatterServiceService } from "../calendar/service/date-formatter-service.service";
+import { Absence } from "../shared/domain/absence";
+import { AbsenceService } from "../shared/service/absence.service";
+import { JoursFeriesService } from "../shared/service/jours-feries.service";
+import { AbsenceType, ABSENCES_TYPES} from "../shared/domain/absence-type.enum";
+import { FerieType, FERIE_TYPES } from "../shared/domain/ferie-type.enum";
+import { JourFerie } from "../shared/domain/jour-ferie";
+
 
 const colors: any = {
   red: {
@@ -23,123 +32,66 @@ const colors: any = {
   selector: 'app-planning-des-absences',
   templateUrl: './planning-des-absences.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styleUrls: ['./planning-des-absences.component.css']
+  styleUrls: ['./planning-des-absences.component.css',]
 })
 export class PlanningDesAbsencesComponent implements OnInit {
+  absences: Absence[] = [];
+  joursFeries: JourFerie[] = [];
+  rtt:number;
+  conges:number;
+  absenceClass:string;
 
-  @ViewChild('modalContent') modalContent: TemplateRef<any>;
+  constructor(private absService: AbsenceService,private jourFerieService: JoursFeriesService) { }
+
+  ngOnInit() {
+    this.absService.absenceSubj.subscribe(result => {
+      this.absences = result;
+      if (result.length > 0) {
+        this.rtt = result[0].collaborateur.conges;
+        this.conges = result[0].collaborateur.rtt;
+      }
+      result.forEach(a => {
+        this.absenceClass = "absence-color";
+        let event:any = {};
+        if(a.type != 'RTT_EMPLOYEUR') {
+          let label:string = ABSENCES_TYPES.filter( abs => abs.key == a.type)[0].label;
+          event = {
+            title:label,
+            type: a.type,
+            start: new Date(a.dateDebut),
+            end: new Date(a.dateFin),
+          }
+        }
+        this.events.push(event)
+      });
+      console.log(this.events);
+    });
+
+    this.jourFerieService.ferieSubj.subscribe(jourF => {
+      this.joursFeries = jourF;
+      jourF.forEach(jf => {
+        let label:string = FERIE_TYPES.filter( abs => abs.key == jf.type)[0].label;
+        let event:any = {
+          title: label,
+          type: jf.type,
+          start: new Date(jf.date)
+        }
+          
+        this.events.push(event)
+      });
+    });
+  }
 
   view: string = 'month';
 
   viewDate: Date = new Date();
 
-  modalData: {
-    action: string;
-    event: CalendarEvent;
-  };
+  events: CalendarEvent[] = [];
 
-  actions: CalendarEventAction[] = [
-    // {
-    //   label: '<i class="fa fa-fw fa-pencil"></i>',
-    //   onClick: ({ event }: { event: CalendarEvent }): void => {
-    //     this.handleEvent('Edited', event);
-    //   }
-    // },
-    // {
-    //   label: '<i class="fa fa-fw fa-times"></i>',
-    //   onClick: ({ event }: { event: CalendarEvent }): void => {
-    //     this.events = this.events.filter(iEvent => iEvent !== event);
-    //     this.handleEvent('Deleted', event);
-    //   }
-    // }
-  ];
+  locale: string = 'fr';
 
-  refresh: Subject<any> = new Subject();
+  weekStartsOn: number = DAYS_OF_WEEK.MONDAY;
 
-  // events: CalendarEvent[] = [
-    // {
-    //   start: subDays(startOfDay(new Date()), 1),
-    //   end: addDays(new Date(), 1),
-    //   title: 'A 3 day event',
-    //   color: colors.red,
-    //   actions: this.actions
-    // },
-    // {
-    //   start: startOfDay(new Date()),
-    //   title: 'An event with no end date',
-    //   color: colors.yellow,
-    //   actions: this.actions
-    // },
-    // {
-    //   start: subDays(endOfMonth(new Date()), 3),
-    //   end: addDays(endOfMonth(new Date()), 3),
-    //   title: 'A long event that spans 2 months',
-    //   color: colors.blue
-    // },
-    // {
-    //   start: addHours(startOfDay(new Date()), 2),
-    //   end: new Date(),
-    //   title: 'A draggable and resizable event',
-    //   color: colors.yellow,
-    //   actions: this.actions,
-    //   resizable: {
-    //     beforeStart: true,
-    //     afterEnd: true
-    //   },
-    //   draggable: true
-    // }
-  // ];
-
-  // activeDayIsOpen: boolean = true;
-
-  constructor(private modal: NgbModal) { }
-
-  ngOnInit() {
-  }
-
-  dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
-    if (isSameMonth(date, this.viewDate)) {
-      if (
-        (isSameDay(this.viewDate, date) /*&& this.activeDayIsOpen === true*/) ||
-        events.length === 0
-      ) {
-        /*this.activeDayIsOpen = false;*/
-      } else {
-        /*this.activeDayIsOpen = true;*/
-        this.viewDate = date;
-      }
-    }
-  }
-
-  eventTimesChanged({
-    event,
-    newStart,
-    newEnd
-  }: CalendarEventTimesChangedEvent): void {
-    event.start = newStart;
-    event.end = newEnd;
-    this.handleEvent('Dropped or resized', event);
-    this.refresh.next();
-  }
-
-  handleEvent(action: string, event: CalendarEvent): void {
-    this.modalData = { event, action };
-    this.modal.open(this.modalContent, { size: 'lg' });
-  }
-
-  addEvent(): void {
-    // this.events.push({
-    //   title: 'New event',
-    //   start: startOfDay(new Date()),
-    //   end: endOfDay(new Date()),
-    //   color: colors.red,
-    //   draggable: true,
-    //   resizable: {
-    //     beforeStart: true,
-    //     afterEnd: true
-    //   }
-    // });
-    this.refresh.next();
-  }
+  weekendDays: number[] = [DAYS_OF_WEEK.FRIDAY, DAYS_OF_WEEK.SATURDAY];
 
 }

@@ -1,7 +1,10 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from "@angular/core";
-import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import { LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
+import { NgbModule, NgbDatepickerModule, NgbTimepickerModule } from "@ng-bootstrap/ng-bootstrap";
 import { RouterModule, Routes } from "@angular/router";
 import { AppComponent } from "./app.component";
 import { MenuComponent } from "./menu/menu.component";
@@ -23,6 +26,9 @@ import { FormJourFerieComponent } from "./form-jour-ferie/form-jour-ferie.compon
 import { JoursFeriesService } from "./shared/service/jours-feries.service";
 import { SuprimerJourFerieComponent } from "./suprimer-jour-ferie/suprimer-jour-ferie.component";
 import { CalendarModule } from 'angular-calendar';
+import { DateFormatterServiceService } from "./calendar/service/date-formatter-service.service";
+import { UtilsCalendarHeaderComponent } from './calendar/utils/utils-calendar-header/utils-calendar-header.component';
+
 
 const appRoutes: Routes = [
   { path: "connexion", component: AuthentificationComponent },
@@ -37,6 +43,7 @@ const appRoutes: Routes = [
   { path: "JoursFeries", component: JoursFeriesComponent },
   { path: "**", redirectTo: "accueil" }
 ];
+registerLocaleData(localeFr);
 @NgModule({
   declarations: [
     AppComponent,
@@ -51,7 +58,8 @@ const appRoutes: Routes = [
     ButtonsModifSuppComponent,
     ValidationDemandesComponent,
     SuprimerJourFerieComponent,
-    FormJourFerieComponent
+    FormJourFerieComponent,
+    UtilsCalendarHeaderComponent,
     
   ],
   imports: [
@@ -64,7 +72,7 @@ const appRoutes: Routes = [
     CalendarModule.forRoot(),
     BrowserAnimationsModule,
   ],
-  providers: [AbsenceService, JoursFeriesService],
+  providers: [AbsenceService, JoursFeriesService, DateFormatterServiceService,{provide: LOCALE_ID, useValue: 'fr-FR' }],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
