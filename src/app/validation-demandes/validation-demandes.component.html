@@ -21,7 +21,9 @@
       <tr *ngFor="let absence of absences">
         <td>{{absence.dateDebut}} </td>
         <td>{{absence.dateFin}}</td>
-        <td>{{absence.type}}</td>
+        <div *ngFor="let type of absTypes">
+            <td *ngIf="type.key === absence.type">{{type.label}}</td>
+        </div>
         <td>{{absence.collaborateur.nom}} {{absence.collaborateur.nom}} </td>
         <td>
           <div class="actionBtn">
