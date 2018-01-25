@@ -7,13 +7,14 @@
     </p>
     <br>
   </div>
-  <h4 class="text-center">
+  <app-filtre-conges-par-annee [annees]="annees" (change)="yearChanges($event)" (change)="handleYearEventChanged(annee)"></app-filtre-conges-par-annee>
+  <!-- <h4 class="text-center">
     Année
 
     <select (change)="filtrerParDate($event)">
       <option [value]="jf1" *ngFor="let jf1 of annees"> {{jf1}}</option>
     </select>
-  </h4>
+  </h4> -->
   <table class="table table-hover">
     <thead>
       <tr>
@@ -25,7 +26,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let jf of joursFeries ">
+      <tr *ngFor="let jf of joursFeries | yearFilter:annee ">
         <td>{{jf.date | date : 'dd-MM-yyyy' }}</td>
         <div *ngFor="let type of jfTypes">
             <td *ngIf="type.key === jf.type">{{type.label}}</td>

@@ -30,3 +30,7 @@ h3 {
   color: red !important;
   font-weight: bold !important;
 }
+
+.container {
+  margin-top: 2%;
+}

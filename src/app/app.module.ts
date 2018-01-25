@@ -28,6 +28,8 @@ import { SuprimerJourFerieComponent } from "./suprimer-jour-ferie/suprimer-jour-
 import { CalendarModule } from 'angular-calendar';
 import { DateFormatterServiceService } from "./calendar/service/date-formatter-service.service";
 import { UtilsCalendarHeaderComponent } from './calendar/utils/utils-calendar-header/utils-calendar-header.component';
+import { FiltreCongesParAnneeComponent } from './filtre-conges-par-annee/filtre-conges-par-annee.component';
+import { YearFilterPipe } from './shared/pipe/year-filter.pipe';
 
 
 const appRoutes: Routes = [
@@ -60,6 +62,8 @@ registerLocaleData(localeFr);
     SuprimerJourFerieComponent,
     FormJourFerieComponent,
     UtilsCalendarHeaderComponent,
+    FiltreCongesParAnneeComponent,
+    YearFilterPipe,
     
   ],
   imports: [
