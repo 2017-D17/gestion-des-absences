@@ -1,0 +1,10 @@
+.text {
+  font-size: 40px;
+}
+.label {
+  border-radius: 50%;
+  font-size: 9px;
+  font-weight: 500;
+  padding: 3px 8px;
+  text-transform: uppercase;
+}

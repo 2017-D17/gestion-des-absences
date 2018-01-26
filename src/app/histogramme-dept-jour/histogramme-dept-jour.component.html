@@ -1,0 +1,49 @@
+<div class="container">
+  <div class="text">
+    <p class=" text-nowrap text-center font-weight-bold font-italic">
+      Histogramme par département et par jour
+    </p>
+
+    <br>
+    <div class="form-group">
+      <h4> Département
+        <select>
+          <option [value]="collab" *ngFor="let collab of collaborateurs">{{collab}}</option>
+          <option>dev</option>
+          <option></option>
+          <option></option>
+        </select>
+        Année
+        <select>
+          <option value="2017">2017</option>
+          <option value="2018">2018</option>
+          <option value="2019">2019</option>
+          <option value="2020">2020</option>
+
+        </select> Mois
+        <select>
+          <option value="1">Janvier</option>
+          <option value="2">Février</option>
+          <option value="3">Mars</option>
+          <option value="4">Avril</option>
+          <option value="5">Mai</option>
+          <option value="6">Juin</option>
+          <option value="7">Juillet</option>
+          <option value="8">Aôut</option>
+          <option value="9">Septembre</option>
+          <option value="10">Octobre</option>
+          <option value="11">Novembre</option>
+          <option value="12">Décembre</option>
+        </select>
+      </h4>
+      <br>
+      <br>
+      <br>
+      <br>
+      <ngx-charts-bar-vertical-stacked [view]="view" [scheme]="colorScheme" [results]="multi" [gradient]="gradient" [xAxis]="showXAxis"
+        [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
+        [yAxisLabel]="yAxisLabel" (select)="onSelect($event)">
+      </ngx-charts-bar-vertical-stacked>
+
+    </div>
+  </div>

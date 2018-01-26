@@ -13,7 +13,7 @@ import { JoursFeriesComponent } from "./jours-feries/jours-feries.component";
 import { VueSynthetiqueComponent } from "./vue-synthetique/vue-synthetique.component";
 import { GestionDesAbsencesComponent } from "./gestion-des-absences/gestion-des-absences.component";
 import { ButtonsModifSuppComponent } from "./buttons-modif-supp/buttons-modif-supp.component";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { FormAbsenceComponent } from "./form-absence/form-absence.component";
 import { MyDatePickerModule } from "mydatepicker";
 import { VALID } from "@angular/forms/src/model";
@@ -21,6 +21,9 @@ import { ValidationDemandesComponent } from "./validation-demandes/validation-de
 import { FormJourFerieComponent } from "./form-jour-ferie/form-jour-ferie.component";
 import { JoursFeriesService } from "./shared/service/jours-feries.service";
 import { SuprimerJourFerieComponent } from "./suprimer-jour-ferie/suprimer-jour-ferie.component";
+import { HistogrammeDeptJourComponent } from "./histogramme-dept-jour/histogramme-dept-jour.component";
+import { NgxChartsModule } from "@swimlane/ngx-charts";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 const appRoutes: Routes = [
   { path: "connexion", component: AuthentificationComponent },
@@ -30,7 +33,7 @@ const appRoutes: Routes = [
     path: "GestionDesAbsences",
     component: GestionDesAbsencesComponent
   },
-  { path: "VueSynthetique", component: VueSynthetiqueComponent },
+  { path: "VueSynthetique", component: HistogrammeDeptJourComponent },
   { path: "ValidationDesAbsences", component: ValidationDemandesComponent },
   { path: "JoursFeries", component: JoursFeriesComponent },
   { path: "**", redirectTo: "accueil" }
@@ -48,10 +51,9 @@ const appRoutes: Routes = [
     VueSynthetiqueComponent,
     ButtonsModifSuppComponent,
     ValidationDemandesComponent,
-
     SuprimerJourFerieComponent,
-
-    FormJourFerieComponent
+    FormJourFerieComponent,
+    HistogrammeDeptJourComponent
   ],
   imports: [
     BrowserModule,
@@ -59,7 +61,9 @@ const appRoutes: Routes = [
     HttpClientModule,
     FormsModule,
     MyDatePickerModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    NgxChartsModule,
+    BrowserAnimationsModule
   ],
   providers: [AbsenceService, JoursFeriesService],
   bootstrap: [AppComponent]
