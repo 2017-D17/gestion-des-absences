@@ -7,7 +7,7 @@ import { Collaborateur } from "../domain/collaborateur";
 
 @Injectable()
 export class LoginService {
-  subjectCollaborateur = new BehaviorSubject<Collaborateur>(new Collaborateur("8b2d3ac7","Hahn","Nellie",0,0,"DSI/INDUS","MANAGER"));
+  subjectCollaborateur = new BehaviorSubject<Collaborateur>(new Collaborateur("8b2d3ac7","Hahn","Nellie",0,0,"DSI/INDUS","USER"));
 
   constructor(private http: HttpClient) { }
 
@@ -19,7 +19,7 @@ export class LoginService {
     const httpOptions = {
       headers: new HttpHeaders({ "Content-Type": "application/json" })
     };
-    return this.http.put<Collaborateur>(env.urlBackEndLogin, collaborateur,httpOptions );
+    return this.http.post<Collaborateur>(env.urlBackEndLogin, collaborateur,httpOptions );
   }
   seDeConnecter(): Observable<any> {
     return this.http.post<any>(env.urlBackEndLogout,"");
