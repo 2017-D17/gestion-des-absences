@@ -16,7 +16,8 @@ export class JoursFeriesComponent implements OnInit {
   joursFeries: JourFerie[] = [];
   annees: number[] = [];
   // Type de jours férié
-  options: any = FERIE_TYPES;
+  jfTypes: any = FERIE_TYPES;
+  annee:number;
 
   constructor(private jourFerieService: JoursFeriesService) {}
 
@@ -25,11 +26,23 @@ export class JoursFeriesComponent implements OnInit {
       this.joursFeries = jourF;
       //filtre les annee
       this.joursFeries.forEach(jf => {
-        var annee = jf.date.slice(0, 4);
+        let annee = jf.date.slice(0, 4);
         if (!this.annees.includes(annee)) {
           this.annees.push(annee);
         }
       });
+      this.handleYearEventChanged(this.annees[0]);
     });
+    this.jourFerieService.ferieSubj.next(this.joursFeries);
+  }
+
+  yearChanges(event) {
+    if(event && event.srcElement) {
+      this.annee = event.srcElement.value;
+    }
+  }
+
+  handleYearEventChanged(newAnnee:number){
+    return this.annee = newAnnee;
   }
 }

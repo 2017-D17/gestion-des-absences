@@ -2,6 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { AbsenceService } from "../shared/service/absence.service";
 import { Absence } from "../shared/domain/absence";
 import { Collaborateur } from "../shared/domain/collaborateur";
+import { AbsenceType, ABSENCES_TYPES} from "../shared/domain/absence-type.enum";
+import { FerieType, FERIE_TYPES } from "../shared/domain/ferie-type.enum";
 
 @Component({
   selector: "app-gestion-des-absences",
@@ -13,6 +15,8 @@ export class GestionDesAbsencesComponent implements OnInit {
   demandeAbsence: string = "add";
   rtt:number;
   conges:number;
+  absTypes:any = ABSENCES_TYPES;
+  jfTypes:any = FERIE_TYPES;
 
   constructor(private absService: AbsenceService) {}
 
