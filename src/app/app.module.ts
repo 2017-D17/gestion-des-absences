@@ -44,7 +44,7 @@ const appRoutes: Routes = [
   { path: "VueSynthetique", component: VueSynthetiqueComponent },
   { path: "ValidationDesAbsences", component: ValidationDemandesComponent },
   { path: "JoursFeries", component: JoursFeriesComponent },
-  { path: "**", redirectTo: "connexion" }
+  { path: "**", redirectTo: "accueil" }
 ];
 registerLocaleData(localeFr);
 @NgModule({
@@ -65,7 +65,7 @@ registerLocaleData(localeFr);
     UtilsCalendarHeaderComponent,
     FiltreCongesParAnneeComponent,
     YearFilterPipe,
-    
+
   ],
   imports: [
     BrowserModule,
@@ -77,7 +77,7 @@ registerLocaleData(localeFr);
     CalendarModule.forRoot(),
     BrowserAnimationsModule,
   ],
-  providers: [AbsenceService, JoursFeriesService, LoginService, DateFormatterServiceService,{provide: LOCALE_ID, useValue: 'fr-FR' }],
+  providers: [AbsenceService, JoursFeriesService, LoginService, DateFormatterServiceService, { provide: LOCALE_ID, useValue: 'fr-FR' }],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

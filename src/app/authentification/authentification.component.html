@@ -9,13 +9,19 @@
     <p id="profile-name" class="profile-name-card"></p>
     <form id="loginform" class="form-signin" role="form" (ngSubmit)="submit(loginForm)" novalidate #loginForm="ngForm">
       <span id="reauth-email" class="reauth-email"></span>
-      <input type="email" id="inputEmail" class="form-control" placeholder="Email" [(ngModel)]="collaborateur.email" name="email" #email="ngModel" required autofocus>
-      <input type="password" id="inputPassword" class="form-control" placeholder="Mot de passe" [(ngModel)]="collaborateur.password" name="password" #password="ngModel" required>
+      <input type="email" id="inputEmail" class="form-control" placeholder="Email" [(ngModel)]="collaborateur.email" name="email"
+        #email="ngModel" required autofocus>
+      <input type="password" id="inputPassword" class="form-control" placeholder="Mot de passe" [(ngModel)]="collaborateur.password"
+        name="password" #password="ngModel" required>
       <div *ngIf="alertActive" class="alert alert-danger alert-dismissable">
-          <a (click)="closeAlert()" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-          <strong>{{msg}}</strong>
+        <a (click)="closeAlert()" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>{{msg}}</strong>
       </div>
-      <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Se Connecter</button>
+      <div class="form-group">
+        <button [disabled]="loading" class="btn btn-lg btn-primary btn-block btn-signin">Se Connecter</button>
+        <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+        />
+      </div>
     </form>
   </div>
 </div>
