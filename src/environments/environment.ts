@@ -7,4 +7,6 @@ export const environment = {
   production: false,
   urlBackEndAbsences: 'http://localhost:8080/absences/',
   urlBackEndJoursFeries: 'http://localhost:8080/jours_feries/',
+  urlBackEndLogin: 'http://localhost:8080/login/',
+  urlBackEndLogout: 'http://localhost:8080/logout/',
 };

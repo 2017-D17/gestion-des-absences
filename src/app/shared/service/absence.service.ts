@@ -4,26 +4,22 @@ import { Observable, Subject } from "rxjs";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { Absence } from "../domain/absence";
 import { JourFerie } from "../domain/jour-ferie";
-import { Collaborateur } from "../domain/collaborateur";
-
+import { LoginService } from "./login.service";
 import { environment as env} from '../../../environments/environment';
 
 @Injectable()
 export class AbsenceService {
   abences:Absence[];
-  subjectCollaborateur = new BehaviorSubject<Collaborateur>(new Collaborateur("8b2d3ac7","Hahn","Nellie",0,0));
   public absenceSubj = new BehaviorSubject<Absence[]>([]);
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,private loginService: LoginService) {
     this.refreshAbsencesByMatricule();
   }
 
-   refreshConnectedCollab(collab:Collaborateur) {
-		this.subjectCollaborateur.next(collab);
-   }
+   
 
   refreshAbsencesByMatricule() {
-    this.subjectCollaborateur.subscribe(data => {
+    this.loginService.subjectCollaborateur.subscribe(data => {
       this.http.get<Absence[]>( env.urlBackEndAbsences + data.matricule)
       .subscribe(data => this.absenceSubj.next(data));
 

@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Absence } from "../shared/domain/absence";
 import { AbsenceService } from "../shared/service/absence.service";
-import { AbsenceStatut, ABSENCES_STATUS } from '../absence-statut.enum';
+import { AbsenceStatut, ABSENCES_STATUS } from '../shared/domain/absence-statut.enum';
 import { AbsenceType, ABSENCES_TYPES} from "../shared/domain/absence-type.enum";
 
 @Component({

@@ -30,6 +30,7 @@ import { DateFormatterServiceService } from "./calendar/service/date-formatter-s
 import { UtilsCalendarHeaderComponent } from './calendar/utils/utils-calendar-header/utils-calendar-header.component';
 import { FiltreCongesParAnneeComponent } from './filtre-conges-par-annee/filtre-conges-par-annee.component';
 import { YearFilterPipe } from './shared/pipe/year-filter.pipe';
+import { LoginService } from "./shared/service/login.service";
 
 
 const appRoutes: Routes = [
@@ -43,7 +44,7 @@ const appRoutes: Routes = [
   { path: "VueSynthetique", component: VueSynthetiqueComponent },
   { path: "ValidationDesAbsences", component: ValidationDemandesComponent },
   { path: "JoursFeries", component: JoursFeriesComponent },
-  { path: "**", redirectTo: "accueil" }
+  { path: "**", redirectTo: "connexion" }
 ];
 registerLocaleData(localeFr);
 @NgModule({
@@ -76,7 +77,7 @@ registerLocaleData(localeFr);
     CalendarModule.forRoot(),
     BrowserAnimationsModule,
   ],
-  providers: [AbsenceService, JoursFeriesService, DateFormatterServiceService,{provide: LOCALE_ID, useValue: 'fr-FR' }],
+  providers: [AbsenceService, JoursFeriesService, LoginService, DateFormatterServiceService,{provide: LOCALE_ID, useValue: 'fr-FR' }],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
