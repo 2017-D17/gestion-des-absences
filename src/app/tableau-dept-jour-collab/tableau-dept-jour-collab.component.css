@@ -1,0 +1,23 @@
+.text {
+    font-size: 40px;
+}
+
+.table-day {
+    padding: 0px;
+    border-right: 1px;
+    border-right-style: solid;
+    border-right-color: rgba(211, 211, 211, 0.603);
+    border-top: 0px;
+}
+
+.weekendClass {
+    background-color: darkgray;
+}
+
+.table {
+    border-style: solid;
+}
+
+.day-tr {
+    border-top: 0px;
+}

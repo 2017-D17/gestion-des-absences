@@ -31,19 +31,20 @@ import { UtilsCalendarHeaderComponent } from './calendar/utils/utils-calendar-he
 import { FiltreCongesParAnneeComponent } from './filtre-conges-par-annee/filtre-conges-par-annee.component';
 import { YearFilterPipe } from './shared/pipe/year-filter.pipe';
 import { LoginService } from "./shared/service/login.service";
+import { TableauDeptJourCollabComponent } from './tableau-dept-jour-collab/tableau-dept-jour-collab.component';
+import { FiltreCongesParJourEtParCollabComponent } from './filtre-conges-par-jour-et-par-collab/filtre-conges-par-jour-et-par-collab.component';
+import { CongesJourCollabFilterPipe } from './shared/pipe/conges-jour-collab-filter.pipe';
 
 
 const appRoutes: Routes = [
   { path: "connexion", component: AuthentificationComponent },
   { path: "accueil", component: AccueilComponent },
   { path: "PlanningDesAbsences", component: PlanningDesAbsencesComponent },
-  {
-    path: "GestionDesAbsences",
-    component: GestionDesAbsencesComponent
-  },
+  { path: "GestionDesAbsences", component: GestionDesAbsencesComponent },
   { path: "VueSynthetique", component: VueSynthetiqueComponent },
   { path: "ValidationDesAbsences", component: ValidationDemandesComponent },
   { path: "JoursFeries", component: JoursFeriesComponent },
+  { path: "tableauSynthetique", component: TableauDeptJourCollabComponent},
   { path: "**", redirectTo: "connexion" }
 ];
 registerLocaleData(localeFr);
@@ -65,6 +66,9 @@ registerLocaleData(localeFr);
     UtilsCalendarHeaderComponent,
     FiltreCongesParAnneeComponent,
     YearFilterPipe,
+    TableauDeptJourCollabComponent,
+    FiltreCongesParJourEtParCollabComponent,
+    CongesJourCollabFilterPipe,
     
   ],
   imports: [

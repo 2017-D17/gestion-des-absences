@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 })
 export class AuthentificationComponent implements OnInit {
     // Collaborateur connecté
-    collaborateur: Collaborateur = new Collaborateur("","","",0,0,"","");
+    collaborateur: Collaborateur = new Collaborateur("","","",0,0,"","",[]);
     // Message d'erreur ou de succès suite à l'envoi des données sur le serveur
     msg:string
     // Attribut permettant d'afficher ou non le message d'alert msg

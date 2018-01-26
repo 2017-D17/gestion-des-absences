@@ -1,0 +1,30 @@
+<app-menu></app-menu>
+<br>
+<br>
+<div class="container">
+  <div class="text">
+    <p class=" text-nowrap text-center font-weight-bold font-italic">
+        Vue par département par jour et par collaborateur
+    </p>
+    <br>
+  </div>
+  <app-filtre-conges-par-annee [annees]="annees" (change)="yearChanges($event)" (change)="handleYearEventChanged(annee)"></app-filtre-conges-par-annee>
+  <table class="table table-striped">
+    <thead class="table-head">
+      <tr class="text-center day-tr">
+        <th class="table-day">Nom </th>
+        <th class="table-day {{day.cssClass}}" *ngFor="let day of days">{{day.day}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="day-tr" *ngFor="let subalterne of collaborateur.subalternes | yearFilter:annee ">
+        <td class="table-day text-center">{{subalterne.nom}}</td>
+        <td class="table-day {{day.cssClass}} text-center" *ngFor="let day of days" #type>{{type.innerHTML | congesJourCollabFilter: subalterne.matricule: day}}</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="legend">
+    <p><i>C: Congés payés, F: jours fériés, R: RTT</i></p>
+    <button routerLink="/VueSynthetique" class="btn btn-primary pull-right">Retour</button>
+  </div>
+</div>

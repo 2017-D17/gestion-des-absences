@@ -6,14 +6,20 @@ import { Absence } from "../domain/absence";
 import { JourFerie } from "../domain/jour-ferie";
 import { LoginService } from "./login.service";
 import { environment as env} from '../../../environments/environment';
+import { RoleCollaborateur } from "../domain/role-collaborateur.enum";
 
 @Injectable()
 export class AbsenceService {
+  // absences du collaborateur
   abences:Absence[];
   public absenceSubj = new BehaviorSubject<Absence[]>([]);
+  // toutes les absences
+  allAbences:Absence[];
+  public allAbsencesSubj = new BehaviorSubject<Absence[]>([]);
 
   constructor(private http: HttpClient,private loginService: LoginService) {
     this.refreshAbsencesByMatricule();
+    this.listerAllAbsences();
   }
 
    
@@ -24,6 +30,15 @@ export class AbsenceService {
       .subscribe(data => this.absenceSubj.next(data));
 
     });
+  }
+
+  listerAllAbsences() {
+    this.loginService.subjectCollaborateur.subscribe( collab => {
+      if(collab.role == RoleCollaborateur.MANAGER) {
+        this.http.get<Absence[]>( env.urlBackEndAbsences)
+      .subscribe(data => this.allAbsencesSubj.next(data));
+      }
+    })
   }
 
   
