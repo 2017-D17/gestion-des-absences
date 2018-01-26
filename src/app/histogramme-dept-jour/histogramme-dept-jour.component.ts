@@ -7,10 +7,16 @@ import { Collaborateur } from "../shared/domain/collaborateur";
   styleUrls: ["./histogramme-dept-jour.component.css"]
 })
 export class HistogrammeDeptJourComponent {
-  collaborateurs: Collaborateur[] = [];
   single: any[];
   multi: any[];
   view: any[] = [800, 200];
+  annees: number[] = [];
+  mois: string[] = [];
+  depts: string[] = [];
+
+  annee: number;
+  unmois: string;
+  dept: string;
   //option
   showXAxis = true;
   showYAxis = true;
@@ -37,38 +43,35 @@ export class HistogrammeDeptJourComponent {
   };
 
   constructor() {
-
-    var single = [
-      {
-        name: "2014-06-18",
-        value: 0
-      },
-      {
-        name: "2017-06-18",
-        value: 5
-      },
-      {
-        name: "2017-06-18",
-        value: 12
-      }
-    ];
-
     var multi = [
       {
-        name: "2014-06-18",
-        series: [new col("amelie", 8), new col("X", 3)]
+        name: "2015-06-18",
+        series: [
+          {
+            name: "2010",
+            value: 9
+          },
+          {
+            name: "2011",
+            value: 1
+          }
+        ]
       },
       {
-        name: "2017-06-18",
-        series: [new col("martin2", 7)]
-      },
-
-      {
-        name: "2018-06-20",
-        series: [new col("2010", 5), new col("Y", 2)]
+        name: "2014-06-15",
+        series: [
+          {
+            name: "2010",
+            value: 4
+          },
+          {
+            name: "201",
+            value: 5
+          }
+        ]
       }
     ];
-    Object.assign(this, { single, multi });
+    Object.assign(this, { multi });
   }
 
   onSelect(event) {
@@ -76,13 +79,23 @@ export class HistogrammeDeptJourComponent {
   }
 
   makeDayRepresentation() {}
-  afficherJour()
-  {
-    if()
+
+  filterChanges(annee) {
+    this.annee = annee;
+    /*if (event && event.srcElement) {
+      this.annee = event.srcElement.value;
+      this.dept = event.srcElement.value;
+      this.mois = event.srcElement.value;
+    }*/
+  }
+
+  handlefilterEventChanged(newAnnee: number, newmois: string, newDept: string) {
+    return (
+      (this.annee = newAnnee), (this.unmois = newmois), (this.dept = newDept)
+    );
   }
 }
 
-class col {
-  constructor(public name: string, public value: number) {}
-}
-
+// class col {
+//   constructor(public name: string, public value: number) {}
+// }

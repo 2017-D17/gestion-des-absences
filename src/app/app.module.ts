@@ -31,11 +31,12 @@ import { JoursFeriesService } from "./shared/service/jours-feries.service";
 import { SuprimerJourFerieComponent } from "./suprimer-jour-ferie/suprimer-jour-ferie.component";
 import { HistogrammeDeptJourComponent } from "./histogramme-dept-jour/histogramme-dept-jour.component";
 import { NgxChartsModule } from "@swimlane/ngx-charts";
-//import { CalendarModule } from "angular-calendar";
+import { CalendarModule } from "angular-calendar";
 import { DateFormatterServiceService } from "./calendar/service/date-formatter-service.service";
 import { UtilsCalendarHeaderComponent } from "./calendar/utils/utils-calendar-header/utils-calendar-header.component";
 import { FiltreCongesParAnneeComponent } from "./filtre-conges-par-annee/filtre-conges-par-annee.component";
 import { YearFilterPipe } from "./shared/pipe/year-filter.pipe";
+import { FiltreMoisAnneeDeptComponent } from './filtre-mois-annee-dept/filtre-mois-annee-dept.component';
 
 const appRoutes: Routes = [
   { path: "connexion", component: AuthentificationComponent },
@@ -69,7 +70,8 @@ registerLocaleData(localeFr);
     UtilsCalendarHeaderComponent,
     FiltreCongesParAnneeComponent,
     YearFilterPipe,
-    HistogrammeDeptJourComponent
+    HistogrammeDeptJourComponent,
+    FiltreMoisAnneeDeptComponent
   ],
   imports: [
     BrowserModule,

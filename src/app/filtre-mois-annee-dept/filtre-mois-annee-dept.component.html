@@ -1,0 +1,20 @@
+<div class="form-group">
+  <h4> Département
+    <select (change)="filtrerParDepAnneeMois($event)">
+      <option [value]="collab" *ngFor="let collab of collaborateurs">{{collab}}</option>
+      <option>dev</option>
+      <option></option>
+      <option></option>
+    </select>
+    Année
+
+    <select (change)="filtrerParDepAnneeMois($event)">
+      <option [value]="anneee" *ngFor="let anneee of annees">{{anneee}}</option>
+
+    </select>
+
+    Mois
+    <select>
+      <option [value]="unmois" *ngFor="let unmois of mois">{{unmois}}</option>
+    </select>
+  </h4>
