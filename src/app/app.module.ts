@@ -38,6 +38,8 @@ import { RoleGuardService } from "./shared/service/role-guard.service";
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { environment } from "../environments/environment";
 import { getToken } from "./token-getter";
+import { LoginService } from "./shared/service/login.service";
+
 
 const appRoutes: Routes = [
   { path: "connexion", component: AuthentificationComponent },
@@ -100,6 +102,7 @@ registerLocaleData(localeFr);
   providers: [
     AbsenceService,
     JoursFeriesService,
+    LoginService,
     DateFormatterServiceService,
     { provide: LOCALE_ID, useValue: 'fr-FR' },
     AuthService,

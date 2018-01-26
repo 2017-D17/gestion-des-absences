@@ -1,3 +1,4 @@
+<app-menu></app-menu>
 <br>
 <br>
 <div class="container">
@@ -8,13 +9,6 @@
     <br>
   </div>
   <app-filtre-conges-par-annee [annees]="annees" (change)="yearChanges($event)" (change)="handleYearEventChanged(annee)"></app-filtre-conges-par-annee>
-  <!-- <h4 class="text-center">
-    Année
-
-    <select (change)="filtrerParDate($event)">
-      <option [value]="jf1" *ngFor="let jf1 of annees"> {{jf1}}</option>
-    </select>
-  </h4> -->
   <table class="table table-hover">
     <thead class="table-head">
       <tr>
