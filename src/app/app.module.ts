@@ -12,6 +12,8 @@ import { AccueilComponent } from "./accueil/accueil.component";
 import { AuthentificationComponent } from "./authentification/authentification.component";
 import { AbsenceService } from "./shared/service/absence.service";
 import { HttpClientModule } from "@angular/common/http";
+import { HttpModule } from '@angular/http';
+import { JwtModule } from '@auth0/angular-jwt';
 import { PlanningDesAbsencesComponent } from "./planning-des-absences/planning-des-absences.component";
 import { JoursFeriesComponent } from "./jours-feries/jours-feries.component";
 import { VueSynthetiqueComponent } from "./vue-synthetique/vue-synthetique.component";
@@ -30,20 +32,26 @@ import { DateFormatterServiceService } from "./calendar/service/date-formatter-s
 import { UtilsCalendarHeaderComponent } from './calendar/utils/utils-calendar-header/utils-calendar-header.component';
 import { FiltreCongesParAnneeComponent } from './filtre-conges-par-annee/filtre-conges-par-annee.component';
 import { YearFilterPipe } from './shared/pipe/year-filter.pipe';
-
+import { AuthService } from "./shared/service/auth.service";
+import { AuthGuardService } from "./shared/service/auth-guard.service";
+import { RoleGuardService } from "./shared/service/role-guard.service";
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { environment } from "../environments/environment";
+import { getToken } from "./token-getter";
 
 const appRoutes: Routes = [
   { path: "connexion", component: AuthentificationComponent },
   { path: "accueil", component: AccueilComponent },
-  { path: "PlanningDesAbsences", component: PlanningDesAbsencesComponent },
+  { path: "PlanningDesAbsences", component: PlanningDesAbsencesComponent, canActivate: [RoleGuardService] },
   {
     path: "GestionDesAbsences",
-    component: GestionDesAbsencesComponent
+    component: GestionDesAbsencesComponent,
+    canActivate: [RoleGuardService]
   },
-  { path: "VueSynthetique", component: VueSynthetiqueComponent },
-  { path: "ValidationDesAbsences", component: ValidationDemandesComponent },
-  { path: "JoursFeries", component: JoursFeriesComponent },
-  { path: "**", redirectTo: "accueil" }
+  { path: "VueSynthetique", component: VueSynthetiqueComponent, canActivate: [RoleGuardService], data: { expectedRole: 'MANAGER' } },
+  { path: "ValidationDesAbsences", component: ValidationDemandesComponent, canActivate: [RoleGuardService], data: { expectedRole: 'MANAGER' } },
+  { path: "JoursFeries", component: JoursFeriesComponent, canActivate: [RoleGuardService] },
+  { path: "**", redirectTo: "connexion" }
 ];
 registerLocaleData(localeFr);
 @NgModule({
@@ -64,7 +72,7 @@ registerLocaleData(localeFr);
     UtilsCalendarHeaderComponent,
     FiltreCongesParAnneeComponent,
     YearFilterPipe,
-    
+
   ],
   imports: [
     BrowserModule,
@@ -75,8 +83,30 @@ registerLocaleData(localeFr);
     RouterModule.forRoot(appRoutes),
     CalendarModule.forRoot(),
     BrowserAnimationsModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: getToken,
+        whitelistedDomains: [
+          environment.urlBackEndAbsences,
+          environment.urlBackEndJoursFeries,
+          'localhost:8080',
+          'gestion-des-absences.herokuapp.com/'
+        ],
+        throwNoTokenError: true,
+        skipWhenExpired: true
+      }
+    })
   ],
-  providers: [AbsenceService, JoursFeriesService, DateFormatterServiceService,{provide: LOCALE_ID, useValue: 'fr-FR' }],
+  providers: [
+    AbsenceService,
+    JoursFeriesService,
+    DateFormatterServiceService,
+    { provide: LOCALE_ID, useValue: 'fr-FR' },
+    AuthService,
+    AuthGuardService,
+    RoleGuardService,
+    JwtHelperService
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }
