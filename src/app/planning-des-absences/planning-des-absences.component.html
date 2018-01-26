@@ -1,3 +1,45 @@
-<p>
-  planning-des-absences works!
-</p>
+<div class="container">
+  <app-utils-calendar-header
+  [(view)]="view"
+  [(viewDate)]="viewDate"
+  [locale]="locale">
+</app-utils-calendar-header>
+
+<ng-template #customCellTemplate let-day="day" let-locale="locale" >
+    <div class="cal-cell-top">
+      <span class="cal-day-number">{{ day.date | calendarDate:'monthViewDayNumber':locale }}</span>
+    </div>
+    <div *ngFor="let event of day.events">
+      <div *ngIf="event.type === 'CONGE_SANS_SOLDE' || event.type === 'RTT' || event.type === 'CONGE_PAYE'" class="absence-color">
+          {{ event.title }}
+      </div>
+      <div *ngIf="event.type === 'RTT_EMPLOYEUR'" class="RTT-E-color">
+          {{ event.title }}
+      </div>
+      <div *ngIf="event.type === 'JOUR_FERIE'" class="jf-color">
+          {{ event.title }}
+      </div>
+    </div>
+</ng-template>
+
+<div [ngSwitch]="view">
+  <mwl-calendar-month-view
+    *ngSwitchCase="'month'"
+    [viewDate]="viewDate"
+    [events]="events"
+    [locale]="locale"
+    [weekStartsOn]="weekStartsOn"
+    [weekendDays]="weekendDays"
+    [cellTemplate]="customCellTemplate">
+  </mwl-calendar-month-view>
+</div>
+<br><br>
+<div>
+  <p>Soldes des compteurs:</p>
+  <ul>
+    <li>Congés payés : {{conges}}</li>
+    <li>RTT : {{rtt}}</li>
+  </ul>
+</div>
+
+</div>

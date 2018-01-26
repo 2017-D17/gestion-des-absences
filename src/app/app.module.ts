@@ -1,6 +1,14 @@
 import { BrowserModule } from "@angular/platform-browser";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { NgModule } from "@angular/core";
-import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import { LOCALE_ID } from "@angular/core";
+import { registerLocaleData } from "@angular/common";
+import localeFr from "@angular/common/locales/fr";
+import {
+  NgbModule,
+  NgbDatepickerModule,
+  NgbTimepickerModule
+} from "@ng-bootstrap/ng-bootstrap";
 import { RouterModule, Routes } from "@angular/router";
 import { AppComponent } from "./app.component";
 import { MenuComponent } from "./menu/menu.component";
@@ -23,7 +31,11 @@ import { JoursFeriesService } from "./shared/service/jours-feries.service";
 import { SuprimerJourFerieComponent } from "./suprimer-jour-ferie/suprimer-jour-ferie.component";
 import { HistogrammeDeptJourComponent } from "./histogramme-dept-jour/histogramme-dept-jour.component";
 import { NgxChartsModule } from "@swimlane/ngx-charts";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+//import { CalendarModule } from "angular-calendar";
+import { DateFormatterServiceService } from "./calendar/service/date-formatter-service.service";
+import { UtilsCalendarHeaderComponent } from "./calendar/utils/utils-calendar-header/utils-calendar-header.component";
+import { FiltreCongesParAnneeComponent } from "./filtre-conges-par-annee/filtre-conges-par-annee.component";
+import { YearFilterPipe } from "./shared/pipe/year-filter.pipe";
 
 const appRoutes: Routes = [
   { path: "connexion", component: AuthentificationComponent },
@@ -38,6 +50,7 @@ const appRoutes: Routes = [
   { path: "JoursFeries", component: JoursFeriesComponent },
   { path: "**", redirectTo: "accueil" }
 ];
+registerLocaleData(localeFr);
 @NgModule({
   declarations: [
     AppComponent,
@@ -53,6 +66,9 @@ const appRoutes: Routes = [
     ValidationDemandesComponent,
     SuprimerJourFerieComponent,
     FormJourFerieComponent,
+    UtilsCalendarHeaderComponent,
+    FiltreCongesParAnneeComponent,
+    YearFilterPipe,
     HistogrammeDeptJourComponent
   ],
   imports: [
@@ -62,10 +78,16 @@ const appRoutes: Routes = [
     FormsModule,
     MyDatePickerModule,
     RouterModule.forRoot(appRoutes),
+    CalendarModule.forRoot(),
     NgxChartsModule,
     BrowserAnimationsModule
   ],
-  providers: [AbsenceService, JoursFeriesService],
+  providers: [
+    AbsenceService,
+    JoursFeriesService,
+    DateFormatterServiceService,
+    { provide: LOCALE_ID, useValue: "fr-FR" }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

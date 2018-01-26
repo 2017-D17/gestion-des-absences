@@ -23,3 +23,14 @@ a, button {
     cursor: pointer;
 }
 
+.table-head {
+    background-color: lightgrey;
+}
+
+tr {
+    border-top: 1px solid #e9ecef;
+}
+
+td {
+    border-top: none !important;
+}

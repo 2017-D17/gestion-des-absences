@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Absence } from "../shared/domain/absence";
 import { AbsenceService } from "../shared/service/absence.service";
 import { AbsenceStatut, ABSENCES_STATUS } from '../absence-statut.enum';
+import { AbsenceType, ABSENCES_TYPES} from "../shared/domain/absence-type.enum";
 
 @Component({
   selector: "app-validation-demandes",
@@ -16,6 +17,8 @@ export class ValidationDemandesComponent implements OnInit {
   alertActive:boolean = false;
   // Attribut permettant de définir le style de l'alerte
   alertClass:string;
+  // Types d'absences
+  absTypes:any = ABSENCES_TYPES;
 
   constructor(private absenceService: AbsenceService) {}
 

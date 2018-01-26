@@ -1,0 +1,36 @@
+h3 {
+    margin: 0 0 10px;
+  }
+  
+  pre {
+    background-color: #f5f5f5;
+    padding: 15px;
+  }
+
+.absence-color{
+  background-color: deepskyblue !important;
+  font-size: 15px !important;
+  text-align: center !important;
+  color: black !important;
+  font-weight: bold !important;
+}
+
+.RTT-E-color {
+  background-color:#ffc107 !important;
+  font-size: 15px !important; 
+  text-align: center !important;
+  color: black !important;
+  font-weight: bold !important;
+}
+
+.jf-color{
+  background-color: rgb(21, 255, 0) !important;
+  font-size: 15px !important; 
+  text-align: center !important;
+  color: red !important;
+  font-weight: bold !important;
+}
+
+.container {
+  margin-top: 2%;
+}

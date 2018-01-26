@@ -1,4 +1,6 @@
 import { Component, OnInit } from "@angular/core";
+import { AbsenceService } from "../shared/service/absence.service";
+import { Collaborateur } from "../shared/domain/collaborateur";
 
 @Component({
   selector: "app-menu",
@@ -6,8 +8,14 @@ import { Component, OnInit } from "@angular/core";
   styleUrls: ["./menu.component.css"]
 })
 export class MenuComponent implements OnInit {
-  name: String;
-  constructor() {}
+  // Collaborateur connecté
+  collaborateur: Collaborateur;
+  constructor(private absenceService: AbsenceService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    // récupération du collaborateur connecté
+    this.absenceService.subjectCollaborateur.subscribe(
+      data => (this.collaborateur = data)
+    );
+  }
 }

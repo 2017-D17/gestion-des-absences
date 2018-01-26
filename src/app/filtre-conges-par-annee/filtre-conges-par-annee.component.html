@@ -1,0 +1,6 @@
+<h4 class="text-center filtre">
+  Année
+  <select (change)="filtrerParDate($event)">
+    <option [value]="jf1" *ngFor="let jf1 of annees"> {{jf1}}</option>
+  </select>
+</h4>
