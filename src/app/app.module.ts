@@ -33,6 +33,8 @@ import { YearFilterPipe } from './shared/pipe/year-filter.pipe';
 import { LoginService } from "./shared/service/login.service";
 import { TableauDeptJourCollabComponent } from './tableau-dept-jour-collab/tableau-dept-jour-collab.component';
 import { CongesJourCollabFilterPipe } from './shared/pipe/conges-jour-collab-filter.pipe';
+import { FiltreDeptMoisAnneeComponent } from './filtre-dept-mois-annee/filtre-dept-mois-annee.component';
+import { DeptMonthYearFilterPipe } from './shared/pipe/dept-month-year-filter.pipe';
 
 
 const appRoutes: Routes = [
@@ -67,6 +69,8 @@ registerLocaleData(localeFr);
     YearFilterPipe,
     TableauDeptJourCollabComponent,
     CongesJourCollabFilterPipe,
+    FiltreDeptMoisAnneeComponent,
+    DeptMonthYearFilterPipe,
     
   ],
   imports: [

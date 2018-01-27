@@ -7,6 +7,6 @@ export class Collaborateur {
         public rtt:number, 
         public departement:string, 
         public role:string[],
-        public subalternes:Collaborateur[]) {}
+        public subalternes:string[]) {}
 
 }

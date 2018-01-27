@@ -7,9 +7,7 @@ import { Collaborateur } from "../domain/collaborateur";
 
 @Injectable()
 export class LoginService {
-  sub1:Collaborateur = new Collaborateur("a8fc21fc","Robertson","Hubbard",0,0,"DSI/INDUS",["USER"],[]);
-  sub2:Collaborateur = new Collaborateur("e300fb12","Odonnell","Jennifer",0,0,"DSI/INDUS",["USER"],[]);
-  subjectCollaborateur = new BehaviorSubject<Collaborateur>(new Collaborateur("8b2d3ac7","Hahn","Nellie",0,0,"DSI/INDUS",["MANAGER","ADMIN"],[this.sub1,this.sub2]));
+  subjectCollaborateur = new BehaviorSubject<Collaborateur>(new Collaborateur("8b2d3ac7","Hahn","Nellie",0,0,"DSI/INDUS",["MANAGER","ADMIN"],["a8fc21fc","e300fb12"]));
 
   constructor(private http: HttpClient) { }
 

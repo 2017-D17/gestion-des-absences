@@ -8,7 +8,7 @@
     </p>
     <br>
   </div>
-  <app-filtre-conges-par-annee [annees]="annees" (change)="yearChanges($event)" (change)="handleYearEventChanged(annee)"></app-filtre-conges-par-annee>
+  <app-filtre-dept-mois-annee [absences]="absences" (changedFilter)="filterChanges($event)" ></app-filtre-dept-mois-annee>
   <table class="table table-striped">
     <thead class="table-head">
       <tr class="text-center day-tr">
@@ -17,7 +17,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr class="day-tr" *ngFor="let collab of collaborateurs | yearFilter:annee ">
+      <tr class="day-tr" *ngFor="let collab of collaborateurs | deptMonthYearFilter: filtre: currentDatetime">
         <td class="table-day text-center">{{collab.prenom}} {{collab.nom}}</td>
         <td class="table-day {{day.cssClass}} text-center" *ngFor="let day of days" #type>{{type | congesJourCollabFilter: collab.matricule: absences: day: joursFeries}}</td>
       </tr>

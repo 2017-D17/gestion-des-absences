@@ -33,10 +33,10 @@ export class ValidationDemandesComponent implements OnInit {
     );
 
     // Récupération des absences
-    this.collaborateur.subalternes.forEach(c => {
+    this.collaborateur.subalternes.forEach(matricule => {
       this.absenceService.abencesEnAttenteSubj.subscribe(result => {
         result.forEach(abs => {
-          if(abs.collaborateur.matricule === c.matricule) {
+          if(abs.collaborateur.matricule === matricule) {
             this.absences.push(abs);
           }
         });
