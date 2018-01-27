@@ -15,6 +15,8 @@ export class TableauDeptJourCollabComponent implements OnInit {
   absences: Absence[] = [];
   // Collaborateur connecté
   collaborateur: Collaborateur;
+  // tableau des collaborateurs
+  collaborateurs: Collaborateur[] = [];
   // tableau des jours pour le mois selectionné
   days:any[]=[];
   // tableau des jours fériés
@@ -26,7 +28,7 @@ export class TableauDeptJourCollabComponent implements OnInit {
   ngOnInit() {
     // Initialisation du tableau
     let year:number = 2018;
-    let month:number = 1;
+    let month:number = 0; // Janvier
     let d = new Date(year, month, 0);
     for(let i=1;i<=d.getDate();i++) {
       let weekendClass:string ="";
@@ -51,7 +53,6 @@ export class TableauDeptJourCollabComponent implements OnInit {
           cssClass: weekendClass
         }
       }
-      
       this.days.push(dateObject);
     }
     
@@ -61,26 +62,35 @@ export class TableauDeptJourCollabComponent implements OnInit {
       data => (this.collaborateur = data)
     );
 
-    // récupération de toutes les absences
+    // récupération de toutes les absences et de la liste des collaborateurs
+    this.absService.listerAllAbsences();
     this.absService.allAbsencesSubj.subscribe(result => {
       this.absences = result;
+      result.forEach(abs => {
+        if(this.isCollabExist(abs.collaborateur) === false) {
+          this.collaborateurs.push(abs.collaborateur);
+        }
+      });
     });
-
-    //récupération de la liste des collaborateurs
 
     // récupération des jours fériés
     this.jourFerieService.ferieSubj.subscribe(jourF => {
       this.joursFeries = jourF;
-      jourF.forEach(jf => {
-        let event:any = {
-          title: "",
-          type: jf.type,
-          start: new Date(jf.date)
-        }
-          
-        // this.events.push(event)
-      });
     });
+  }
+
+  isCollabExist(collab:Collaborateur):boolean {
+    let nbCollab = 0;
+    this.collaborateurs.forEach(col => {
+      if(col.matricule === collab.matricule) {
+        nbCollab++;
+      }
+    });
+    if(nbCollab > 0) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
 }

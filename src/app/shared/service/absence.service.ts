@@ -7,19 +7,24 @@ import { JourFerie } from "../domain/jour-ferie";
 import { LoginService } from "./login.service";
 import { environment as env} from '../../../environments/environment';
 import { RoleCollaborateur } from "../domain/role-collaborateur.enum";
+import { AbsenceStatut } from '../domain/absence-statut.enum';
 
 @Injectable()
 export class AbsenceService {
-  // absences du collaborateur
+  // absences du collaborateur collaborateur connecté
   abences:Absence[];
   public absenceSubj = new BehaviorSubject<Absence[]>([]);
   // toutes les absences
   allAbences:Absence[];
   public allAbsencesSubj = new BehaviorSubject<Absence[]>([]);
+  // Absences en attentes de validation
+  abencesEnAttente:Absence[];
+  public abencesEnAttenteSubj = new BehaviorSubject<Absence[]>([]);
 
   constructor(private http: HttpClient,private loginService: LoginService) {
     this.refreshAbsencesByMatricule();
     this.listerAllAbsences();
+    this.listerAbsencesParStatut();
   }
 
    
@@ -34,9 +39,18 @@ export class AbsenceService {
 
   listerAllAbsences() {
     this.loginService.subjectCollaborateur.subscribe( collab => {
-      if(collab.role == RoleCollaborateur.MANAGER) {
+      if(collab.role.includes(RoleCollaborateur.MANAGER)) {
         this.http.get<Absence[]>( env.urlBackEndAbsences)
       .subscribe(data => this.allAbsencesSubj.next(data));
+      }
+    })
+  }
+
+  listerAbsencesParStatut() {
+    this.loginService.subjectCollaborateur.subscribe( collab => {
+      if(collab.role.includes(RoleCollaborateur.MANAGER)) {
+        this.http.get<Absence[]>( env.urlBackEndAbsences + "status/")
+      .subscribe(data => this.abencesEnAttenteSubj.next(data));
       }
     })
   }

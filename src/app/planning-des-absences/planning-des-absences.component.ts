@@ -92,6 +92,6 @@ export class PlanningDesAbsencesComponent implements OnInit {
 
   weekStartsOn: number = DAYS_OF_WEEK.MONDAY;
 
-  weekendDays: number[] = [DAYS_OF_WEEK.FRIDAY, DAYS_OF_WEEK.SATURDAY];
+  weekendDays: number[] = [DAYS_OF_WEEK.SUNDAY, DAYS_OF_WEEK.SATURDAY];
 
 }

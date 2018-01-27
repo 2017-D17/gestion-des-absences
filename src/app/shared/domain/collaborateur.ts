@@ -6,7 +6,7 @@ export class Collaborateur {
         public conges:number, 
         public rtt:number, 
         public departement:string, 
-        public role:string,
+        public role:string[],
         public subalternes:Collaborateur[]) {}
 
 }

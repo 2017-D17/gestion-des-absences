@@ -17,9 +17,9 @@
       </tr>
     </thead>
     <tbody>
-      <tr class="day-tr" *ngFor="let subalterne of collaborateur.subalternes | yearFilter:annee ">
-        <td class="table-day text-center">{{subalterne.nom}}</td>
-        <td class="table-day {{day.cssClass}} text-center" *ngFor="let day of days" #type>{{type.innerHTML | congesJourCollabFilter: subalterne.matricule: day}}</td>
+      <tr class="day-tr" *ngFor="let collab of collaborateurs | yearFilter:annee ">
+        <td class="table-day text-center">{{collab.prenom}} {{collab.nom}}</td>
+        <td class="table-day {{day.cssClass}} text-center" *ngFor="let day of days" #type>{{type | congesJourCollabFilter: collab.matricule: absences: day: joursFeries}}</td>
       </tr>
     </tbody>
   </table>

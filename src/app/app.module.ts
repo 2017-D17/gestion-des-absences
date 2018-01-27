@@ -32,7 +32,6 @@ import { FiltreCongesParAnneeComponent } from './filtre-conges-par-annee/filtre-
 import { YearFilterPipe } from './shared/pipe/year-filter.pipe';
 import { LoginService } from "./shared/service/login.service";
 import { TableauDeptJourCollabComponent } from './tableau-dept-jour-collab/tableau-dept-jour-collab.component';
-import { FiltreCongesParJourEtParCollabComponent } from './filtre-conges-par-jour-et-par-collab/filtre-conges-par-jour-et-par-collab.component';
 import { CongesJourCollabFilterPipe } from './shared/pipe/conges-jour-collab-filter.pipe';
 
 
@@ -67,7 +66,6 @@ registerLocaleData(localeFr);
     FiltreCongesParAnneeComponent,
     YearFilterPipe,
     TableauDeptJourCollabComponent,
-    FiltreCongesParJourEtParCollabComponent,
     CongesJourCollabFilterPipe,
     
   ],

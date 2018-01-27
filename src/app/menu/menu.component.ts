@@ -23,7 +23,7 @@ export class MenuComponent implements OnInit {
 
   seDeconnecter() {
     this.loginService.seDeConnecter().subscribe();
-    this.loginService.subjectCollaborateur.next(new Collaborateur("","","",0,0,"","USER",[]));
+    this.loginService.subjectCollaborateur.next(new Collaborateur("","","",0,0,"",["USER"],[]));
     this.router.navigate(['/connexion']);
   }
 }
