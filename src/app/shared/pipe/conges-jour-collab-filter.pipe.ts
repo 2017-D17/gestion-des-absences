@@ -9,7 +9,7 @@ import { FerieType } from '../domain/ferie-type.enum';
 })
 export class CongesJourCollabFilterPipe implements PipeTransform {
 
-  transform(type: string, matricule:string, absences:Absence[], day:any, joursFeries:JourFerie[]): any {
+  transform(type: string, matricule:string, absences:Absence[], day:any, joursFeries:JourFerie[], data:any[]): any {
     // Récupération des jours fériés
     let jfResult = joursFeries.filter(jf => {
       // récupérer date courante à tester

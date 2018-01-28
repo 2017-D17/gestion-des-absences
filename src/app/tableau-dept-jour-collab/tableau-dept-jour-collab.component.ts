@@ -25,6 +25,10 @@ export class TableauDeptJourCollabComponent implements OnInit {
   @Input() filtre:any = {};
   // date courante pour forcer la mise à jour du pipe pour filtrer
   currentDatetime:Date = new Date();
+  // colonne excel
+  colonnes:any[] = [];
+  data:any[] = [];
+  lignes:any = {};
   
 
   
@@ -58,6 +62,13 @@ export class TableauDeptJourCollabComponent implements OnInit {
     this.jourFerieService.ferieSubj.subscribe(jourF => {
       this.joursFeries = jourF;
     });
+    // console.log(document.getElementById('table'));
+    // let el = (document.getElementById('8b2d3ac7')) as HTMLTableRowElement;
+    // console.log(el.rowIndex);
+  }
+
+  ngAfterViewInit(){
+   
   }
 
   isCollabExist(collab:Collaborateur):boolean {
@@ -79,7 +90,6 @@ export class TableauDeptJourCollabComponent implements OnInit {
     console.log('event',event);
     this.filtre = event;
     this.initialiserTableau(parseInt(this.filtre.annee),parseInt(this.filtre.mois));
-    
   }
 
   initialiserTableau(year:number,month:number) {
@@ -95,7 +105,7 @@ export class TableauDeptJourCollabComponent implements OnInit {
       if(today.getDay() == 6 || today.getDay() == 0) {
         weekendClass = "weekendClass";
       }
-      let dateObject = {};
+      let dateObject:any = {};
       if(i<10) {
         dateObject = {
           day: "0"+i,
@@ -113,6 +123,7 @@ export class TableauDeptJourCollabComponent implements OnInit {
         }
       }
       this.days.push(dateObject);
+      this.colonnes.push(dateObject.day);
     }
   }
 

@@ -8,8 +8,13 @@
     </p>
     <br>
   </div>
-  <app-filtre-dept-mois-annee [absences]="absences" (changedFilter)="filterChanges($event)" ></app-filtre-dept-mois-annee>
-  <table class="table table-striped">
+  <div class="filtreDepMonthYear">
+      <app-filtre-dept-mois-annee [absences]="absences" (changedFilter)="filterChanges($event)" ></app-filtre-dept-mois-annee>
+      <app-export-csv></app-export-csv>
+      <!-- <button class="btn export-btn"><img src="assets/img/exporter-CSV.png"/></button> -->
+  </div>
+  
+  <table id="table" class="table table-striped">
     <thead class="table-head">
       <tr class="text-center day-tr">
         <th class="table-day">Nom </th>
@@ -17,9 +22,9 @@
       </tr>
     </thead>
     <tbody>
-      <tr class="day-tr" *ngFor="let collab of collaborateurs | deptMonthYearFilter: filtre: currentDatetime">
+      <tr id="{{collab.matricule}}" class="day-tr" *ngFor="let collab of collaborateurs | deptMonthYearFilter: filtre: currentDatetime">
         <td class="table-day text-center">{{collab.prenom}} {{collab.nom}}</td>
-        <td class="table-day {{day.cssClass}} text-center" *ngFor="let day of days" #type>{{type | congesJourCollabFilter: collab.matricule: absences: day: joursFeries}}</td>
+        <td class="table-day {{day.cssClass}} text-center" *ngFor="let day of days" #type>{{type | congesJourCollabFilter: collab.matricule: absences: day: joursFeries: data}}</td>
       </tr>
     </tbody>
   </table>

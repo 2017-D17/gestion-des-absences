@@ -21,3 +21,15 @@
 .day-tr {
     border-top: 0px;
 }
+
+.export-btn {
+    padding: 0px;
+    background-color: transparent;
+}
+
+.filtreDepMonthYear {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
