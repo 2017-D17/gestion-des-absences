@@ -49,7 +49,7 @@ export class AbsenceService {
   listerAbsencesParStatut() {
     this.loginService.subjectCollaborateur.subscribe( collab => {
       if(collab.role.includes(RoleCollaborateur.MANAGER)) {
-        this.http.get<Absence[]>( env.urlBackEndAbsences + "status/")
+        this.http.get<Absence[]>( env.urlBackEndAbsencesStatut + AbsenceStatut.EN_ATTENTE_VALIDATION)
       .subscribe(data => this.abencesEnAttenteSubj.next(data));
       }
     })

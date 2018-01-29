@@ -62,9 +62,6 @@ export class TableauDeptJourCollabComponent implements OnInit {
     this.jourFerieService.ferieSubj.subscribe(jourF => {
       this.joursFeries = jourF;
     });
-    // console.log(document.getElementById('table'));
-    // let el = (document.getElementById('8b2d3ac7')) as HTMLTableRowElement;
-    // console.log(el.rowIndex);
   }
 
   ngAfterViewInit(){
@@ -95,10 +92,6 @@ export class TableauDeptJourCollabComponent implements OnInit {
   initialiserTableau(year:number,month:number) {
     this.days = [];
     let d = new Date(year, month+1, 0);
-    console.log('year',year);
-    console.log('month',month);
-    console.log('d',d);
-    console.log('d.getDate()',d.getDate());
     for(let i=1;i<=d.getDate();i++) {
       let weekendClass:string ="";
       let today:Date = new Date(year,month,i);
