@@ -80,7 +80,6 @@ export class TableauDeptJourCollabComponent implements OnInit {
 
   filterChanges(event) {
     this.currentDatetime = new Date();
-    console.log('event',event);
     this.filtre = event;
     this.initialiserTableau(parseInt(this.filtre.annee),parseInt(this.filtre.mois));
   }

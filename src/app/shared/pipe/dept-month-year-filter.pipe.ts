@@ -8,7 +8,6 @@ import { Collaborateur } from '../domain/collaborateur';
 export class DeptMonthYearFilterPipe implements PipeTransform {
 
   transform(items: Collaborateur[], filtre: any, currentDatetime:Date): any {
-    console.log("filtre",filtre);
     if(!items || !filtre || !filtre.annee) {
       return items;
     } 
