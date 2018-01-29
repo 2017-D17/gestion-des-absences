@@ -96,6 +96,6 @@ export class HistogrammeDeptJourComponent {
   }
 }
 
-// class col {
-//   constructor(public name: string, public value: number) {}
-// }
+class col {
+  constructor(public name: string, public value: number) {}
+}
