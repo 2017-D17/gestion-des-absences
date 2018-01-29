@@ -36,15 +36,14 @@ import { DateFormatterServiceService } from "./calendar/service/date-formatter-s
 import { UtilsCalendarHeaderComponent } from "./calendar/utils/utils-calendar-header/utils-calendar-header.component";
 import { FiltreCongesParAnneeComponent } from "./filtre-conges-par-annee/filtre-conges-par-annee.component";
 import { YearFilterPipe } from "./shared/pipe/year-filter.pipe";
-import { FiltreMoisAnneeDeptComponent } from './filtre-mois-annee-dept/filtre-mois-annee-dept.component';
+import { FiltreMoisAnneeDeptComponent } from "./filtre-mois-annee-dept/filtre-mois-annee-dept.component";
 import { LoginService } from "./shared/service/login.service";
 import { ExcelService } from "./shared/service/excel.service";
-import { TableauDeptJourCollabComponent } from './tableau-dept-jour-collab/tableau-dept-jour-collab.component';
-import { CongesJourCollabFilterPipe } from './shared/pipe/conges-jour-collab-filter.pipe';
-import { FiltreDeptMoisAnneeComponent } from './filtre-dept-mois-annee/filtre-dept-mois-annee.component';
-import { DeptMonthYearFilterPipe } from './shared/pipe/dept-month-year-filter.pipe';
-import { ExportCsvComponent } from './export-csv/export-csv.component';
-
+import { TableauDeptJourCollabComponent } from "./tableau-dept-jour-collab/tableau-dept-jour-collab.component";
+import { CongesJourCollabFilterPipe } from "./shared/pipe/conges-jour-collab-filter.pipe";
+import { FiltreDeptMoisAnneeComponent } from "./filtre-dept-mois-annee/filtre-dept-mois-annee.component";
+import { DeptMonthYearFilterPipe } from "./shared/pipe/dept-month-year-filter.pipe";
+import { ExportCsvComponent } from "./export-csv/export-csv.component";
 
 const appRoutes: Routes = [
   { path: "connexion", component: AuthentificationComponent },
@@ -56,12 +55,11 @@ const appRoutes: Routes = [
   },
   { path: "VueHistogramme", component: HistogrammeDeptJourComponent },
 
- 
   { path: "VueSynthetique", component: VueSynthetiqueComponent },
 
   { path: "ValidationDesAbsences", component: ValidationDemandesComponent },
   { path: "JoursFeries", component: JoursFeriesComponent },
-  { path: "tableauSynthetique", component: TableauDeptJourCollabComponent},
+  { path: "tableauSynthetique", component: TableauDeptJourCollabComponent },
   { path: "**", redirectTo: "connexion" }
 ];
 registerLocaleData(localeFr);
@@ -90,7 +88,6 @@ registerLocaleData(localeFr);
     FiltreDeptMoisAnneeComponent,
     DeptMonthYearFilterPipe,
     ExportCsvComponent
-
   ],
   imports: [
     BrowserModule,
