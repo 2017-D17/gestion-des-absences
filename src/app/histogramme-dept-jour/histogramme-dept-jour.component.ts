@@ -2,6 +2,8 @@ import { Component, OnInit, Input } from "@angular/core";
 import { Collaborateur } from "../shared/domain/collaborateur";
 import { Absence } from "../shared/domain/absence";
 import { AbsenceService } from "../shared/service/absence.service";
+import { ExcelService } from "../shared/service/excel.service";
+
 @Component({
   selector: "app-histogramme-dept-jour",
   templateUrl: "./histogramme-dept-jour.component.html",
@@ -18,7 +20,7 @@ export class HistogrammeDeptJourComponent {
   colonnes: any[] = [];
   single: any[];
   multi: any[];
-  view: any[] = [1100, 200];
+  view: any[] = [1100, 300];
   annees: number[] = [];
   mois: string[] = [];
   depts: string[] = [];
@@ -52,52 +54,49 @@ export class HistogrammeDeptJourComponent {
     ]
   };
 
-  constructor(private absService: AbsenceService) {
-    // let dates = this.date;
-    var multi = [
-      {
-        name: "2015-06-18",
-        series: [new collab("Jean", 9), new collab("Edrine", 2)]
-      },
-      {
-        name: "2014-06-15",
-        series: [new collab("Adrien", 11)]
-      }
-    ];
-    // Object.assign(this, { multi });
+  constructor(
+    private absService: AbsenceService,
+    private excelService: ExcelService
+  ) {
     let dates = this.date;
     Object.assign(this, { dates });
   }
 
   onSelect(event) {
-    console.log(event);
+    console.log("onSelect " + event);
   }
 
   makeDayRepresentation() {}
 
-  handlefilterEventChanged(newAnnee: number, newmois: string, newDept: string) {
+  /*handlefilterEventChanged(newAnnee: number, newmois: string, newDept: string) {
+    console.log("----------------handlefilterEventChanged");
     return (
       (this.annee = newAnnee), (this.unmois = newmois), (this.dept = newDept)
     );
-  }
+  }*/
+
   ngOnInit() {
+    this.filtre.annee = 2018;
+    this.filtre.mois = 0;
+    this.filtre.departement = "DSI/INDUS";
     let year = this.currentDatetime.getFullYear();
     let month = this.currentDatetime.getMonth();
     this.initialiserHistogramme(year, month);
   }
+
   filterChanges(event) {
     this.currentDatetime = new Date();
-    console.log("event", event);
     this.filtre = event;
-    console.log("filtre", this.filtre);
     this.initialiserHistogramme(
       parseInt(this.filtre.annee),
       parseInt(this.filtre.mois)
     );
   }
+
   initialiserHistogramme(year: number, month: number) {
     this.recuperationCollab(year, month);
   }
+
   recuperationCollab(year: number, month: number) {
     let series = [];
     this.absService.listerAllAbsences();
@@ -110,12 +109,12 @@ export class HistogrammeDeptJourComponent {
       });
       this.date = [];
       let monthNum: number = month + 1;
-      console.log("month 2", monthNum);
+      //console.log("month 2", monthNum);
       let d = new Date(year, monthNum, 0);
       for (let i = 1; i <= d.getDate(); i++) {
         series = [];
         let today: Date = new Date(year, month, i);
-        console.log("today", today.getMonth());
+        //console.log("today", today.getMonth());
         this.collaborateurs.forEach(collab => {
           let DateNumber = this.convertDateToMillisecond(today); // date à tester
 
@@ -129,14 +128,14 @@ export class HistogrammeDeptJourComponent {
               DateNumber <= dateFinNumber
             );
           });
-          console.log("absences", absenceList);
+          //console.log("absences", absenceList);
           let serie = {
             name: collab.nom,
             value: absenceList.length
           };
           series.push(serie);
         });
-        console.log("serie", series);
+        //console.log("serie", series);
         let monthNum: number = today.getMonth() + 1;
         let formattedToday =
           today.getDate() + "/" + monthNum + "/" + today.getFullYear();
@@ -144,10 +143,10 @@ export class HistogrammeDeptJourComponent {
           name: formattedToday,
           series: series
         };
-        console.log("obj", obj);
+        //console.log("obj", obj);
         this.date.push(obj);
       }
-      console.log("date", this.date);
+      //console.log("date", this.date);
     });
 
     // return series;
@@ -172,8 +171,51 @@ export class HistogrammeDeptJourComponent {
     date.setHours(0, 0, 0, 0);
     return Date.parse(date);
   }
-}
 
-class collab {
-  constructor(public name: string, public value: number) {}
+  filterByDeptAndYearAndMonth(absence) {
+    console.log("filterByDeptAndYearAndMonth " + absence);
+    console.log(
+      this.filtre.annee +
+        " " +
+        this.filtre.mois +
+        " " +
+        absence.dateDebut.substring(5, 7)
+    );
+    if (
+      absence.collaborateur.departement == this.filtre.departement &&
+      this.filtre.annee == absence.dateDebut.substring(0, 4) &&
+      this.filtre.annee == absence.dateFin.substring(0, 4) &&
+      this.filtre.mois + 1 == absence.dateDebut.substring(5, 7) &&
+      this.filtre.mois + 1 == absence.dateFin.substring(5, 7)
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  exporterCSV() {
+    let data = [];
+    let exportData = this.absences
+      .filter(absence => this.filterByDeptAndYearAndMonth(absence))
+      .forEach(absence => {
+        data.push({
+          Nom: absence.collaborateur.nom,
+          Prenom: absence.collaborateur.prenom,
+          Date_de_debut: absence.dateDebut,
+          Date_de_fin: absence.dateFin,
+          Type_de_congés: absence.type,
+          Durée_du_congés: this.getNbrJour(absence.dateDebut, absence.dateFin)
+        });
+      });
+    this.excelService.exportAsExcelFile(data, "histogramme_conges");
+  }
+
+  getNbrJour(dateDebut: Date, dateFin: Date) {
+    var date1 = new Date(dateDebut);
+    var date2 = new Date(dateFin);
+    var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+    return diffDays + 1;
+  }
 }
