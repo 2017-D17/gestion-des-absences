@@ -11,20 +11,19 @@ import { AbsenceStatut, ABSENCES_STATUS } from "../shared/domain/absence-statut.
 })
 export class ButtonsModifSuppComponent implements OnInit {
   @Input() absence: Absence;
-
   @Input() titre: string;
   absences: Absence[];
   modif: boolean = false;
   modifAbsence: string;
-  aff:boolean = false;
+  aff: boolean = false;
 
-  constructor(private aService: AbsenceService) {}
+  constructor(private aService: AbsenceService) { }
 
   ngOnInit() {
-    if ((this.absence.statut == AbsenceStatut.INITIALE || this.absence.statut == AbsenceStatut.REJETEE ) && this.absence.type != FerieType.RTT_EMPLOYEUR) {
+    if ((this.absence.statut == AbsenceStatut.INITIALE || this.absence.statut == AbsenceStatut.REJETEE) && this.absence.type != FerieType.RTT_EMPLOYEUR) {
       this.modifAbsence = "update";
       this.aff = true;
-    } else if(this.absence.statut == AbsenceStatut.EN_ATTENTE_VALIDATION ) {
+    } else if (this.absence.statut == AbsenceStatut.EN_ATTENTE_VALIDATION) {
       this.aff = true;
     }
   }
@@ -33,9 +32,7 @@ export class ButtonsModifSuppComponent implements OnInit {
     this.aService
       .supprimerAbsence(this.absence.id).subscribe(resultat => {
         this.absence = resultat;
-        //Mise à jour des absences
         this.aService.refreshAbsencesByMatricule();
       });
   }
-
 }

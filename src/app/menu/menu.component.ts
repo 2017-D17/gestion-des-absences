@@ -10,20 +10,21 @@ import { Router } from '@angular/router';
   styleUrls: ["./menu.component.css"]
 })
 export class MenuComponent implements OnInit {
-  // Collaborateur connecté
+
   collaborateur: Collaborateur;
-  constructor(private absenceService: AbsenceService,private loginService: LoginService,private router: Router) {}
+
+  constructor(private absenceService: AbsenceService, private loginService: LoginService, private router: Router) { }
 
   ngOnInit() {
     // récupération du collaborateur connecté
     this.loginService.subjectCollaborateur.subscribe(
-      data => (this.collaborateur = data)
+      data => this.collaborateur = data
     );
   }
 
-  seDeconnecter() {
-    this.loginService.seDeConnecter().subscribe();
-    this.loginService.subjectCollaborateur.next(new Collaborateur("","","",0,0,"","USER"));
+  logout() {
+    this.loginService.logout().subscribe();
+    this.loginService.subjectCollaborateur.next(new Collaborateur("", "", "", 0, 0, "", "USER"));
     this.router.navigate(['/connexion']);
   }
 }

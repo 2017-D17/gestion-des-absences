@@ -8,7 +8,7 @@ import { DateFormatterServiceService } from "../calendar/service/date-formatter-
 import { Absence } from "../shared/domain/absence";
 import { AbsenceService } from "../shared/service/absence.service";
 import { JoursFeriesService } from "../shared/service/jours-feries.service";
-import { AbsenceType, ABSENCES_TYPES} from "../shared/domain/absence-type.enum";
+import { AbsenceType, ABSENCES_TYPES } from "../shared/domain/absence-type.enum";
 import { FerieType, FERIE_TYPES } from "../shared/domain/ferie-type.enum";
 import { JourFerie } from "../shared/domain/jour-ferie";
 
@@ -35,13 +35,21 @@ const colors: any = {
   styleUrls: ['./planning-des-absences.component.css',]
 })
 export class PlanningDesAbsencesComponent implements OnInit {
+
   absences: Absence[] = [];
   joursFeries: JourFerie[] = [];
-  rtt:number;
-  conges:number;
-  absenceClass:string;
+  rtt: number;
+  conges: number;
+  absenceClass: string;
 
-  constructor(private absService: AbsenceService,private jourFerieService: JoursFeriesService) { }
+  view: string = 'month';
+  viewDate: Date = new Date();
+  events: CalendarEvent[] = [];
+  locale: string = 'fr';
+  weekStartsOn: number = DAYS_OF_WEEK.MONDAY;
+  weekendDays: number[] = [DAYS_OF_WEEK.FRIDAY, DAYS_OF_WEEK.SATURDAY];
+
+  constructor(private absService: AbsenceService, private jourFerieService: JoursFeriesService) { }
 
   ngOnInit() {
     this.absService.absenceSubj.subscribe(result => {
@@ -52,11 +60,11 @@ export class PlanningDesAbsencesComponent implements OnInit {
       }
       result.forEach(a => {
         this.absenceClass = "absence-color";
-        let event:any = {};
-        if(a.type != 'RTT_EMPLOYEUR') {
-          let label:string = ABSENCES_TYPES.filter( abs => abs.key == a.type)[0].label;
+        let event: any = {};
+        if (a.type != 'RTT_EMPLOYEUR') {
+          let label: string = ABSENCES_TYPES.filter(abs => abs.key == a.type)[0].label;
           event = {
-            title:label,
+            title: label,
             type: a.type,
             start: new Date(a.dateDebut),
             end: new Date(a.dateFin),
@@ -64,34 +72,21 @@ export class PlanningDesAbsencesComponent implements OnInit {
         }
         this.events.push(event)
       });
-      console.log(this.events);
+      console.log("Planning des absences component => this.events = " + this.events);
     });
 
     this.jourFerieService.ferieSubj.subscribe(jourF => {
       this.joursFeries = jourF;
       jourF.forEach(jf => {
-        let label:string = FERIE_TYPES.filter( abs => abs.key == jf.type)[0].label;
-        let event:any = {
+        let label: string = FERIE_TYPES.filter(abs => abs.key == jf.type)[0].label;
+        let event: any = {
           title: label,
           type: jf.type,
           start: new Date(jf.date)
         }
-          
         this.events.push(event)
       });
     });
   }
-
-  view: string = 'month';
-
-  viewDate: Date = new Date();
-
-  events: CalendarEvent[] = [];
-
-  locale: string = 'fr';
-
-  weekStartsOn: number = DAYS_OF_WEEK.MONDAY;
-
-  weekendDays: number[] = [DAYS_OF_WEEK.FRIDAY, DAYS_OF_WEEK.SATURDAY];
 
 }
