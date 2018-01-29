@@ -1,5 +1,6 @@
-<!-- Logo -->
 <nav class="navbar navbar-expand-sm bg-light nav justify-content-center">
+
+  <!-- Logo -->
   <a class="navbar-brand" href="#">
     <img src="https://alternatiba-mulhouse.org/wp-content/uploads/2016/06/programme.png" width="50" height="50" alt="">
   </a>
@@ -7,27 +8,29 @@
   <!-- Links -->
   <ul class="navbar-nav ">
     <li class="nav-item">
-      <a routerLink="/accueil" routerLinkActive="active-link" class="nav-link" href="#">Accueil</a>
+      <a routerLink="/accueil" routerLinkActive="active" class="nav-link">Accueil</a>
     </li>
     <li class="nav-item">
-      <a routerLink="/GestionDesAbsences" routerLinkActive="active-link" class="nav-link" href="#">Gestion des absences</a>
+      <a routerLink="/GestionDesAbsences" routerLinkActive="active" class="nav-link">Gestion des absences</a>
     </li>
     <li class="nav-item">
-      <a routerLink="/PlanningDesAbsences" routerLinkActive="active-link" class="nav-link" href="#">Planning des absences</a>
+      <a routerLink="/PlanningDesAbsences" routerLinkActive="active" class="nav-link">Planning des absences</a>
     </li>
-    <li *ngIf="collaborateur.role === 'MANAGER'" class="nav-item">
-      <a routerLink="/ValidationDesAbsences" routerLinkActive="active-link" class="nav-link" href="#">Validation demandes</a>
+    <li *ngIf="collaborateur.role === 'EMPLOYE'" class="nav-item">
+      <a routerLink="/ValidationDesAbsences" routerLinkActive="active" class="nav-link">Validation demandes</a>
     </li>
-    <li *ngIf="collaborateur.role === 'MANAGER'" class="nav-item">
-      <a routerLink="/VueSynthetique" routerLinkActive="active-link" class="nav-link" href="#">Vue synthétique</a>
+    <li *ngIf="collaborateur.role === 'EMPLOYE'" class="nav-item">
+      <a routerLink="/VueSynthetique" routerLinkActive="active" class="nav-link">Vue synthétique</a>
     </li>
     <li class="nav-item">
-      <a routerLink="/JoursFeries" class="nav-link" routerLinkActive="active-link" href="#">Jours féries</a>
+      <a routerLink="/JoursFeries" routerLinkActive="active" class="nav-link">Jours féries</a>
     </li>
   </ul>
+
+  <!-- Longout -->
   <div class="deconnexion pull-right">
-    <span>Bonjour {{collaborateur.prenom}} {{collaborateur.nom}}</span><a class="nav-link" href="#">Se deconnecter</a>
+    <span>Bonjour {{collaborateur.prenom}} {{collaborateur.nom}}</span>
+    <a class="nav-link" href="#">Se deconnecter</a>
   </div>
+
 </nav>
-
-

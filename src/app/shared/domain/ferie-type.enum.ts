@@ -4,7 +4,6 @@ export enum FerieType {
 }
 
 export const FERIE_TYPES = [
-    { key: FerieType.JOUR_FERIE, label: "Jour férié"},
-    { key: FerieType.RTT_EMPLOYEUR, label: "RTT employeur"}
+    { key: FerieType.JOUR_FERIE, label: "Jour férié" },
+    { key: FerieType.RTT_EMPLOYEUR, label: "RTT employeur" }
 ]
-

@@ -40,22 +40,19 @@ import { environment } from "../environments/environment";
 import { getToken } from "./token-getter";
 import { LoginService } from "./shared/service/login.service";
 
-
 const appRoutes: Routes = [
   { path: "connexion", component: AuthentificationComponent },
   { path: "accueil", component: AccueilComponent },
   { path: "PlanningDesAbsences", component: PlanningDesAbsencesComponent, canActivate: [RoleGuardService] },
-  {
-    path: "GestionDesAbsences",
-    component: GestionDesAbsencesComponent,
-    canActivate: [RoleGuardService]
-  },
+  { path: "GestionDesAbsences", component: GestionDesAbsencesComponent, canActivate: [RoleGuardService] },
   { path: "VueSynthetique", component: VueSynthetiqueComponent, canActivate: [RoleGuardService], data: { expectedRole: 'MANAGER' } },
   { path: "ValidationDesAbsences", component: ValidationDemandesComponent, canActivate: [RoleGuardService], data: { expectedRole: 'MANAGER' } },
   { path: "JoursFeries", component: JoursFeriesComponent, canActivate: [RoleGuardService] },
   { path: "**", redirectTo: "connexion" }
 ];
+
 registerLocaleData(localeFr);
+
 @NgModule({
   declarations: [
     AppComponent,
