@@ -1,0 +1,30 @@
+<div class="filtreDepMonthYear">
+  <form id="filterDeptMonthYearForm" class="form-horizontal" role="form" (ngSubmit)="submit()" novalidate #filterDeptMonthYearForm="ngForm">
+      <div class="item-filter">
+          <h4 class="text-center filtre">
+              Département
+              <select [(ngModel)]="filtre.departement" name="departement" #departement="ngModel">
+                <option [value]="dept" *ngFor="let dept of depts"> {{dept}}</option>
+              </select>
+            </h4>
+      </div>
+      <div class="item-filter">
+          <h4 class="text-center filtre">
+              Mois
+              <select [(ngModel)]="filtre.mois" name="mois" #mois="ngModel">
+                <option [value]="mois.number" *ngFor="let mois of moisDeLannee"> {{mois.name}}</option>
+              </select>
+            </h4>
+      </div>
+      <div class="item-filter">
+          <h4 class="text-center filtre">
+              Année
+              <select [(ngModel)]="filtre.annee"  name="annee" #annee="ngModel" required>
+                <option [value]="annee" *ngFor="let annee of annees"> {{annee}}</option>
+              </select>
+            </h4>
+      </div>
+      <button type="submit" class="btn btn-primary filterButton"><i class="fa fa-search" aria-hidden="true"></i></button>
+  </form>
+  
+</div>

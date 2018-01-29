@@ -1,4 +1,4 @@
-<p *ngIf="add" id="btnAddJourFerie" class="text-right" (click)="open(content)">Ajouter un jour férié ou un RTT employeur
+<p *ngIf="add && collaborateur.roles.includes('ROLE_ADMIN')" id="btnAddJourFerie" class="text-right" (click)="open(content)">Ajouter un jour férié ou un RTT employeur
   <a>
     <img class="imgAdd" type="button" src="https://cdn4.iconfinder.com/data/icons/meBaze-Freebies/512/add.png">
   </a>

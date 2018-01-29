@@ -1,19 +1,13 @@
 import { Component, Input, OnInit, ViewChild } from "@angular/core";
 import { FormsModule, NgForm } from "@angular/forms";
 import { AbsenceService } from "../shared/service/absence.service";
-import {
-  NgbModal,
-  NgbModalRef,
-  ModalDismissReasons
-} from "@ng-bootstrap/ng-bootstrap";
+import { NgbModal, NgbModalRef, ModalDismissReasons} from "@ng-bootstrap/ng-bootstrap";
 import { Absence } from "../shared/domain/absence";
 import { Collaborateur } from "../shared/domain/collaborateur";
-import {
-  AbsenceType,
-  ABSENCES_TYPES
-} from "../shared/domain/absence-type.enum";
+import {  AbsenceType, ABSENCES_TYPES} from "../shared/domain/absence-type.enum";
 import { IMyDpOptions, IMyDateModel, IMyDate } from "mydatepicker";
-import { AbsenceStatut, ABSENCES_STATUS } from "../absence-statut.enum";
+import { AbsenceStatut, ABSENCES_STATUS } from "../shared/domain/absence-statut.enum";
+import { LoginService } from "../shared/service/login.service";
 
 @Component({
   selector: "app-form-absence",
@@ -95,21 +89,19 @@ export class FormAbsenceComponent implements OnInit {
 
   constructor(
     private absenceService: AbsenceService,
+    private loginService: LoginService,
     private modalService: NgbModal
   ) {}
 
   ngOnInit() {
-    // récupération du collaborateur connecté
-    this.absenceService.subjectCollaborateur.subscribe(
-      data => (this.collaborateur = data)
-    );
+    this.collaborateur = this.loginService.getConnectedUser();
     this.currentDate = new Date();
     // initialisation du formulaire selon son rôle
     if(this.action === "add") {
       this.isValid = false;
       this.add = true;
       this.titre = "Demande d'absence";
-      this.absence = new Absence(0, "", "", "", "", "", this.collaborateur);
+      this.absence = new Absence(0, "", "", "", "", "");
       this.selDateDebut = {
         year: this.currentDate.getFullYear(),
         month: this.currentDate.getMonth() + 1,
@@ -198,6 +190,7 @@ export class FormAbsenceComponent implements OnInit {
     this.absence.dateFin = this.correctDateFormat(this.dateDeFin);
     
     this.absence.statut = AbsenceStatut.INITIALE;
+    // this.absence.collaborateur = this.collaborateur;
 
     if (this.action === "add") {
       this.absenceService.sauvegarderAbsence(this.absence).subscribe(

@@ -30,20 +30,27 @@ import { DateFormatterServiceService } from "./calendar/service/date-formatter-s
 import { UtilsCalendarHeaderComponent } from './calendar/utils/utils-calendar-header/utils-calendar-header.component';
 import { FiltreCongesParAnneeComponent } from './filtre-conges-par-annee/filtre-conges-par-annee.component';
 import { YearFilterPipe } from './shared/pipe/year-filter.pipe';
+import { LoginService } from "./shared/service/login.service";
+import { ExcelService } from "./shared/service/excel.service";
+import { TableauDeptJourCollabComponent } from './tableau-dept-jour-collab/tableau-dept-jour-collab.component';
+import { CongesJourCollabFilterPipe } from './shared/pipe/conges-jour-collab-filter.pipe';
+import { FiltreDeptMoisAnneeComponent } from './filtre-dept-mois-annee/filtre-dept-mois-annee.component';
+import { DeptMonthYearFilterPipe } from './shared/pipe/dept-month-year-filter.pipe';
+import { ExportCsvComponent } from './export-csv/export-csv.component';
+import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import { AuthInterceptorService } from "./shared/service/auth-interceptor.service";
 
 
 const appRoutes: Routes = [
   { path: "connexion", component: AuthentificationComponent },
   { path: "accueil", component: AccueilComponent },
   { path: "PlanningDesAbsences", component: PlanningDesAbsencesComponent },
-  {
-    path: "GestionDesAbsences",
-    component: GestionDesAbsencesComponent
-  },
+  { path: "GestionDesAbsences", component: GestionDesAbsencesComponent },
   { path: "VueSynthetique", component: VueSynthetiqueComponent },
   { path: "ValidationDesAbsences", component: ValidationDemandesComponent },
   { path: "JoursFeries", component: JoursFeriesComponent },
-  { path: "**", redirectTo: "accueil" }
+  { path: "tableauSynthetique", component: TableauDeptJourCollabComponent},
+  { path: "**", redirectTo: "connexion" }
 ];
 registerLocaleData(localeFr);
 @NgModule({
@@ -64,7 +71,11 @@ registerLocaleData(localeFr);
     UtilsCalendarHeaderComponent,
     FiltreCongesParAnneeComponent,
     YearFilterPipe,
-    
+    TableauDeptJourCollabComponent,
+    CongesJourCollabFilterPipe,
+    FiltreDeptMoisAnneeComponent,
+    DeptMonthYearFilterPipe,
+    ExportCsvComponent
   ],
   imports: [
     BrowserModule,
@@ -74,9 +85,13 @@ registerLocaleData(localeFr);
     MyDatePickerModule,
     RouterModule.forRoot(appRoutes),
     CalendarModule.forRoot(),
-    BrowserAnimationsModule,
+    BrowserAnimationsModule
   ],
-  providers: [AbsenceService, JoursFeriesService, DateFormatterServiceService,{provide: LOCALE_ID, useValue: 'fr-FR' }],
+  providers: [ExcelService,AbsenceService, JoursFeriesService, LoginService, DateFormatterServiceService,{provide: LOCALE_ID, useValue: 'fr-FR' },{
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptorService,
+    multi: true,
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

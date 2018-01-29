@@ -6,8 +6,10 @@ import {NgbModal,NgbModalRef, ModalDismissReasons} from '@ng-bootstrap/ng-bootst
 import { JourFerie } from '../shared/domain/jour-ferie';
 import { FerieType, FERIE_TYPES } from '../shared/domain/ferie-type.enum';
 import {IMyDpOptions, IMyDateModel,IMyDate} from 'mydatepicker';
-import { AbsenceStatut, ABSENCES_STATUS } from '../absence-statut.enum';
+import { AbsenceStatut, ABSENCES_STATUS } from '../shared/domain/absence-statut.enum';
 import { concat } from 'rxjs/operators/concat';
+import { Collaborateur } from "../shared/domain/collaborateur";
+import { LoginService } from "../shared/service/login.service";
 
 @Component({
   selector: 'app-form-jour-ferie',
@@ -15,6 +17,8 @@ import { concat } from 'rxjs/operators/concat';
   styleUrls: ['./form-jour-ferie.component.css']
 })
 export class FormJourFerieComponent implements OnInit {
+  // Collaborateur connecté
+  collaborateur: Collaborateur;
   // Absence concerné par le formulaire
   @Input() jourFerie:JourFerie;
   // Nom de l'action permettant d'identifier le rôle du formulaire (ajout ou modification)
@@ -64,9 +68,10 @@ export class FormJourFerieComponent implements OnInit {
   currentDate:Date;
 
 
-  constructor(private jourFerieService:JoursFeriesService,private absenceService:AbsenceService,private modalService: NgbModal) { }
+  constructor(private jourFerieService:JoursFeriesService,private absenceService:AbsenceService,private modalService: NgbModal,private loginService: LoginService) { }
 
   ngOnInit() {
+    this.collaborateur = this.loginService.getConnectedUser();
     this.currentDate = new Date();
     // initialisation du formulaire selon son rôle
     if(this.action === "add") {

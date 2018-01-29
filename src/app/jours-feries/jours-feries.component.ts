@@ -3,6 +3,8 @@ import { AbsenceService } from "../shared/service/absence.service";
 import { JourFerie } from "../shared/domain/jour-ferie";
 import { JoursFeriesService } from "../shared/service/jours-feries.service";
 import { FerieType, FERIE_TYPES } from "../shared/domain/ferie-type.enum";
+import { LoginService } from "../shared/service/login.service";
+import { Collaborateur } from "../shared/domain/collaborateur";
 
 @Component({
   selector: "app-jours-feries",
@@ -10,6 +12,8 @@ import { FerieType, FERIE_TYPES } from "../shared/domain/ferie-type.enum";
   styleUrls: ["./jours-feries.component.css"]
 })
 export class JoursFeriesComponent implements OnInit {
+  // Collaborateur connecté
+  collaborateur: Collaborateur;
   @Input() JourFerie: JourFerie;
   demandeAbsence: string = "add";
   modifAbsence: string = "update";
@@ -19,9 +23,11 @@ export class JoursFeriesComponent implements OnInit {
   jfTypes: any = FERIE_TYPES;
   annee:number;
 
-  constructor(private jourFerieService: JoursFeriesService) {}
+  constructor(private jourFerieService: JoursFeriesService,private loginService: LoginService) {}
 
   ngOnInit() {
+    this.collaborateur = this.loginService.getConnectedUser();
+
     this.jourFerieService.ferieSubj.subscribe(jourF => {
       this.joursFeries = jourF;
       //filtre les annee
