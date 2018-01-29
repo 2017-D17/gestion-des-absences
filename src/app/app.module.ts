@@ -33,6 +33,7 @@ import { HistogrammeDeptJourComponent } from "./histogramme-dept-jour/histogramm
 import { NgxChartsModule } from "@swimlane/ngx-charts";
 import { CalendarModule } from "angular-calendar";
 import { DateFormatterServiceService } from "./calendar/service/date-formatter-service.service";
+
 import { UtilsCalendarHeaderComponent } from './calendar/utils/utils-calendar-header/utils-calendar-header.component';
 import { FiltreCongesParAnneeComponent } from './filtre-conges-par-annee/filtre-conges-par-annee.component';
 import { YearFilterPipe } from './shared/pipe/year-filter.pipe';
@@ -47,7 +48,6 @@ import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import { AuthInterceptorService } from "./shared/service/auth-interceptor.service";
 import { FiltreMoisAnneeDeptComponent } from './filtre-mois-annee-dept/filtre-mois-annee-dept.component';
 
-
 const appRoutes: Routes = [
   { path: "connexion", component: AuthentificationComponent },
   { path: "accueil", component: AccueilComponent },
@@ -57,7 +57,7 @@ const appRoutes: Routes = [
   { path: "VueHistogramme", component: HistogrammeDeptJourComponent },
   { path: "ValidationDesAbsences", component: ValidationDemandesComponent },
   { path: "JoursFeries", component: JoursFeriesComponent },
-  { path: "tableauSynthetique", component: TableauDeptJourCollabComponent},
+  { path: "tableauSynthetique", component: TableauDeptJourCollabComponent },
   { path: "**", redirectTo: "connexion" }
 ];
 registerLocaleData(localeFr);
@@ -79,14 +79,13 @@ registerLocaleData(localeFr);
     UtilsCalendarHeaderComponent,
     FiltreCongesParAnneeComponent,
     YearFilterPipe,
+    HistogrammeDeptJourComponent,
+    FiltreMoisAnneeDeptComponent,
     TableauDeptJourCollabComponent,
     CongesJourCollabFilterPipe,
     FiltreDeptMoisAnneeComponent,
     DeptMonthYearFilterPipe,
     ExportCsvComponent,
-    HistogrammeDeptJourComponent,
-    FiltreMoisAnneeDeptComponent
-
   ],
   imports: [
     BrowserModule,
@@ -104,6 +103,7 @@ registerLocaleData(localeFr);
     useClass: AuthInterceptorService,
     multi: true,
   }],
+
 
   bootstrap: [AppComponent]
 })

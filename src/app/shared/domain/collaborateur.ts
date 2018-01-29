@@ -8,6 +8,4 @@ export class Collaborateur {
         public departement:string, 
         public roles:string[],
         public subalternes:string[]) {}
-
-
 }

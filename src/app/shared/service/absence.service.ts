@@ -15,17 +15,18 @@ export class AbsenceService {
   // absences du collaborateur collaborateur connecté
   abences:Absence[];
 
+
   public absenceSubj = new BehaviorSubject<Absence[]>([]);
   // toutes les absences
-  allAbences:Absence[];
+  allAbences: Absence[];
   public allAbsencesSubj = new BehaviorSubject<Absence[]>([]);
   // Collaborateur connecté
   connectedUser:Collaborateur;
   // Absences en attentes de validation
-  abencesEnAttente:Absence[];
+  abencesEnAttente: Absence[];
   public abencesEnAttenteSubj = new BehaviorSubject<Absence[]>([]);
 
-  constructor(private http: HttpClient,private loginService: LoginService) {
+  constructor(private http: HttpClient, private loginService: LoginService) {
     this.refreshAbsencesByMatricule();
     this.listerAllAbsences();
     this.listerAbsencesParStatut();
@@ -59,6 +60,7 @@ export class AbsenceService {
   sauvegarderAbsence(newAbsence:Absence):Observable<any> {
 		const httpOptions = {
 			headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+
     };
     console.log('newAbsence ',newAbsence);
 		return this.http.post<Absence>(env.urlBackEndAbsences, newAbsence,httpOptions);
