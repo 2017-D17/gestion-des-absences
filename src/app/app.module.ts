@@ -37,6 +37,14 @@ import { UtilsCalendarHeaderComponent } from "./calendar/utils/utils-calendar-he
 import { FiltreCongesParAnneeComponent } from "./filtre-conges-par-annee/filtre-conges-par-annee.component";
 import { YearFilterPipe } from "./shared/pipe/year-filter.pipe";
 import { FiltreMoisAnneeDeptComponent } from './filtre-mois-annee-dept/filtre-mois-annee-dept.component';
+import { LoginService } from "./shared/service/login.service";
+import { ExcelService } from "./shared/service/excel.service";
+import { TableauDeptJourCollabComponent } from './tableau-dept-jour-collab/tableau-dept-jour-collab.component';
+import { CongesJourCollabFilterPipe } from './shared/pipe/conges-jour-collab-filter.pipe';
+import { FiltreDeptMoisAnneeComponent } from './filtre-dept-mois-annee/filtre-dept-mois-annee.component';
+import { DeptMonthYearFilterPipe } from './shared/pipe/dept-month-year-filter.pipe';
+import { ExportCsvComponent } from './export-csv/export-csv.component';
+
 
 const appRoutes: Routes = [
   { path: "connexion", component: AuthentificationComponent },
@@ -46,10 +54,15 @@ const appRoutes: Routes = [
     path: "GestionDesAbsences",
     component: GestionDesAbsencesComponent
   },
-  { path: "VueSynthetique", component: HistogrammeDeptJourComponent },
+  { path: "VueHistogramme", component: HistogrammeDeptJourComponent },
+
+ 
+  { path: "VueSynthetique", component: VueSynthetiqueComponent },
+
   { path: "ValidationDesAbsences", component: ValidationDemandesComponent },
   { path: "JoursFeries", component: JoursFeriesComponent },
-  { path: "**", redirectTo: "accueil" }
+  { path: "tableauSynthetique", component: TableauDeptJourCollabComponent},
+  { path: "**", redirectTo: "connexion" }
 ];
 registerLocaleData(localeFr);
 @NgModule({
@@ -71,7 +84,13 @@ registerLocaleData(localeFr);
     FiltreCongesParAnneeComponent,
     YearFilterPipe,
     HistogrammeDeptJourComponent,
-    FiltreMoisAnneeDeptComponent
+    FiltreMoisAnneeDeptComponent,
+    TableauDeptJourCollabComponent,
+    CongesJourCollabFilterPipe,
+    FiltreDeptMoisAnneeComponent,
+    DeptMonthYearFilterPipe,
+    ExportCsvComponent
+
   ],
   imports: [
     BrowserModule,
@@ -85,11 +104,14 @@ registerLocaleData(localeFr);
     BrowserAnimationsModule
   ],
   providers: [
+    ExcelService,
     AbsenceService,
     JoursFeriesService,
+    LoginService,
     DateFormatterServiceService,
     { provide: LOCALE_ID, useValue: "fr-FR" }
   ],
+
   bootstrap: [AppComponent]
 })
 export class AppModule {}

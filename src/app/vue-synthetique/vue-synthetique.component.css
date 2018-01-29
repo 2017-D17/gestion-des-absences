@@ -1,0 +1,35 @@
+.text {
+    font-size: 40px;
+  }
+
+  .row {
+	padding: 2%;
+    justify-content: center;
+    flex-wrap: nowrap;
+}
+
+.card-block {
+    font-size: 1em;
+    position: relative;
+    margin: 0;
+    padding: 1em;
+    border: none;
+    box-shadow: none;
+    text-align: center;
+    color: black;
+    width: 50%;
+}
+
+.card-img-top {
+    width: 50%;
+    border-top-left-radius: calc(.25rem - 1px);
+    border-top-right-radius: calc(.25rem - 1px);
+}
+
+.card-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2%;
+}

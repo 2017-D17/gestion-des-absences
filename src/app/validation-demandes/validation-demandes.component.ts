@@ -1,8 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { Absence } from "../shared/domain/absence";
 import { AbsenceService } from "../shared/service/absence.service";
-import { AbsenceStatut, ABSENCES_STATUS } from '../absence-statut.enum';
+import { AbsenceStatut, ABSENCES_STATUS } from '../shared/domain/absence-statut.enum';
 import { AbsenceType, ABSENCES_TYPES} from "../shared/domain/absence-type.enum";
+import { Collaborateur } from "../shared/domain/collaborateur";
+import { LoginService } from "../shared/service/login.service";
 
 @Component({
   selector: "app-validation-demandes",
@@ -10,6 +12,8 @@ import { AbsenceType, ABSENCES_TYPES} from "../shared/domain/absence-type.enum";
   styleUrls: ["./validation-demandes.component.css"]
 })
 export class ValidationDemandesComponent implements OnInit {
+  // Collaborateur connecté
+  collaborateur:Collaborateur;
   absences: Absence[] = [];
   // Message d'erreur ou de succès suite à l'envoi des données sur le serveur
   msg:string
@@ -20,12 +24,24 @@ export class ValidationDemandesComponent implements OnInit {
   // Types d'absences
   absTypes:any = ABSENCES_TYPES;
 
-  constructor(private absenceService: AbsenceService) {}
+  constructor(private absenceService: AbsenceService,private loginService: LoginService) {}
 
   ngOnInit() {
-    this.absenceService.absenceSubj.subscribe(result => {
-      this.absences = result.filter(abs => abs.statut === AbsenceStatut.EN_ATTENTE_VALIDATION);
-    });
+    // récupération du collaborateur connecté
+    this.loginService.subjectCollaborateur.subscribe(
+      data => (this.collaborateur = data)
+    );
+
+    // Récupération des absences
+    this.collaborateur.subalternes.forEach(matricule => {
+      this.absenceService.abencesEnAttenteSubj.subscribe(result => {
+        result.forEach(abs => {
+          if(abs.collaborateur.matricule === matricule) {
+            this.absences.push(abs);
+          }
+        });
+      });
+    })
   }
 
   valider(absence:Absence) {

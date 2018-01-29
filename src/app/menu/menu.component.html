@@ -15,10 +15,10 @@
     <li class="nav-item">
       <a routerLink="/PlanningDesAbsences" routerLinkActive="active-link" class="nav-link" href="#">Planning des absences</a>
     </li>
-    <li class="nav-item">
+    <li *ngIf="collaborateur.role.includes('MANAGER')" class="nav-item">
       <a routerLink="/ValidationDesAbsences" routerLinkActive="active-link" class="nav-link" href="#">Validation demandes</a>
     </li>
-    <li class="nav-item">
+    <li *ngIf="collaborateur.role.includes('MANAGER')" class="nav-item">
       <a routerLink="/VueSynthetique" routerLinkActive="active-link" class="nav-link" href="#">Vue synthétique</a>
     </li>
     <li class="nav-item">
