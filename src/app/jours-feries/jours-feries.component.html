@@ -23,7 +23,7 @@
       <tr *ngFor="let jf of joursFeries | yearFilter:annee ">
         <td>{{jf.date | date : 'dd-MM-yyyy' }}</td>
         <div *ngFor="let type of jfTypes">
-            <td *ngIf="type.key === jf.type">{{type.label}}</td>
+          <td *ngIf="type.key === jf.type">{{type.label}}</td>
         </div>
         <td>{{jf.date | date : 'EEEE' }}</td>
         <td>{{jf.commentaire}}</td>

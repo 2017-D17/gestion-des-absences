@@ -9,4 +9,5 @@ export class Collaborateur {
         public roles:string[],
         public subalternes:string[]) {}
 
+
 }

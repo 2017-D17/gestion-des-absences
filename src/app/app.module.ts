@@ -1,10 +1,14 @@
 import { BrowserModule } from "@angular/platform-browser";
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { NgModule } from "@angular/core";
-import { LOCALE_ID } from '@angular/core';
-import { registerLocaleData } from '@angular/common';
-import localeFr from '@angular/common/locales/fr';
-import { NgbModule, NgbDatepickerModule, NgbTimepickerModule } from "@ng-bootstrap/ng-bootstrap";
+import { LOCALE_ID } from "@angular/core";
+import { registerLocaleData } from "@angular/common";
+import localeFr from "@angular/common/locales/fr";
+import {
+  NgbModule,
+  NgbDatepickerModule,
+  NgbTimepickerModule
+} from "@ng-bootstrap/ng-bootstrap";
 import { RouterModule, Routes } from "@angular/router";
 import { AppComponent } from "./app.component";
 import { MenuComponent } from "./menu/menu.component";
@@ -17,7 +21,7 @@ import { JoursFeriesComponent } from "./jours-feries/jours-feries.component";
 import { VueSynthetiqueComponent } from "./vue-synthetique/vue-synthetique.component";
 import { GestionDesAbsencesComponent } from "./gestion-des-absences/gestion-des-absences.component";
 import { ButtonsModifSuppComponent } from "./buttons-modif-supp/buttons-modif-supp.component";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { FormAbsenceComponent } from "./form-absence/form-absence.component";
 import { MyDatePickerModule } from "mydatepicker";
 import { VALID } from "@angular/forms/src/model";
@@ -25,7 +29,9 @@ import { ValidationDemandesComponent } from "./validation-demandes/validation-de
 import { FormJourFerieComponent } from "./form-jour-ferie/form-jour-ferie.component";
 import { JoursFeriesService } from "./shared/service/jours-feries.service";
 import { SuprimerJourFerieComponent } from "./suprimer-jour-ferie/suprimer-jour-ferie.component";
-import { CalendarModule } from 'angular-calendar';
+import { HistogrammeDeptJourComponent } from "./histogramme-dept-jour/histogramme-dept-jour.component";
+import { NgxChartsModule } from "@swimlane/ngx-charts";
+import { CalendarModule } from "angular-calendar";
 import { DateFormatterServiceService } from "./calendar/service/date-formatter-service.service";
 import { UtilsCalendarHeaderComponent } from './calendar/utils/utils-calendar-header/utils-calendar-header.component';
 import { FiltreCongesParAnneeComponent } from './filtre-conges-par-annee/filtre-conges-par-annee.component';
@@ -39,6 +45,7 @@ import { DeptMonthYearFilterPipe } from './shared/pipe/dept-month-year-filter.pi
 import { ExportCsvComponent } from './export-csv/export-csv.component';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import { AuthInterceptorService } from "./shared/service/auth-interceptor.service";
+import { FiltreMoisAnneeDeptComponent } from './filtre-mois-annee-dept/filtre-mois-annee-dept.component';
 
 
 const appRoutes: Routes = [
@@ -47,6 +54,7 @@ const appRoutes: Routes = [
   { path: "PlanningDesAbsences", component: PlanningDesAbsencesComponent },
   { path: "GestionDesAbsences", component: GestionDesAbsencesComponent },
   { path: "VueSynthetique", component: VueSynthetiqueComponent },
+  { path: "VueHistogramme", component: HistogrammeDeptJourComponent },
   { path: "ValidationDesAbsences", component: ValidationDemandesComponent },
   { path: "JoursFeries", component: JoursFeriesComponent },
   { path: "tableauSynthetique", component: TableauDeptJourCollabComponent},
@@ -75,7 +83,10 @@ registerLocaleData(localeFr);
     CongesJourCollabFilterPipe,
     FiltreDeptMoisAnneeComponent,
     DeptMonthYearFilterPipe,
-    ExportCsvComponent
+    ExportCsvComponent,
+    HistogrammeDeptJourComponent,
+    FiltreMoisAnneeDeptComponent
+
   ],
   imports: [
     BrowserModule,
@@ -85,6 +96,7 @@ registerLocaleData(localeFr);
     MyDatePickerModule,
     RouterModule.forRoot(appRoutes),
     CalendarModule.forRoot(),
+    NgxChartsModule,    
     BrowserAnimationsModule
   ],
   providers: [ExcelService,AbsenceService, JoursFeriesService, LoginService, DateFormatterServiceService,{provide: LOCALE_ID, useValue: 'fr-FR' },{
@@ -92,6 +104,7 @@ registerLocaleData(localeFr);
     useClass: AuthInterceptorService,
     multi: true,
   }],
+
   bootstrap: [AppComponent]
 })
 export class AppModule {}

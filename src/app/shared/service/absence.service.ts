@@ -14,6 +14,7 @@ import { Collaborateur } from "../domain/collaborateur";
 export class AbsenceService {
   // absences du collaborateur collaborateur connecté
   abences:Absence[];
+
   public absenceSubj = new BehaviorSubject<Absence[]>([]);
   // toutes les absences
   allAbences:Absence[];
@@ -29,7 +30,6 @@ export class AbsenceService {
     this.listerAllAbsences();
     this.listerAbsencesParStatut();
   }
-
    
 
   refreshAbsencesByMatricule() {
@@ -63,13 +63,16 @@ export class AbsenceService {
     console.log('newAbsence ',newAbsence);
 		return this.http.post<Absence>(env.urlBackEndAbsences, newAbsence,httpOptions);
   }
-  
-  modifierAbsence(modifAbsence:Absence) {
-    const httpOptions = {
-			headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-		};
-		return this.http.put<Absence>(env.urlBackEndAbsences + modifAbsence.id,modifAbsence,httpOptions);
 
+  modifierAbsence(modifAbsence: Absence) {
+    const httpOptions = {
+      headers: new HttpHeaders({ "Content-Type": "application/json" })
+    };
+    return this.http.put<Absence>(
+      env.urlBackEndAbsences + modifAbsence.id,
+      modifAbsence,
+      httpOptions
+    );
   }
   supprimerAbsence(absenceId: number): Observable<any> {
     const httpOptions = {
@@ -78,11 +81,14 @@ export class AbsenceService {
     return this.http.delete<Absence>(env.urlBackEndAbsences + absenceId);
   }
 
-  validerOuRejeterAbsence(modifAbsence:Absence) {
+  validerOuRejeterAbsence(modifAbsence: Absence) {
     const httpOptions = {
-			headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-		};
-		return this.http.patch<Absence>(env.urlBackEndAbsences + modifAbsence.id,modifAbsence,httpOptions);
+      headers: new HttpHeaders({ "Content-Type": "application/json" })
+    };
+    return this.http.patch<Absence>(
+      env.urlBackEndAbsences + modifAbsence.id,
+      modifAbsence,
+      httpOptions
+    );
   }
-
 }
