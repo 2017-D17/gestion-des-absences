@@ -10,9 +10,10 @@ import { Router } from '@angular/router';
   styleUrls: ["./menu.component.css"]
 })
 export class MenuComponent implements OnInit {
-  // Collaborateur connecté
+
   collaborateur: Collaborateur;
-  constructor(private absenceService: AbsenceService,private loginService: LoginService,private router: Router) {}
+
+  constructor(private absenceService: AbsenceService, private loginService: LoginService, private router: Router) { }
 
   ngOnInit() {
     this.collaborateur = this.loginService.getConnectedUser();
@@ -21,6 +22,7 @@ export class MenuComponent implements OnInit {
   seDeconnecter() {
     this.loginService.seDeConnecter().subscribe();
     localStorage.clear();
+
     this.router.navigate(['/connexion']);
   }
 }

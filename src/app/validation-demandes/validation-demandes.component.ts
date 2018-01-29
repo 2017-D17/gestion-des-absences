@@ -16,15 +16,16 @@ export class ValidationDemandesComponent implements OnInit {
   collaborateur:Collaborateur;
   absences: Absence[] = [];
   // Message d'erreur ou de succès suite à l'envoi des données sur le serveur
-  msg:string
+  msg: string
   // Attribut permettant d'afficher ou non le message d'alert msg
-  alertActive:boolean = false;
+  alertActive: boolean = false;
   // Attribut permettant de définir le style de l'alerte
-  alertClass:string;
+  alertClass: string;
   // Types d'absences
-  absTypes:any = ABSENCES_TYPES;
+  absTypes: any = ABSENCES_TYPES;
 
   constructor(private absenceService: AbsenceService,private loginService: LoginService) {}
+
 
   ngOnInit() {
     // récupération du collaborateur connecté
@@ -42,50 +43,39 @@ export class ValidationDemandesComponent implements OnInit {
     })
   }
 
-  valider(absence:Absence) {
+  valider(absence: Absence) {
     absence.statut = AbsenceStatut.VALIDEE;
     this.absenceService.validerOuRejeterAbsence(absence).subscribe(result => {
       this.alertActive = true;
       this.alertClass = "alert-success";
-      this.msg = "L'absence n°"+ result.id + " est validée";
-      
-      // Mise à jour des absences suite à la soumission du formulaire
+      this.msg = "L'absence n°" + result.id + " est validée";
       this.absenceService.refreshAbsencesByMatricule();
-      
-    },err => {
+    }, err => {
       this.alertActive = true;
       this.alertClass = "alert-danger";
       this.msg = err.error.message;
-      // Mise à jour des absences suite à la soumission du formulaire
       this.absenceService.refreshAbsencesByMatricule();
-
     });
-
   }
 
-  rejeter(absence:Absence) {
+  rejeter(absence: Absence) {
     absence.statut = AbsenceStatut.REJETEE;
     this.absenceService.validerOuRejeterAbsence(absence).subscribe(result => {
       this.alertActive = true;
       this.alertClass = "alert-success";
-      this.msg = "L'absence n°"+ result.id + " est rejetée";
-      
-      // Mise à jour des absences suite à la soumission du formulaire
+      this.msg = "L'absence n°" + result.id + " est rejetée";
       this.absenceService.refreshAbsencesByMatricule();
-      
-    },err => {
+    }, err => {
       this.alertActive = true;
       this.alertClass = "alert-danger";
       this.msg = err.error.message;
-      // Mise à jour des absences suite à la soumission du formulaire
       this.absenceService.refreshAbsencesByMatricule();
 
     });
-
   }
-  
+
   // Fermeture de l'alert par la croix
   closeAlert() {
-		this.alertActive = false;
+    this.alertActive = false;
   }
 }

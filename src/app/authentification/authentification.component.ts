@@ -18,11 +18,11 @@ export class AuthentificationComponent implements OnInit {
     alertActive:boolean = false;
     data:any = {};
 
-  constructor(private loginService: LoginService,private router: Router) { }
+
+  constructor(private loginService: LoginService, private router: Router) { }
 
   ngOnInit() {
   }
-
   submit(loginForm: NgForm) {    
     this.loginService.seConnecter(this.data).subscribe(result => {
       if(result) {
@@ -42,11 +42,12 @@ export class AuthentificationComponent implements OnInit {
         this.msg = "Vos informations d'authentification sont invalides";
     });
     
+
   }
 
   // Fermeture de l'alert par la croix
   closeAlert() {
-		this.alertActive = false;
+    this.alertActive = false;
   }
 
 }

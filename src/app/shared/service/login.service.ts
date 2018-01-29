@@ -5,6 +5,8 @@ import { Observable, Subject } from "rxjs";
 import { environment as env } from "../../../environments/environment";
 import { Collaborateur } from "../domain/collaborateur";
 
+const httpOptions = { headers: new HttpHeaders({ "Content-Type": "application/json" }) };
+
 @Injectable()
 export class LoginService {
   connectedUser:Collaborateur;
@@ -28,10 +30,10 @@ export class LoginService {
   }
   seDeConnecter(): Observable<any> {
     return this.http.post<any>(env.urlBackEndLogout,"");
+
   }
 
-
-
-
-
+  login(collaborateur: Collaborateur): Observable<any> {
+    return this.http.post<Collaborateur>(env.urlBackEndLogin, collaborateur, httpOptions);
+  }
 }

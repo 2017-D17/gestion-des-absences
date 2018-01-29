@@ -12,14 +12,13 @@ import { AbsenceStatut, ABSENCES_STATUS } from "../shared/domain/absence-statut.
 })
 export class ButtonsModifSuppComponent implements OnInit {
   @Input() absence: Absence;
-
   @Input() titre: string;
   absences: Absence[];
   modif: boolean = false;
   modifAbsence: string;
   aff: boolean = false;
 
-  constructor(private aService: AbsenceService) {}
+  constructor(private aService: AbsenceService) { }
 
   ngOnInit() {
 
@@ -27,7 +26,6 @@ export class ButtonsModifSuppComponent implements OnInit {
       this.modifAbsence = "update";
       this.aff = true;
     } else if(this.absence.statut == AbsenceStatut.EN_ATTENTE_VALIDATION ) {
-
       this.aff = true;
     }
   }

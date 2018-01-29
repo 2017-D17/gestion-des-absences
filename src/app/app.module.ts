@@ -16,6 +16,7 @@ import { AccueilComponent } from "./accueil/accueil.component";
 import { AuthentificationComponent } from "./authentification/authentification.component";
 import { AbsenceService } from "./shared/service/absence.service";
 import { HttpClientModule } from "@angular/common/http";
+import { HttpModule } from '@angular/http';
 import { PlanningDesAbsencesComponent } from "./planning-des-absences/planning-des-absences.component";
 import { JoursFeriesComponent } from "./jours-feries/jours-feries.component";
 import { VueSynthetiqueComponent } from "./vue-synthetique/vue-synthetique.component";
@@ -33,10 +34,14 @@ import { HistogrammeDeptJourComponent } from "./histogramme-dept-jour/histogramm
 import { NgxChartsModule } from "@swimlane/ngx-charts";
 import { CalendarModule } from "angular-calendar";
 import { DateFormatterServiceService } from "./calendar/service/date-formatter-service.service";
-
 import { UtilsCalendarHeaderComponent } from './calendar/utils/utils-calendar-header/utils-calendar-header.component';
 import { FiltreCongesParAnneeComponent } from './filtre-conges-par-annee/filtre-conges-par-annee.component';
 import { YearFilterPipe } from './shared/pipe/year-filter.pipe';
+import { AuthService } from "./shared/service/auth.service";
+import { AuthGuardService } from "./shared/service/auth-guard.service";
+import { RoleGuardService } from "./shared/service/role-guard.service";
+import { environment } from "../environments/environment";
+import { getToken } from "./token-getter";
 import { LoginService } from "./shared/service/login.service";
 import { ExcelService } from "./shared/service/excel.service";
 import { TableauDeptJourCollabComponent } from './tableau-dept-jour-collab/tableau-dept-jour-collab.component';
@@ -58,9 +63,12 @@ const appRoutes: Routes = [
   { path: "ValidationDesAbsences", component: ValidationDemandesComponent },
   { path: "JoursFeries", component: JoursFeriesComponent },
   { path: "tableauSynthetique", component: TableauDeptJourCollabComponent },
+
   { path: "**", redirectTo: "connexion" }
 ];
+
 registerLocaleData(localeFr);
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -103,8 +111,6 @@ registerLocaleData(localeFr);
     useClass: AuthInterceptorService,
     multi: true,
   }],
-
-
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }
