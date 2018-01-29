@@ -28,9 +28,7 @@ export class ValidationDemandesComponent implements OnInit {
 
   ngOnInit() {
     // récupération du collaborateur connecté
-    this.loginService.subjectCollaborateur.subscribe(
-      data => (this.collaborateur = data)
-    );
+    this.collaborateur = this.loginService.getConnectedUser();
 
     // Récupération des absences
     this.collaborateur.subalternes.forEach(matricule => {

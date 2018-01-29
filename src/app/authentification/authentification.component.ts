@@ -16,29 +16,31 @@ export class AuthentificationComponent implements OnInit {
     msg:string
     // Attribut permettant d'afficher ou non le message d'alert msg
     alertActive:boolean = false;
+    data:any = {};
 
   constructor(private loginService: LoginService,private router: Router) { }
 
   ngOnInit() {
   }
 
-  submit(loginForm: NgForm) {
-    console.log(this.collaborateur);
-    this.router.navigate(['/accueil']);
-    // this.loginService.seConnecter(this.collaborateur).subscribe(collab => {
-    //   if(collab) {
-    //     this.loginService.refreshConnectedCollab(collab);
-    //     this.router.navigate(['/accueil']);
-    //   } else {
-    //     this.alertActive = true;
-    //     this.msg = "Vos informations d'authentification sont invalides";
-    //   }
+  submit(loginForm: NgForm) {    
+    this.loginService.seConnecter(this.data).subscribe(result => {
+      if(result) {
+        localStorage.setItem('token', result.token);
+        localStorage.setItem('user', JSON.stringify(result.collaborateur));
+        this.loginService.setConnectedUser(result.collaborateur);
+        loginForm.resetForm();
+        this.router.navigate(['/accueil']);
+      } else {
+        this.alertActive = true;
+        this.msg = "Vos informations d'authentification sont invalides";
+      }
       
 
-    // },err => {
-    //     this.alertActive = true;
-    //     this.msg = "Vos informations d'authentification sont invalides";
-    // });
+    },err => {
+        this.alertActive = true;
+        this.msg = "Vos informations d'authentification sont invalides";
+    });
     
   }
 

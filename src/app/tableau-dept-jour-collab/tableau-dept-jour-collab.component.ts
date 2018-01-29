@@ -31,8 +31,6 @@ export class TableauDeptJourCollabComponent implements OnInit {
   lignes:any = {};
   
 
-  
-
   constructor(private loginService: LoginService,private jourFerieService: JoursFeriesService,private absService: AbsenceService) { }
 
   ngOnInit() {
@@ -43,9 +41,7 @@ export class TableauDeptJourCollabComponent implements OnInit {
     this.initialiserTableau(year,month);
     
     // récupération du collaborateur connecté
-    this.loginService.subjectCollaborateur.subscribe(
-      data => (this.collaborateur = data)
-    );
+    this.collaborateur = this.loginService.getConnectedUser();
 
     // récupération de toutes les absences et de la liste des collaborateurs
     this.absService.listerAllAbsences();

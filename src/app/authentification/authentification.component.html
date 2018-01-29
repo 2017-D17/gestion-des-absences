@@ -9,8 +9,8 @@
     <p id="profile-name" class="profile-name-card"></p>
     <form id="loginform" class="form-signin" role="form" (ngSubmit)="submit(loginForm)" novalidate #loginForm="ngForm">
       <span id="reauth-email" class="reauth-email"></span>
-      <input type="email" id="inputEmail" class="form-control" placeholder="Email" [(ngModel)]="collaborateur.email" name="email" #email="ngModel" required autofocus>
-      <input type="password" id="inputPassword" class="form-control" placeholder="Mot de passe" [(ngModel)]="collaborateur.password" name="password" #password="ngModel" required>
+      <input type="email" id="inputEmail" class="form-control" placeholder="Email" [(ngModel)]="data.email" name="email" #email="ngModel" required autofocus>
+      <input type="password" id="inputPassword" class="form-control" placeholder="Mot de passe" [(ngModel)]="data.password" name="password" #password="ngModel" required>
       <div *ngIf="alertActive" class="alert alert-danger alert-dismissable">
           <a (click)="closeAlert()" class="close" data-dismiss="alert" aria-label="close">&times;</a>
           <strong>{{msg}}</strong>

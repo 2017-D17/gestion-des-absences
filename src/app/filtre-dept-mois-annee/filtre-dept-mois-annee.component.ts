@@ -28,9 +28,8 @@ export class FiltreDeptMoisAnneeComponent implements OnInit {
 
   ngOnInit() {
     // récupération du collaborateur connecté
-    this.loginService.subjectCollaborateur.subscribe(
-      data => (this.collaborateur = data)
-    );
+    this.collaborateur = this.loginService.getConnectedUser();
+
     let currentDate = new Date();
     // Initialisation des années à partir de l'année actuelle
     this.filtre.annee = currentDate.getFullYear();
@@ -48,6 +47,9 @@ export class FiltreDeptMoisAnneeComponent implements OnInit {
 
     // Initialisation des départements
     this.filtre.departement = this.collaborateur.departement;
+    if(this.isDepartementExist(this.collaborateur.departement) === false) {
+      this.depts.push(this.collaborateur.departement);
+    }
     this.absService.listerAllAbsences();
     this.absService.allAbsencesSubj.subscribe(result => {
       this.absences = result;
@@ -57,6 +59,7 @@ export class FiltreDeptMoisAnneeComponent implements OnInit {
         }
       });
     });
+    this.changedFilter.emit(this.filtre);
 
   }
 

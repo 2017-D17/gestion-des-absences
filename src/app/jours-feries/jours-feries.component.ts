@@ -26,10 +26,7 @@ export class JoursFeriesComponent implements OnInit {
   constructor(private jourFerieService: JoursFeriesService,private loginService: LoginService) {}
 
   ngOnInit() {
-     // récupération du collaborateur connecté
-     this.loginService.subjectCollaborateur.subscribe(
-      data => (this.collaborateur = data)
-    );
+    this.collaborateur = this.loginService.getConnectedUser();
 
     this.jourFerieService.ferieSubj.subscribe(jourF => {
       this.joursFeries = jourF;

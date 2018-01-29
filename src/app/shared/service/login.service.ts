@@ -7,23 +7,30 @@ import { Collaborateur } from "../domain/collaborateur";
 
 @Injectable()
 export class LoginService {
-  subjectCollaborateur = new BehaviorSubject<Collaborateur>(new Collaborateur("8b2d3ac7","Hahn","Nellie",0,0,"DSI/INDUS",["MANAGER","ADMIN"],["a8fc21fc","e300fb12"]));
+  connectedUser:Collaborateur;
 
   constructor(private http: HttpClient) { }
 
-  refreshConnectedCollab(collab:Collaborateur) {
-		this.subjectCollaborateur.next(collab);
+   getConnectedUser():Collaborateur {
+    this.connectedUser = JSON.parse(localStorage.getItem('user'))
+     return this.connectedUser;
    }
 
-  seConnecter(collaborateur: Collaborateur): Observable<any> {
+   setConnectedUser(collab:Collaborateur) {
+    this.connectedUser = collab;
+   }
+
+  seConnecter(dataLogin: any): Observable<any> {
     const httpOptions = {
-      headers: new HttpHeaders({ "Content-Type": "application/json" })
+      headers: new HttpHeaders({ "Content-Type": "application/json"})
     };
-    return this.http.post<Collaborateur>(env.urlBackEndLogin, collaborateur,httpOptions );
+    return this.http.post<Collaborateur>(env.urlBackEndLogin, dataLogin,httpOptions );
   }
   seDeConnecter(): Observable<any> {
     return this.http.post<any>(env.urlBackEndLogout,"");
   }
+
+
 
 
 

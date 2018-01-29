@@ -1,5 +1,5 @@
 export enum RoleCollaborateur {
-    MANAGER = "MANAGER",
-    ADMIN = "ADMIN", 
-    USER = "USER"
+    MANAGER = "ROLE_MANAGER",
+    ADMIN = "ROLE_ADMIN", 
+    USER = "ROLE_USER"
 }

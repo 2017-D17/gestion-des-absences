@@ -8,6 +8,7 @@ import { LoginService } from "./login.service";
 import { environment as env} from '../../../environments/environment';
 import { RoleCollaborateur } from "../domain/role-collaborateur.enum";
 import { AbsenceStatut } from '../domain/absence-statut.enum';
+import { Collaborateur } from "../domain/collaborateur";
 
 @Injectable()
 export class AbsenceService {
@@ -17,6 +18,8 @@ export class AbsenceService {
   // toutes les absences
   allAbences:Absence[];
   public allAbsencesSubj = new BehaviorSubject<Absence[]>([]);
+  // Collaborateur connecté
+  connectedUser:Collaborateur;
   // Absences en attentes de validation
   abencesEnAttente:Absence[];
   public abencesEnAttenteSubj = new BehaviorSubject<Absence[]>([]);
@@ -30,29 +33,25 @@ export class AbsenceService {
    
 
   refreshAbsencesByMatricule() {
-    this.loginService.subjectCollaborateur.subscribe(data => {
-      this.http.get<Absence[]>( env.urlBackEndAbsences + data.matricule)
+    this.connectedUser = this.loginService.getConnectedUser();
+    this.http.get<Absence[]>( env.urlBackEndAbsences + this.connectedUser.matricule)
       .subscribe(data => this.absenceSubj.next(data));
-
-    });
   }
 
   listerAllAbsences() {
-    this.loginService.subjectCollaborateur.subscribe( collab => {
-      if(collab.role.includes(RoleCollaborateur.MANAGER)) {
-        this.http.get<Absence[]>( env.urlBackEndAbsences)
-      .subscribe(data => this.allAbsencesSubj.next(data));
-      }
-    })
+    this.connectedUser = this.loginService.getConnectedUser();
+    if(this.connectedUser.roles.includes(RoleCollaborateur.MANAGER)) {
+      this.http.get<Absence[]>( env.urlBackEndAbsences)
+    .subscribe(data => this.allAbsencesSubj.next(data));
+    }
   }
 
   listerAbsencesParStatut() {
-    this.loginService.subjectCollaborateur.subscribe( collab => {
-      if(collab.role.includes(RoleCollaborateur.MANAGER)) {
-        this.http.get<Absence[]>( env.urlBackEndAbsencesStatut + AbsenceStatut.EN_ATTENTE_VALIDATION)
+    this.connectedUser = this.loginService.getConnectedUser();
+    if(this.connectedUser.roles.includes(RoleCollaborateur.MANAGER)) {
+      this.http.get<Absence[]>( env.urlBackEndAbsencesStatut + AbsenceStatut.EN_ATTENTE_VALIDATION)
       .subscribe(data => this.abencesEnAttenteSubj.next(data));
-      }
-    })
+    }
   }
 
   
@@ -60,7 +59,8 @@ export class AbsenceService {
   sauvegarderAbsence(newAbsence:Absence):Observable<any> {
 		const httpOptions = {
 			headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-		};
+    };
+    console.log('newAbsence ',newAbsence);
 		return this.http.post<Absence>(env.urlBackEndAbsences, newAbsence,httpOptions);
   }
   

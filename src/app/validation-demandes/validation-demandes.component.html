@@ -25,7 +25,7 @@
         <div *ngFor="let type of absTypes">
             <td *ngIf="type.key === absence.type">{{type.label}}</td>
         </div>
-        <td>{{absence.collaborateur.nom}} {{absence.collaborateur.nom}} </td>
+        <td>{{absence.collaborateur.nom}} {{absence.collaborateur.prenom}} </td>
         <td>
           <div class="actionBtn">
               <i  class="fa fa-check font-btn" style=" color:green" aria-hidden="true" (click)="valider(absence)"></i>

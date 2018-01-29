@@ -94,17 +94,14 @@ export class FormAbsenceComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // récupération du collaborateur connecté
-    this.loginService.subjectCollaborateur.subscribe(
-      data => (this.collaborateur = data)
-    );
+    this.collaborateur = this.loginService.getConnectedUser();
     this.currentDate = new Date();
     // initialisation du formulaire selon son rôle
     if(this.action === "add") {
       this.isValid = false;
       this.add = true;
       this.titre = "Demande d'absence";
-      this.absence = new Absence(0, "", "", "", "", "", this.collaborateur);
+      this.absence = new Absence(0, "", "", "", "", "");
       this.selDateDebut = {
         year: this.currentDate.getFullYear(),
         month: this.currentDate.getMonth() + 1,
@@ -193,6 +190,7 @@ export class FormAbsenceComponent implements OnInit {
     this.absence.dateFin = this.correctDateFormat(this.dateDeFin);
     
     this.absence.statut = AbsenceStatut.INITIALE;
+    // this.absence.collaborateur = this.collaborateur;
 
     if (this.action === "add") {
       this.absenceService.sauvegarderAbsence(this.absence).subscribe(

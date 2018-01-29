@@ -71,10 +71,7 @@ export class FormJourFerieComponent implements OnInit {
   constructor(private jourFerieService:JoursFeriesService,private absenceService:AbsenceService,private modalService: NgbModal,private loginService: LoginService) { }
 
   ngOnInit() {
-     // récupération du collaborateur connecté
-     this.loginService.subjectCollaborateur.subscribe(
-      data => (this.collaborateur = data)
-    );
+    this.collaborateur = this.loginService.getConnectedUser();
     this.currentDate = new Date();
     // initialisation du formulaire selon son rôle
     if(this.action === "add") {

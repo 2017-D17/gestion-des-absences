@@ -11,6 +11,8 @@ import { JoursFeriesService } from "../shared/service/jours-feries.service";
 import { AbsenceType, ABSENCES_TYPES} from "../shared/domain/absence-type.enum";
 import { FerieType, FERIE_TYPES } from "../shared/domain/ferie-type.enum";
 import { JourFerie } from "../shared/domain/jour-ferie";
+import { LoginService } from "../shared/service/login.service";
+import { Collaborateur } from "../shared/domain/collaborateur";
 
 
 const colors: any = {
@@ -35,21 +37,23 @@ const colors: any = {
   styleUrls: ['./planning-des-absences.component.css',]
 })
 export class PlanningDesAbsencesComponent implements OnInit {
+  // Collaborateur connecté
+  collaborateur: Collaborateur;
   absences: Absence[] = [];
   joursFeries: JourFerie[] = [];
   rtt:number;
   conges:number;
   absenceClass:string;
 
-  constructor(private absService: AbsenceService,private jourFerieService: JoursFeriesService) { }
+  constructor(private absService: AbsenceService,private jourFerieService: JoursFeriesService,private loginService: LoginService) { }
 
   ngOnInit() {
+    //récupération du collaborateur connecté
+    this.collaborateur = this.loginService.getConnectedUser();
+    this.rtt = this.collaborateur.conges;
+    this.conges = this.collaborateur.rtt;
     this.absService.absenceSubj.subscribe(result => {
       this.absences = result;
-      if (result.length > 0) {
-        this.rtt = result[0].collaborateur.conges;
-        this.conges = result[0].collaborateur.rtt;
-      }
       result.forEach(a => {
         this.absenceClass = "absence-color";
         let event:any = {};

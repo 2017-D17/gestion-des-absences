@@ -37,6 +37,9 @@ import { CongesJourCollabFilterPipe } from './shared/pipe/conges-jour-collab-fil
 import { FiltreDeptMoisAnneeComponent } from './filtre-dept-mois-annee/filtre-dept-mois-annee.component';
 import { DeptMonthYearFilterPipe } from './shared/pipe/dept-month-year-filter.pipe';
 import { ExportCsvComponent } from './export-csv/export-csv.component';
+import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import { AuthInterceptorService } from "./shared/service/auth-interceptor.service";
+
 
 const appRoutes: Routes = [
   { path: "connexion", component: AuthentificationComponent },
@@ -84,7 +87,11 @@ registerLocaleData(localeFr);
     CalendarModule.forRoot(),
     BrowserAnimationsModule
   ],
-  providers: [ExcelService,AbsenceService, JoursFeriesService, LoginService, DateFormatterServiceService,{provide: LOCALE_ID, useValue: 'fr-FR' }],
+  providers: [ExcelService,AbsenceService, JoursFeriesService, LoginService, DateFormatterServiceService,{provide: LOCALE_ID, useValue: 'fr-FR' },{
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptorService,
+    multi: true,
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
