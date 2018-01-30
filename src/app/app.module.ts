@@ -37,11 +37,7 @@ import { DateFormatterServiceService } from "./calendar/service/date-formatter-s
 import { UtilsCalendarHeaderComponent } from './calendar/utils/utils-calendar-header/utils-calendar-header.component';
 import { FiltreCongesParAnneeComponent } from './filtre-conges-par-annee/filtre-conges-par-annee.component';
 import { YearFilterPipe } from './shared/pipe/year-filter.pipe';
-import { AuthService } from "./shared/service/auth.service";
-import { AuthGuardService } from "./shared/service/auth-guard.service";
-import { RoleGuardService } from "./shared/service/role-guard.service";
 import { environment } from "../environments/environment";
-import { getToken } from "./token-getter";
 import { LoginService } from "./shared/service/login.service";
 import { ExcelService } from "./shared/service/excel.service";
 import { TableauDeptJourCollabComponent } from './tableau-dept-jour-collab/tableau-dept-jour-collab.component';
