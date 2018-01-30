@@ -10,38 +10,42 @@ import { Router } from '@angular/router';
   styleUrls: ['./authentification.component.css']
 })
 export class AuthentificationComponent implements OnInit {
-    // Collaborateur connecté
-    collaborateur: Collaborateur = new Collaborateur("","","",0,0,"",[],[]);
-    // Message d'erreur ou de succès suite à l'envoi des données sur le serveur
-    msg:string
-    // Attribut permettant d'afficher ou non le message d'alert msg
-    alertActive:boolean = false;
-    data:any = {};
-
+  // Collaborateur connecté
+  collaborateur: Collaborateur = new Collaborateur("", "", "", 0, 0, "", [], []);
+  // Message d'erreur ou de succès suite à l'envoi des données sur le serveur
+  msg: string
+  // Attribut permettant d'afficher ou non le message d'alert msg
+  alertActive: boolean = false;
+  data: any = {};
+  loading: boolean;
 
   constructor(private loginService: LoginService, private router: Router) { }
 
   ngOnInit() {
+    this.loading = false;
   }
-  submit(loginForm: NgForm) {    
+  submit(loginForm: NgForm) {
+    this.loading = true;
     this.loginService.seConnecter(this.data).subscribe(result => {
-      if(result) {
+      if (result) {
         localStorage.setItem('token', result.token);
         localStorage.setItem('user', JSON.stringify(result.collaborateur));
         this.loginService.setConnectedUser(result.collaborateur);
         loginForm.resetForm();
         this.router.navigate(['/accueil']);
       } else {
+        this.loading = false;
         this.alertActive = true;
         this.msg = "Vos informations d'authentification sont invalides";
       }
-      
 
-    },err => {
-        this.alertActive = true;
-        this.msg = "Vos informations d'authentification sont invalides";
+
+    }, err => {
+      this.loading = false;
+      this.alertActive = true;
+      this.msg = "Vos informations d'authentification sont invalides";
     });
-    
+
 
   }
 
