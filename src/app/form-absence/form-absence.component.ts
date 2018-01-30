@@ -190,7 +190,6 @@ export class FormAbsenceComponent implements OnInit {
     this.absence.dateFin = this.correctDateFormat(this.dateDeFin);
     
     this.absence.statut = AbsenceStatut.INITIALE;
-    // this.absence.collaborateur = this.collaborateur;
 
     if (this.action === "add") {
       this.absenceService.sauvegarderAbsence(this.absence).subscribe(
@@ -222,7 +221,8 @@ export class FormAbsenceComponent implements OnInit {
           this.absenceService.refreshAbsencesByMatricule();
         });
       } else if (this.action === "update") {
-        this.absenceService.modifierAbsence(this.absence).subscribe(
+        let abs:Absence  = new Absence(this.absence.id,this.absence.dateDebut,this.absence.dateFin,this.absence.type,this.absence.motif,this.absence.statut);
+        this.absenceService.modifierAbsence(abs).subscribe(
         result => {
           this.alertActive = false;
           if (result != null) {

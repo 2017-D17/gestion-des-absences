@@ -3,6 +3,8 @@ import { Collaborateur } from "../shared/domain/collaborateur";
 import { Absence } from "../shared/domain/absence";
 import { AbsenceService } from "../shared/service/absence.service";
 import { ExcelService } from "../shared/service/excel.service";
+import { LoginService } from "../shared/service/login.service";
+
 
 @Component({
   selector: "app-histogramme-dept-jour",
@@ -55,6 +57,7 @@ export class HistogrammeDeptJourComponent {
   };
 
   constructor(
+    private loginService: LoginService,
     private absService: AbsenceService,
     private excelService: ExcelService
   ) {
@@ -63,58 +66,40 @@ export class HistogrammeDeptJourComponent {
   }
 
   onSelect(event) {
-    console.log("onSelect " + event);
   }
 
-  makeDayRepresentation() {}
-
-  /*handlefilterEventChanged(newAnnee: number, newmois: string, newDept: string) {
-    console.log("----------------handlefilterEventChanged");
-    return (
-      (this.annee = newAnnee), (this.unmois = newmois), (this.dept = newDept)
-    );
-  }*/
-
   ngOnInit() {
-    this.filtre.annee = 2018;
-    this.filtre.mois = 0;
-    this.filtre.departement = "DSI/INDUS";
+    // récupération du collaborateur connecté
+    this.collaborateur = this.loginService.getConnectedUser();
+
     let year = this.currentDatetime.getFullYear();
     let month = this.currentDatetime.getMonth();
-    this.initialiserHistogramme(year, month);
+    this.initialiserHistogramme(year, month, this.collaborateur.departement);
   }
 
   filterChanges(event) {
     this.currentDatetime = new Date();
     this.filtre = event;
-    this.initialiserHistogramme(
-      parseInt(this.filtre.annee),
-      parseInt(this.filtre.mois)
-    );
+    this.initialiserHistogramme(parseInt(this.filtre.annee),parseInt(this.filtre.mois),this.filtre.departement);
   }
 
-  initialiserHistogramme(year: number, month: number) {
-    this.recuperationCollab(year, month);
-  }
-
-  recuperationCollab(year: number, month: number) {
+  initialiserHistogramme(year: number, month: number,departement:string) {
     let series = [];
+    this.collaborateurs = [];
     this.absService.listerAllAbsences();
     this.absService.allAbsencesSubj.subscribe(result => {
       this.absences = result;
       result.forEach(abs => {
-        if (this.isCollabExist(abs.collaborateur) === false) {
+        if (this.isCollabExist(abs.collaborateur) === false && abs.collaborateur.departement === this.filtre.departement) {
           this.collaborateurs.push(abs.collaborateur);
         }
       });
       this.date = [];
       let monthNum: number = month + 1;
-      //console.log("month 2", monthNum);
       let d = new Date(year, monthNum, 0);
       for (let i = 1; i <= d.getDate(); i++) {
         series = [];
         let today: Date = new Date(year, month, i);
-        //console.log("today", today.getMonth());
         this.collaborateurs.forEach(collab => {
           let DateNumber = this.convertDateToMillisecond(today); // date à tester
 
@@ -128,14 +113,12 @@ export class HistogrammeDeptJourComponent {
               DateNumber <= dateFinNumber
             );
           });
-          //console.log("absences", absenceList);
           let serie = {
             name: collab.nom,
             value: absenceList.length
           };
           series.push(serie);
         });
-        //console.log("serie", series);
         let monthNum: number = today.getMonth() + 1;
         let formattedToday =
           today.getDate() + "/" + monthNum + "/" + today.getFullYear();
@@ -143,13 +126,9 @@ export class HistogrammeDeptJourComponent {
           name: formattedToday,
           series: series
         };
-        //console.log("obj", obj);
         this.date.push(obj);
       }
-      //console.log("date", this.date);
     });
-
-    // return series;
   }
 
   isCollabExist(collab: Collaborateur): boolean {
@@ -173,14 +152,6 @@ export class HistogrammeDeptJourComponent {
   }
 
   filterByDeptAndYearAndMonth(absence) {
-    console.log("filterByDeptAndYearAndMonth " + absence);
-    console.log(
-      this.filtre.annee +
-        " " +
-        this.filtre.mois +
-        " " +
-        absence.dateDebut.substring(5, 7)
-    );
     if (
       absence.collaborateur.departement == this.filtre.departement &&
       this.filtre.annee == absence.dateDebut.substring(0, 4) &&
