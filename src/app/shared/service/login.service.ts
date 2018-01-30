@@ -35,4 +35,9 @@ export class LoginService {
     return this.http.post<Collaborateur>(env.urlBackEndLogin, dataLogin,httpOptions );
   }
 
+  seDeconnecter() {
+    localStorage.clear();
+    this.router.navigate(['/connexion']);
+  }
+
 }

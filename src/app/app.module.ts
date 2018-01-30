@@ -48,6 +48,7 @@ import { ExportCsvComponent } from './export-csv/export-csv.component';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import { AuthInterceptorService } from "./shared/service/auth-interceptor.service";
 import { FiltreMoisAnneeDeptComponent } from './filtre-mois-annee-dept/filtre-mois-annee-dept.component';
+import { PageAdminComponent } from './page-admin/page-admin.component';
 
 const appRoutes: Routes = [
   { path: "connexion", component: AuthentificationComponent },
@@ -59,6 +60,7 @@ const appRoutes: Routes = [
   { path: "ValidationDesAbsences", component: ValidationDemandesComponent },
   { path: "JoursFeries", component: JoursFeriesComponent },
   { path: "tableauSynthetique", component: TableauDeptJourCollabComponent },
+  { path: "pageAdmin", component: PageAdminComponent },
   { path: "**", redirectTo: "connexion" }
 ];
 
@@ -89,6 +91,7 @@ registerLocaleData(localeFr);
     FiltreDeptMoisAnneeComponent,
     DeptMonthYearFilterPipe,
     ExportCsvComponent,
+    PageAdminComponent,
   ],
   imports: [
     BrowserModule,

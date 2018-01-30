@@ -28,6 +28,7 @@ export class GestionDesAbsencesComponent implements OnInit {
     this.collaborateur = this.loginService.getConnectedUser();
     this.rtt = this.collaborateur.conges;
     this.conges = this.collaborateur.rtt;
+    this.absService.refreshAbsencesByMatricule();
     this.absService.absenceSubj.subscribe(result => {
       this.absences = result;
     });
