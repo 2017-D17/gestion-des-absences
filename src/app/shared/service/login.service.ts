@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable, Subject } from "rxjs";
 import { environment as env } from "../../../environments/environment";
 import { Collaborateur } from "../domain/collaborateur";
+import { Router } from '@angular/router';
 
 const httpOptions = { headers: new HttpHeaders({ "Content-Type": "application/json" }) };
 
@@ -11,11 +12,16 @@ const httpOptions = { headers: new HttpHeaders({ "Content-Type": "application/js
 export class LoginService {
   connectedUser:Collaborateur;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,private router: Router) { }
 
    getConnectedUser():Collaborateur {
     this.connectedUser = JSON.parse(localStorage.getItem('user'))
-     return this.connectedUser;
+    if(this.connectedUser) {
+      return this.connectedUser;
+    } else {
+      this.router.navigate(['/connexion']);
+    }
+    
    }
 
    setConnectedUser(collab:Collaborateur) {
@@ -28,12 +34,5 @@ export class LoginService {
     };
     return this.http.post<Collaborateur>(env.urlBackEndLogin, dataLogin,httpOptions );
   }
-  seDeConnecter(): Observable<any> {
-    return this.http.post<any>(env.urlBackEndLogout,"");
 
-  }
-
-  login(collaborateur: Collaborateur): Observable<any> {
-    return this.http.post<Collaborateur>(env.urlBackEndLogin, collaborateur, httpOptions);
-  }
 }

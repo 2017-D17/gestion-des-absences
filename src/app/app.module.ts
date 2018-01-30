@@ -59,7 +59,6 @@ const appRoutes: Routes = [
   { path: "ValidationDesAbsences", component: ValidationDemandesComponent },
   { path: "JoursFeries", component: JoursFeriesComponent },
   { path: "tableauSynthetique", component: TableauDeptJourCollabComponent },
-
   { path: "**", redirectTo: "connexion" }
 ];
 

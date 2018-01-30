@@ -27,31 +27,42 @@ export class AbsenceService {
   public abencesEnAttenteSubj = new BehaviorSubject<Absence[]>([]);
 
   constructor(private http: HttpClient, private loginService: LoginService) {
-    this.refreshAbsencesByMatricule();
-    this.listerAllAbsences();
-    this.listerAbsencesParStatut();
+    this.connectedUser = this.loginService.getConnectedUser();
+    
+    if(this.connectedUser) {
+      this.refreshAbsencesByMatricule();
+      this.listerAllAbsences();
+      this.listerAbsencesParStatut().subscribe(data => this.abencesEnAttenteSubj.next(data));
+    }
   }
    
 
   refreshAbsencesByMatricule() {
     this.connectedUser = this.loginService.getConnectedUser();
-    this.http.get<Absence[]>( env.urlBackEndAbsences + this.connectedUser.matricule)
-      .subscribe(data => this.absenceSubj.next(data));
+    if(this.connectedUser) {
+      this.http.get<Absence[]>( env.urlBackEndAbsences + this.connectedUser.matricule)
+        .subscribe(data => this.absenceSubj.next(data));
+    } 
+    
   }
 
   listerAllAbsences() {
     this.connectedUser = this.loginService.getConnectedUser();
-    if(this.connectedUser.roles.includes(RoleCollaborateur.MANAGER)) {
-      this.http.get<Absence[]>( env.urlBackEndAbsences)
-    .subscribe(data => this.allAbsencesSubj.next(data));
+    if(this.connectedUser) {
+      if(this.connectedUser.roles.includes(RoleCollaborateur.ROLE_MANAGER)) {
+        this.http.get<Absence[]>( env.urlBackEndAbsences)
+      .subscribe(data => this.allAbsencesSubj.next(data));
+      }
     }
   }
 
-  listerAbsencesParStatut() {
+  listerAbsencesParStatut():Observable<any> {
     this.connectedUser = this.loginService.getConnectedUser();
-    if(this.connectedUser.roles.includes(RoleCollaborateur.MANAGER)) {
-      this.http.get<Absence[]>( env.urlBackEndAbsencesStatut + AbsenceStatut.EN_ATTENTE_VALIDATION)
-      .subscribe(data => this.abencesEnAttenteSubj.next(data));
+    if(this.connectedUser) {
+      if(this.connectedUser.roles.includes(RoleCollaborateur.ROLE_MANAGER)) {
+        console.log("listerAbsencesParStatut");
+        return this.http.get<Absence[]>( env.urlBackEndAbsencesStatut + AbsenceStatut.EN_ATTENTE_VALIDATION);
+      }
     }
   }
 

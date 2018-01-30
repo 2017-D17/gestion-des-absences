@@ -8,6 +8,5 @@ export const environment = {
   urlBackEndAbsences: 'http://localhost:8080/absences/',
   urlBackEndAbsencesStatut: 'http://localhost:8080/absences?statut=',
   urlBackEndJoursFeries: 'http://localhost:8080/jours_feries/',
-  urlBackEndLogin: 'http://localhost:8080/login',
-  urlBackEndLogout: 'http://localhost:8080/logout',
+  urlBackEndLogin: 'http://localhost:8080/login'
 };

@@ -20,9 +20,9 @@ export class MenuComponent implements OnInit {
   }
 
   seDeconnecter() {
-    this.loginService.seDeConnecter().subscribe();
+    console.log("deconnexion");
     localStorage.clear();
-
+    this.loginService.setConnectedUser(new Collaborateur("","","",0,0,"",[],[]));
     this.router.navigate(['/connexion']);
   }
 }
