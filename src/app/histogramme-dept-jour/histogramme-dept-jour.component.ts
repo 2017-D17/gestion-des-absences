@@ -5,7 +5,6 @@ import { AbsenceService } from "../shared/service/absence.service";
 import { ExcelService } from "../shared/service/excel.service";
 import { LoginService } from "../shared/service/login.service";
 
-
 @Component({
   selector: "app-histogramme-dept-jour",
   templateUrl: "./histogramme-dept-jour.component.html",
@@ -47,12 +46,15 @@ export class HistogrammeDeptJourComponent {
       "#C7B42C",
       "#AAAAAA",
       "#803690",
+      "#ff99ff",
       "#00ADF9",
       "#DCDCDC",
       "#46BFBD",
       "#FDB45C",
       "#949FB1",
-      "#4D5360"
+      "#4D5360",
+      "#ff9999",
+      "	#9999ff"
     ]
   };
 
@@ -81,17 +83,24 @@ export class HistogrammeDeptJourComponent {
   filterChanges(event) {
     this.currentDatetime = new Date();
     this.filtre = event;
-    this.initialiserHistogramme(parseInt(this.filtre.annee),parseInt(this.filtre.mois),this.filtre.departement);
+    this.initialiserHistogramme(
+      parseInt(this.filtre.annee),
+      parseInt(this.filtre.mois),
+      this.filtre.departement
+    );
   }
 
-  initialiserHistogramme(year: number, month: number,departement:string) {
+  initialiserHistogramme(year: number, month: number, departement: string) {
     let series = [];
     this.collaborateurs = [];
     this.absService.listerAllAbsences();
     this.absService.allAbsencesSubj.subscribe(result => {
       this.absences = result;
       result.forEach(abs => {
-        if (this.isCollabExist(abs.collaborateur) === false && abs.collaborateur.departement === this.filtre.departement) {
+        if (
+          this.isCollabExist(abs.collaborateur) === false &&
+          abs.collaborateur.departement === this.filtre.departement
+        ) {
           this.collaborateurs.push(abs.collaborateur);
         }
       });
