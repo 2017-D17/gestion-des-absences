@@ -4,13 +4,17 @@ import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable, Subject } from "rxjs";
 import { environment as env } from "../../../environments/environment";
+import { Collaborateur } from "../domain/collaborateur";
+import { LoginService } from "./login.service";
 
 @Injectable()
 export class JoursFeriesService {
   joursFeries: JourFerie[];
   ferieSubj = new BehaviorSubject<JourFerie[]>([]);
+  // Collaborateur connecté
+  connectedUser:Collaborateur;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private loginService: LoginService) {
     this.refreshJoursFeries();
   }
 
@@ -24,9 +28,13 @@ export class JoursFeriesService {
   }
 
   refreshJoursFeries() {
-    this.http
+    this.connectedUser = this.loginService.getConnectedUser();
+    if(this.connectedUser) {
+      this.http
       .get<JourFerie[]>(env.urlBackEndJoursFeries)
       .subscribe(j => this.ferieSubj.next(j));
+    }
+    
   }
 
   sauvegarderJourFerie(newJoursFeries: JourFerie): Observable<any> {

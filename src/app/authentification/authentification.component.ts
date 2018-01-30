@@ -10,38 +10,38 @@ import { Router } from '@angular/router';
   styleUrls: ['./authentification.component.css']
 })
 export class AuthentificationComponent implements OnInit {
-  // Collaborateur connecté
-  collaborateur: Collaborateur = new Collaborateur("", "", "", 0, 0, "", "");
-  // Message d'erreur ou de succès suite à l'envoi des données sur le serveur
-  msg: string
-  // Attribut permettant d'afficher ou non le message d'alert msg
-  alertActive: boolean = false;
-  // Attribut permettant de faire patienter l'utilisateur lors de la connexion
-  loading = false;
+    // Collaborateur connecté
+    collaborateur: Collaborateur = new Collaborateur("","","",0,0,"",[],[]);
+    // Message d'erreur ou de succès suite à l'envoi des données sur le serveur
+    msg:string
+    // Attribut permettant d'afficher ou non le message d'alert msg
+    alertActive:boolean = false;
+    data:any = {};
+
 
   constructor(private loginService: LoginService, private router: Router) { }
 
   ngOnInit() {
   }
+  submit(loginForm: NgForm) {    
+    this.loginService.seConnecter(this.data).subscribe(result => {
+      if(result) {
+        localStorage.setItem('token', result.token);
+        localStorage.setItem('user', JSON.stringify(result.collaborateur));
+        this.loginService.setConnectedUser(result.collaborateur);
+        loginForm.resetForm();
+        this.router.navigate(['/accueil']);
+      } else {
+        this.alertActive = true;
+        this.msg = "Vos informations d'authentification sont invalides";
+      }
+      
 
-  submit(loginForm: NgForm) {
-    console.log(this.collaborateur);
-    this.loading = true;
-    this.router.navigate(['/accueil']);
-    // this.loginService.seConnecter(this.collaborateur).subscribe(collab => {
-    //   if(collab) {
-    //     this.loginService.refreshConnectedCollab(collab);
-    //     this.router.navigate(['/accueil']);
-    //   } else {
-    //     this.alertActive = true;
-    //     this.msg = "Vos informations d'authentification sont invalides";
-    //   }
-
-
-    // },err => {
-    //     this.alertActive = true;
-    //     this.msg = "Vos informations d'authentification sont invalides";
-    // });
+    },err => {
+        this.alertActive = true;
+        this.msg = "Vos informations d'authentification sont invalides";
+    });
+    
 
   }
 

@@ -6,24 +6,64 @@ import { Absence } from "../domain/absence";
 import { JourFerie } from "../domain/jour-ferie";
 import { LoginService } from "./login.service";
 import { environment as env} from '../../../environments/environment';
+import { RoleCollaborateur } from "../domain/role-collaborateur.enum";
+import { AbsenceStatut } from '../domain/absence-statut.enum';
+import { Collaborateur } from "../domain/collaborateur";
 
 @Injectable()
 export class AbsenceService {
+  // absences du collaborateur collaborateur connecté
   abences:Absence[];
+
+
   public absenceSubj = new BehaviorSubject<Absence[]>([]);
+  // toutes les absences
+  allAbences: Absence[];
+  public allAbsencesSubj = new BehaviorSubject<Absence[]>([]);
+  // Collaborateur connecté
+  connectedUser:Collaborateur;
+  // Absences en attentes de validation
+  abencesEnAttente: Absence[];
+  public abencesEnAttenteSubj = new BehaviorSubject<Absence[]>([]);
 
-  constructor(private http: HttpClient,private loginService: LoginService) {
-    this.refreshAbsencesByMatricule();
+  constructor(private http: HttpClient, private loginService: LoginService) {
+    this.connectedUser = this.loginService.getConnectedUser();
+    
+    if(this.connectedUser) {
+      this.refreshAbsencesByMatricule();
+      this.listerAllAbsences();
+      this.listerAbsencesParStatut().subscribe(data => this.abencesEnAttenteSubj.next(data));
+    }
   }
-
    
 
   refreshAbsencesByMatricule() {
-    this.loginService.subjectCollaborateur.subscribe(data => {
-      this.http.get<Absence[]>( env.urlBackEndAbsences + data.matricule)
-      .subscribe(data => this.absenceSubj.next(data));
+    this.connectedUser = this.loginService.getConnectedUser();
+    if(this.connectedUser) {
+      this.http.get<Absence[]>( env.urlBackEndAbsences + this.connectedUser.matricule)
+        .subscribe(data => this.absenceSubj.next(data));
+    } 
+    
+  }
 
-    });
+  listerAllAbsences() {
+    this.connectedUser = this.loginService.getConnectedUser();
+    if(this.connectedUser) {
+      if(this.connectedUser.roles.includes(RoleCollaborateur.ROLE_MANAGER)) {
+        this.http.get<Absence[]>( env.urlBackEndAbsences)
+      .subscribe(data => this.allAbsencesSubj.next(data));
+      }
+    }
+  }
+
+  listerAbsencesParStatut():Observable<any> {
+    this.connectedUser = this.loginService.getConnectedUser();
+    if(this.connectedUser) {
+      if(this.connectedUser.roles.includes(RoleCollaborateur.ROLE_MANAGER)) {
+        console.log("listerAbsencesParStatut");
+        return this.http.get<Absence[]>( env.urlBackEndAbsencesStatut + AbsenceStatut.EN_ATTENTE_VALIDATION);
+      }
+    }
   }
 
   
@@ -31,16 +71,21 @@ export class AbsenceService {
   sauvegarderAbsence(newAbsence:Absence):Observable<any> {
 		const httpOptions = {
 			headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-		};
+
+    };
+    console.log('newAbsence ',newAbsence);
 		return this.http.post<Absence>(env.urlBackEndAbsences, newAbsence,httpOptions);
   }
-  
-  modifierAbsence(modifAbsence:Absence) {
-    const httpOptions = {
-			headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-		};
-		return this.http.put<Absence>(env.urlBackEndAbsences + modifAbsence.id,modifAbsence,httpOptions);
 
+  modifierAbsence(modifAbsence: Absence) {
+    const httpOptions = {
+      headers: new HttpHeaders({ "Content-Type": "application/json" })
+    };
+    return this.http.put<Absence>(
+      env.urlBackEndAbsences + modifAbsence.id,
+      modifAbsence,
+      httpOptions
+    );
   }
   supprimerAbsence(absenceId: number): Observable<any> {
     const httpOptions = {
@@ -49,11 +94,14 @@ export class AbsenceService {
     return this.http.delete<Absence>(env.urlBackEndAbsences + absenceId);
   }
 
-  validerOuRejeterAbsence(modifAbsence:Absence) {
+  validerOuRejeterAbsence(modifAbsence: Absence) {
     const httpOptions = {
-			headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-		};
-		return this.http.patch<Absence>(env.urlBackEndAbsences + modifAbsence.id,modifAbsence,httpOptions);
+      headers: new HttpHeaders({ "Content-Type": "application/json" })
+    };
+    return this.http.patch<Absence>(
+      env.urlBackEndAbsences + modifAbsence.id,
+      modifAbsence,
+      httpOptions
+    );
   }
-
 }

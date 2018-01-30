@@ -1,0 +1,31 @@
+<app-menu></app-menu>
+<br>
+<br>
+<div class="container">
+  <div class="text">
+    <p class=" text-nowrap text-center font-weight-bold font-italic">
+      Histogramme par département et par jour
+    </p>
+    <div class="filtreDepMonthYear">
+      <app-filtre-dept-mois-annee [absences]="absences" (changedFilter)="filterChanges($event)"></app-filtre-dept-mois-annee>
+      <button type="button" class="btn export-btn" (click)="exporterCSV()">
+        <img src="assets/img/exporter-CSV.png" />
+      </button>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <ngx-charts-bar-vertical-stacked [view]="view" [scheme]="colorScheme" [results]="date" [gradient]="gradient" [xAxis]="showXAxis"
+      [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
+      [yAxisLabel]="yAxisLabel" (select)="onSelect($event)">
+    </ngx-charts-bar-vertical-stacked>
+
+  </div>
+  <div class="legend">
+    <br>
+    <br>
+    <button routerLink="/VueSynthetique" class="btn btn-primary pull-right">Retour</button>
+  </div>
+</div>

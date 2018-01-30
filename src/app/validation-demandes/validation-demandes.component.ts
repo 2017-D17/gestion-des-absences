@@ -2,7 +2,9 @@ import { Component, OnInit } from "@angular/core";
 import { Absence } from "../shared/domain/absence";
 import { AbsenceService } from "../shared/service/absence.service";
 import { AbsenceStatut, ABSENCES_STATUS } from '../shared/domain/absence-statut.enum';
-import { AbsenceType, ABSENCES_TYPES } from "../shared/domain/absence-type.enum";
+import { AbsenceType, ABSENCES_TYPES} from "../shared/domain/absence-type.enum";
+import { Collaborateur } from "../shared/domain/collaborateur";
+import { LoginService } from "../shared/service/login.service";
 
 @Component({
   selector: "app-validation-demandes",
@@ -10,6 +12,8 @@ import { AbsenceType, ABSENCES_TYPES } from "../shared/domain/absence-type.enum"
   styleUrls: ["./validation-demandes.component.css"]
 })
 export class ValidationDemandesComponent implements OnInit {
+  // Collaborateur connecté
+  collaborateur:Collaborateur;
   absences: Absence[] = [];
   // Message d'erreur ou de succès suite à l'envoi des données sur le serveur
   msg: string
@@ -20,42 +24,68 @@ export class ValidationDemandesComponent implements OnInit {
   // Types d'absences
   absTypes: any = ABSENCES_TYPES;
 
-  constructor(private absenceService: AbsenceService) { }
+  constructor(private absenceService: AbsenceService,private loginService: LoginService) {}
+
 
   ngOnInit() {
-    this.absenceService.absenceSubj.subscribe(result => {
-      this.absences = result.filter(abs => abs.statut === AbsenceStatut.EN_ATTENTE_VALIDATION);
-    });
+    // récupération du collaborateur connecté
+    this.collaborateur = this.loginService.getConnectedUser();
+    
+    // Récupération des absences
+    this.listerAbsences();
+    
   }
 
   valider(absence: Absence) {
     absence.statut = AbsenceStatut.VALIDEE;
-    this.absenceService.validerOuRejeterAbsence(absence).subscribe(result => {
+    // on enlève le collaborateur pour que la requête passe au niveau du serveur
+    let abs:Absence = new Absence(absence.id,absence.dateDebut,absence.dateFin,absence.type,absence.motif,absence.statut);
+    this.absenceService.validerOuRejeterAbsence(abs).subscribe(result => {
       this.alertActive = true;
       this.alertClass = "alert-success";
       this.msg = "L'absence n°" + result.id + " est validée";
-      this.absenceService.refreshAbsencesByMatricule();
+      // this.absences.
+      this.absenceService.listerAbsencesParStatut();
+      this.listerAbsences();
+
     }, err => {
       this.alertActive = true;
       this.alertClass = "alert-danger";
       this.msg = err.error.message;
-      this.absenceService.refreshAbsencesByMatricule();
+      this.absenceService.listerAbsencesParStatut();
     });
   }
 
   rejeter(absence: Absence) {
     absence.statut = AbsenceStatut.REJETEE;
-    this.absenceService.validerOuRejeterAbsence(absence).subscribe(result => {
+    // on enlève le collaborateur pour que la requête passe au niveau du serveur
+    let abs:Absence = new Absence(absence.id,absence.dateDebut,absence.dateFin,absence.type,absence.motif,absence.statut);
+    this.absenceService.validerOuRejeterAbsence(abs).subscribe(result => {
       this.alertActive = true;
       this.alertClass = "alert-success";
       this.msg = "L'absence n°" + result.id + " est rejetée";
-      this.absenceService.refreshAbsencesByMatricule();
+      this.absenceService.listerAbsencesParStatut();
     }, err => {
       this.alertActive = true;
       this.alertClass = "alert-danger";
       this.msg = err.error.message;
-      this.absenceService.refreshAbsencesByMatricule();
+      this.absenceService.listerAbsencesParStatut();
 
+    });
+  }
+
+  listerAbsences() {
+    console.log('listerAbsences ');
+    this.absences = [];
+    this.collaborateur.subalternes.forEach(matricule => {
+      this.absenceService.listerAbsencesParStatut().subscribe(result => {
+        result.forEach(abs => {
+          if(abs.collaborateur.matricule === matricule) {
+            this.absences.push(abs);
+          }
+          console.log('absences ',this.absences);
+        });
+      });
     });
   }
 

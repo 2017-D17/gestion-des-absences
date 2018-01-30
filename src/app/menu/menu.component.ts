@@ -16,15 +16,13 @@ export class MenuComponent implements OnInit {
   constructor(private absenceService: AbsenceService, private loginService: LoginService, private router: Router) { }
 
   ngOnInit() {
-    // récupération du collaborateur connecté
-    this.loginService.subjectCollaborateur.subscribe(
-      data => this.collaborateur = data
-    );
+    this.collaborateur = this.loginService.getConnectedUser();
   }
 
-  logout() {
-    this.loginService.logout().subscribe();
-    this.loginService.subjectCollaborateur.next(new Collaborateur("", "", "", 0, 0, "", "USER"));
+  seDeconnecter() {
+    console.log("deconnexion");
+    localStorage.clear();
+    this.loginService.setConnectedUser(new Collaborateur("","","",0,0,"",[],[]));
     this.router.navigate(['/connexion']);
   }
 }

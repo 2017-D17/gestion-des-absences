@@ -37,3 +37,10 @@
     justify-content: center;
     padding: 2%;
 }
+
+.card-deck {
+    -ms-flex-flow: row wrap;
+    flex-flow: row wrap;
+    margin-right: 0px;
+    margin-left: 0px;
+}

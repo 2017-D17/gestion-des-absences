@@ -4,24 +4,35 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable, Subject } from "rxjs";
 import { environment as env } from "../../../environments/environment";
 import { Collaborateur } from "../domain/collaborateur";
+import { Router } from '@angular/router';
 
 const httpOptions = { headers: new HttpHeaders({ "Content-Type": "application/json" }) };
 
 @Injectable()
 export class LoginService {
-  subjectCollaborateur = new BehaviorSubject<Collaborateur>(new Collaborateur("8b2d3ac7", "Hahn", "Nellie", 0, 0, "DSI/INDUS", "MANAGER"));
+  connectedUser:Collaborateur;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,private router: Router) { }
 
-  refreshConnectedCollab(collab: Collaborateur) {
-    this.subjectCollaborateur.next(collab);
+   getConnectedUser():Collaborateur {
+    this.connectedUser = JSON.parse(localStorage.getItem('user'))
+    if(this.connectedUser) {
+      return this.connectedUser;
+    } else {
+      this.router.navigate(['/connexion']);
+    }
+    
+   }
+
+   setConnectedUser(collab:Collaborateur) {
+    this.connectedUser = collab;
+   }
+
+  seConnecter(dataLogin: any): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({ "Content-Type": "application/json"})
+    };
+    return this.http.post<Collaborateur>(env.urlBackEndLogin, dataLogin,httpOptions );
   }
 
-  login(collaborateur: Collaborateur): Observable<any> {
-    return this.http.post<Collaborateur>(env.urlBackEndLogin, collaborateur, httpOptions);
-  }
-
-  logout(): Observable<any> {
-    return this.http.post<any>(env.urlBackEndLogout, "");
-  }
 }
