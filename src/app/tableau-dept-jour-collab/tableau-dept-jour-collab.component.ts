@@ -60,9 +60,6 @@ export class TableauDeptJourCollabComponent implements OnInit {
     });
   }
 
-  ngAfterViewInit(){
-   
-  }
 
   isCollabExist(collab:Collaborateur):boolean {
     let nbCollab = 0;
