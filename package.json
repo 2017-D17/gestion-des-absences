@@ -38,7 +38,6 @@
     "angular2-fusioncharts": "^1.0.3",
     "angular4-fusioncharts": "^1.0.0",
     "d3": "^4.12.2",
-
     "font-awesome": "^4.7.0",
     "jquery": "^3.2.1",
     "jwt-decode": "^2.2.0",

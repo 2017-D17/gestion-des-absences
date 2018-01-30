@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
+import { Collaborateur } from "../shared/domain/collaborateur";
 
 @Component({
   selector: "app-filtre-mois-annee-dept",
@@ -12,12 +13,12 @@ export class FiltreMoisAnneeDeptComponent implements OnInit {
   @Output() changeannee: EventEmitter<number> = new EventEmitter<number>();
   @Output() changeyear: EventEmitter<number> = new EventEmitter<number>();
   @Output() changedeptmois: EventEmitter<string> = new EventEmitter<string>();
-
+  collaborateurs: Collaborateur[] = [];
   dept: string;
   annee: number;
   year: number;
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit() {
     let currentDate = new Date();
