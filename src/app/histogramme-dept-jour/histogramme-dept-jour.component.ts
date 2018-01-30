@@ -68,7 +68,6 @@ export class HistogrammeDeptJourComponent {
   }
 
   onSelect(event) {
-    console.log("onSelect " + event);
   }
 
   ngOnInit() {
