@@ -57,7 +57,7 @@ export class PlanningDesAbsencesComponent implements OnInit {
       result.forEach(a => {
         this.absenceClass = "absence-color";
         let event:any = {};
-        if(a.type != 'RTT_EMPLOYEUR') {
+        if(a && a.type != 'RTT_EMPLOYEUR') {
           let label:string = ABSENCES_TYPES.filter( abs => abs.key == a.type)[0].label;
           event = {
             title:label,
