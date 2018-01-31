@@ -81,7 +81,7 @@ export class FormJourFerieComponent implements OnInit {
       this.jourFerie = new JourFerie(0,this.currentDate,"","","");
       let today = new Date(this.currentDate.getFullYear(),this.currentDate.getMonth(),this.currentDate.getDate()+1);
       this.selDate = {year: this.currentDate.getFullYear(), month: today.getMonth() +1, day: today.getDate()};
-      this.date = this.currentDate;
+      this.date = today;
 
     } else if(this.action === "update") {
       this.isValid = true;
