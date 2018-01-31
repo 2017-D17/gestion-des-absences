@@ -79,8 +79,8 @@ export class FormJourFerieComponent implements OnInit {
       this.add = true;
       this.titre = "Nouveau jour férié / RTT employeur"; 
       this.jourFerie = new JourFerie(0,this.currentDate,"","","");
-      this.selDate = {year: this.currentDate.getFullYear(), month: this.currentDate.getMonth() +1, day: this.currentDate.getDate()+1};
-      this.currentDate.setDate(this.currentDate.getDate()+1);
+      let today = new Date(this.currentDate.getFullYear(),this.currentDate.getMonth(),this.currentDate.getDate()+1);
+      this.selDate = {year: this.currentDate.getFullYear(), month: today.getMonth() +1, day: today.getDate()};
       this.date = this.currentDate;
 
     } else if(this.action === "update") {

@@ -32,7 +32,10 @@ export class AbsenceService {
     if(this.connectedUser) {
       this.refreshAbsencesByMatricule();
       this.listerAllAbsences();
-      this.listerAbsencesParStatut().subscribe(data => this.abencesEnAttenteSubj.next(data));
+      if(this.connectedUser.roles.includes(RoleCollaborateur.ROLE_MANAGER)) {
+        this.listerAbsencesParStatut().subscribe(data => this.abencesEnAttenteSubj.next(data));
+      }
+      
     }
   }
    

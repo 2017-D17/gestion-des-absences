@@ -102,17 +102,20 @@ export class FormAbsenceComponent implements OnInit {
       this.add = true;
       this.titre = "Demande d'absence";
       this.absence = new Absence(0, "", "", "", "", "");
+
+      let today = new Date(this.currentDate.getFullYear(),this.currentDate.getMonth(),this.currentDate.getDate()+1);
+
       this.selDateDebut = {
-        year: this.currentDate.getFullYear(),
-        month: this.currentDate.getMonth() + 1,
-        day: this.currentDate.getDate() + 1
+        year: today.getFullYear(),
+        month: today.getMonth() + 1,
+        day: today.getDate()
       };
       this.selDateFin = {
-        year: this.currentDate.getFullYear(),
-        month: this.currentDate.getMonth() + 1,
-        day: this.currentDate.getDate() + 1
+        year: today.getFullYear(),
+        month: today.getMonth() + 1,
+        day: today.getDate()
       };
-      this.currentDate.setDate(this.currentDate.getDate() + 1);
+      // this.currentDate.setDate(this.currentDate.getDate() + 1);
       this.dateDebut = this.currentDate;
       this.dateDeFin = this.currentDate;
       this.dateDebutNumber = Date.parse(this.dateDebut); //conversion date en millisecond pour tester le chevauchement
