@@ -50,11 +50,11 @@ export class PlanningDesAbsencesComponent implements OnInit {
   ngOnInit() {
     //récupération du collaborateur connecté
     this.collaborateur = this.loginService.getConnectedUser();
-    this.rtt = this.collaborateur.conges;
-    this.conges = this.collaborateur.rtt;
     this.absService.absenceSubj.subscribe(result => {
       this.absences = result;
       result.forEach(a => {
+        this.rtt = a.collaborateur.rtt;
+        this.conges = a.collaborateur.conges;
         this.absenceClass = "absence-color";
         let event:any = {};
         if(a && a.type != 'RTT_EMPLOYEUR') {
