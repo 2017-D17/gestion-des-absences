@@ -4,6 +4,8 @@ import { JourFerie } from "../shared/domain/jour-ferie";
 import { JoursFeriesService } from "../shared/service/jours-feries.service";
 import { NgbModalRef } from "@ng-bootstrap/ng-bootstrap/modal/modal-ref";
 import { AbsenceService } from "../shared/service/absence.service";
+import { Collaborateur } from "../shared/domain/collaborateur";
+import { LoginService } from "../shared/service/login.service";
 
 @Component({
   selector: "app-suprimer-jour-ferie",
@@ -11,6 +13,8 @@ import { AbsenceService } from "../shared/service/absence.service";
   styleUrls: ["./suprimer-jour-ferie.component.css"]
 })
 export class SuprimerJourFerieComponent {
+  // Collaborateur connecté
+  collaborateur: Collaborateur;
   closeResult: string;
   msg: string;
   // Message d'erreur ou de succès suite à l'envoi des données sur le serveur
@@ -23,7 +27,8 @@ export class SuprimerJourFerieComponent {
   constructor(
     private modalService: NgbModal,
     private jourFerieService: JoursFeriesService,
-    private absService: AbsenceService
+    private absService: AbsenceService,
+    private loginService: LoginService
   ) {}
 
   open(content) {
@@ -40,6 +45,9 @@ export class SuprimerJourFerieComponent {
     }
   }
   ngOnInit() {
+    // récupération collaborateur connecté
+    this.collaborateur = this.loginService.getConnectedUser();
+
     this.msg =
       " c'est interdit de supprimer un jour ferie ou une RTT dans le passé";
   }
