@@ -8,9 +8,6 @@ export class AuthInterceptorService implements HttpInterceptor {
   constructor() { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
-    console.log("intercepted request ... ");
-
     // Clone the request to add the new header.
     let authReq ;
     if(localStorage.getItem('token') != null) {

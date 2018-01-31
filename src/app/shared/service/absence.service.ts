@@ -63,7 +63,6 @@ export class AbsenceService {
     this.connectedUser = this.loginService.getConnectedUser();
     if(this.connectedUser) {
       if(this.connectedUser.roles.includes(RoleCollaborateur.ROLE_MANAGER)) {
-        console.log("listerAbsencesParStatut");
         return this.http.get<Absence[]>( env.urlBackEndAbsencesStatut + AbsenceStatut.EN_ATTENTE_VALIDATION);
       }
     }

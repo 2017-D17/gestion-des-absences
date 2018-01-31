@@ -75,7 +75,6 @@ export class ValidationDemandesComponent implements OnInit {
   }
 
   listerAbsences() {
-    console.log('listerAbsences ');
     this.absences = [];
     this.collaborateur.subalternes.forEach(matricule => {
       this.absenceService.listerAbsencesParStatut().subscribe(result => {
@@ -83,7 +82,6 @@ export class ValidationDemandesComponent implements OnInit {
           if(abs.collaborateur.matricule === matricule) {
             this.absences.push(abs);
           }
-          console.log('absences ',this.absences);
         });
       });
     });

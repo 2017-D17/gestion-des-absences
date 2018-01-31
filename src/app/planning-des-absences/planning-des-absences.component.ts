@@ -68,7 +68,6 @@ export class PlanningDesAbsencesComponent implements OnInit {
         }
         this.events.push(event)
       });
-      console.log(this.events);
     });
 
     this.jourFerieService.ferieSubj.subscribe(jourF => {
