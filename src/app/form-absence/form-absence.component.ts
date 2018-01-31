@@ -116,8 +116,8 @@ export class FormAbsenceComponent implements OnInit {
         day: today.getDate()
       };
       // this.currentDate.setDate(this.currentDate.getDate() + 1);
-      this.dateDebut = this.currentDate;
-      this.dateDeFin = this.currentDate;
+      this.dateDebut = today;
+      this.dateDeFin = today;
       this.dateDebutNumber = Date.parse(this.dateDebut); //conversion date en millisecond pour tester le chevauchement
       this.dateDeFinNumber = Date.parse(this.dateDeFin); //conversion date date en millisecond pour tester le chevauchement
     } else if (this.action === "update") {

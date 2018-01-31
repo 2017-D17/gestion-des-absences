@@ -5,12 +5,12 @@
 
 export const environment = {
   production: false,
-  urlBackEndAbsences: 'http://localhost:8080/absences/',
-  urlBackEndAbsencesStatut: 'http://localhost:8080/absences?statut=',
-  urlBackEndJoursFeries: 'http://localhost:8080/jours_feries/',
-  urlBackEndLogin: 'http://localhost:8080/login'
-  // urlBackEndAbsences: 'https://gda-absences.herokuapp.com/absences/',
-  // urlBackEndAbsencesStatut: 'https://gda-absences.herokuapp.com/absences?statut=',
-  // urlBackEndJoursFeries: 'https://gda-absences.herokuapp.com/jours_feries/',
-  // urlBackEndLogin: 'https://gda-absences.herokuapp.com/login'
+  // urlBackEndAbsences: 'http://localhost:8080/absences/',
+  // urlBackEndAbsencesStatut: 'http://localhost:8080/absences?statut=',
+  // urlBackEndJoursFeries: 'http://localhost:8080/jours_feries/',
+  // urlBackEndLogin: 'http://localhost:8080/login'
+  urlBackEndAbsences: 'https://gda-absences.herokuapp.com/absences/',
+  urlBackEndAbsencesStatut: 'https://gda-absences.herokuapp.com/absences?statut=',
+  urlBackEndJoursFeries: 'https://gda-absences.herokuapp.com/jours_feries/',
+  urlBackEndLogin: 'https://gda-absences.herokuapp.com/login'
 };
